@@ -1,0 +1,175 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Core Semantic Surface & Ink Tokens */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* THE LIVING EARTH Brand Palette Tokens */
+  --color-earth-forest: var(--earth-forest);
+  --color-earth-deep-forest: var(--earth-deep-forest);
+  --color-earth-sage: var(--earth-sage);
+  --color-earth-soft-sage: var(--earth-soft-sage);
+  --color-earth-ivory: var(--earth-ivory);
+  --color-earth-brown: var(--earth-brown);
+  --color-earth-charcoal: var(--earth-charcoal);
+  --color-earth-muted: var(--earth-muted);
+
+  /* Editorial Chart Palette */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Admin Sidebar Tokens */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Editorial Typography Tokens */
+  --font-sans: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-heading: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Radius Scale */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* Brand Foundation Palette */
+  --earth-forest: #244a38;
+  --earth-deep-forest: #172f25;
+  --earth-sage: #a6b59b;
+  --earth-soft-sage: #dce5d7;
+  --earth-ivory: #f7f5ef;
+  --earth-brown: #8a735e;
+  --earth-charcoal: #252b27;
+  --earth-muted: #777d76;
+
+  /* Semantic Light Tokens (Nature Editorial on Warm Ivory) */
+  --background: #f6f4ee;
+  --foreground: #222824;
+  --card: #ffffff;
+  --card-foreground: #222824;
+  --popover: #ffffff;
+  --popover-foreground: #222824;
+  --primary: #244a38;
+  --primary-foreground: #f7f5ef;
+  --secondary: #e3ebde;
+  --secondary-foreground: #172f25;
+  --muted: #ece8dc;
+  --muted-foreground: #525952;
+  --accent: #dce5d7;
+  --accent-foreground: #172f25;
+  --destructive: #a63d2d;
+  --border: #ddd8ca;
+  --input: #cfc9b8;
+  --ring: #244a38;
+
+  /* Restrained Data Visualization Palette */
+  --chart-1: #244a38;
+  --chart-2: #52796f;
+  --chart-3: #8a735e;
+  --chart-4: #3d6b7d;
+  --chart-5: #b05c3b;
+
+  --radius: 0.625rem;
+
+  /* Admin Workspace Tokens (Deep Forest Sidebar matching Brand Mockup) */
+  --sidebar: #172f25;
+  --sidebar-foreground: #f4f1ea;
+  --sidebar-primary: #2d5a45;
+  --sidebar-primary-foreground: #f7f5ef;
+  --sidebar-accent: #224435;
+  --sidebar-accent-foreground: #f7f5ef;
+  --sidebar-border: #254839;
+  --sidebar-ring: #a6b59b;
+}
+
+.dark {
+  --background: #173528;
+  --foreground: #f5f2e9;
+  --card: #1d4030;
+  --card-foreground: #f5f2e9;
+  --popover: #1d4030;
+  --popover-foreground: #f5f2e9;
+  --primary: #a8b9a0;
+  --primary-foreground: #173528;
+  --secondary: #234b38;
+  --secondary-foreground: #f5f2e9;
+  --muted: #214534;
+  --muted-foreground: #c4d0c0;
+  --accent: #28523e;
+  --accent-foreground: #f5f2e9;
+  --destructive: #d97562;
+  --border: #2e5b46;
+  --input: #2e5b46;
+  --ring: #a8b9a0;
+  --chart-1: #a8b9a0;
+  --chart-2: #76a593;
+  --chart-3: #c7ad8f;
+  --chart-4: #7da9ba;
+  --chart-5: #e08d6c;
+  --sidebar: #132c21;
+  --sidebar-foreground: #f5f2e9;
+  --sidebar-primary: #a8b9a0;
+  --sidebar-primary-foreground: #173528;
+  --sidebar-accent: #1d4030;
+  --sidebar-accent-foreground: #f5f2e9;
+  --sidebar-border: #2b5441;
+  --sidebar-ring: #a8b9a0;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground text-base leading-relaxed antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading tracking-tight text-foreground;
+  }
+}

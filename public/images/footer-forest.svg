@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 240" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="mist-fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6f4ee" stop-opacity="0" />
+      <stop offset="55%" stop-color="#dce5d7" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#244a38" stop-opacity="0.35" />
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="240" fill="url(#mist-fade)" />
+  <path d="M0 155 L 140 95 L 285 132 L 455 72 L 640 124 L 835 68 L 1030 128 L 1220 82 L 1440 130 L 1440 240 L 0 240 Z" fill="#9fb29a" fill-opacity="0.55" />
+  <path d="M0 178 Q 160 130 330 165 T 690 148 T 1070 160 T 1440 146 L 1440 240 L 0 240 Z" fill="#4f725b" fill-opacity="0.72" />
+  <path d="M0 198 L 45 162 L 85 194 L 120 150 L 160 192 L 210 144 L 250 190 L 305 156 L 348 192 L 402 142 L 444 188 L 498 154 L 540 192 L 598 140 L 642 186 L 698 158 L 748 194 L 802 146 L 848 188 L 906 150 L 952 192 L 1012 142 L 1060 188 L 1120 152 L 1168 192 L 1225 144 L 1272 190 L 1332 154 L 1380 194 L 1440 160 L 1440 240 L 0 240 Z" fill="#244a38" fill-opacity="0.88" />
+  <path d="M0 215 L 70 182 L 135 212 L 195 174 L 260 212 L 325 178 L 395 214 L 465 176 L 530 212 L 605 172 L 675 214 L 745 178 L 815 212 L 885 172 L 960 214 L 1030 176 L 1105 212 L 1175 174 L 1250 214 L 1320 180 L 1390 212 L 1440 186 L 1440 240 L 0 240 Z" fill="#172f25" />
+</svg>

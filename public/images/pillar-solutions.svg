@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Solutions and Restoration editorial illustration">
+  <defs>
+    <linearGradient id="sol-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f5ef" />
+      <stop offset="45%" stop-color="#dce5d7" />
+      <stop offset="100%" stop-color="#a6b59b" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#sol-bg)" />
+  <circle cx="910" cy="210" r="88" fill="#f7f5ef" fill-opacity="0.85" />
+  <path d="M0 470 C 280 410, 560 465, 860 400 C 1020 365, 1120 385, 1200 410 L 1200 900 L 0 900 Z" fill="#6f896d" />
+  <path d="M0 565 C 300 510, 620 570, 920 515 C 1050 490, 1140 505, 1200 525 L 1200 900 L 0 900 Z" fill="#3a614b" />
+  <path d="M0 665 C 320 620, 640 675, 960 630 C 1080 612, 1145 622, 1200 638 L 1200 900 L 0 900 Z" fill="#244a38" />
+  <path d="M0 770 C 340 730, 680 780, 980 740 C 1090 725, 1150 735, 1200 750 L 1200 900 L 0 900 Z" fill="#172f25" />
+  <g fill="none" stroke="#f7f5ef" stroke-opacity="0.32" stroke-width="2">
+    <path d="M0 595 C 300 540, 620 600, 920 545 C 1050 520, 1140 535, 1200 555" />
+    <path d="M0 695 C 320 650, 640 705, 960 660 C 1080 642, 1145 652, 1200 668" />
+  </g>
+</svg>

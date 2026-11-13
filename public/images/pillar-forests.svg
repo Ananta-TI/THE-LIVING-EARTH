@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Forests and Biodiversity editorial illustration">
+  <defs>
+    <linearGradient id="canopy-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f5ef" />
+      <stop offset="52%" stop-color="#dce5d7" />
+      <stop offset="100%" stop-color="#a6b59b" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#canopy-sky)" />
+  <path d="M0 430 Q 180 350 360 405 T 740 385 T 1120 410 L 1200 400 L 1200 900 L 0 900 Z" fill="#7c9378" />
+  <path d="M0 535 Q 210 455 430 510 T 860 490 T 1200 520 L 1200 900 L 0 900 Z" fill="#466953" />
+  <path d="M0 635 Q 240 555 490 615 T 960 595 T 1200 625 L 1200 900 L 0 900 Z" fill="#244a38" />
+  <path d="M0 740 Q 260 680 540 730 T 1040 715 T 1200 735 L 1200 900 L 0 900 Z" fill="#172f25" />
+  <g fill="#172f25" fill-opacity="0.88">
+    <polygon points="150,760 185,565 220,760" />
+    <polygon points="240,775 280,545 320,775" />
+    <polygon points="890,760 930,550 970,760" />
+    <polygon points="990,775 1035,525 1080,775" />
+  </g>
+</svg>

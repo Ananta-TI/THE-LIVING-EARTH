@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Oceans and Water Systems editorial illustration">
+  <defs>
+    <linearGradient id="ocean-depth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dce5d7" />
+      <stop offset="28%" stop-color="#698b81" />
+      <stop offset="62%" stop-color="#244a38" />
+      <stop offset="100%" stop-color="#172f25" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#ocean-depth)" />
+  <g fill="none" stroke="#f7f5ef" stroke-opacity="0.24" stroke-width="1.5">
+    <path d="M0 245 Q 240 205 480 245 T 960 245 T 1200 245" />
+    <path d="M0 305 Q 260 260 520 305 T 1040 305 T 1200 305" />
+    <path d="M0 375 Q 280 325 560 375 T 1120 375 T 1200 375" />
+  </g>
+  <path d="M0 440 C 260 385, 520 485, 780 430 C 960 392, 1090 420, 1200 448 L 1200 900 L 0 900 Z" fill="#244a38" fill-opacity="0.84" />
+  <path d="M0 545 C 290 500, 560 595, 840 540 C 1010 506, 1115 530, 1200 555 L 1200 900 L 0 900 Z" fill="#1b3b2d" />
+  <path d="M0 675 C 310 625, 620 715, 920 660 C 1060 634, 1140 650, 1200 670 L 1200 900 L 0 900 Z" fill="#172f25" />
+  <g fill="none" stroke="#a6b59b" stroke-opacity="0.28" stroke-width="1.5">
+    <path d="M0 740 C 310 695, 620 780, 920 728 C 1060 705, 1140 720, 1200 736" />
+    <path d="M0 805 C 310 765, 620 845, 920 798 C 1060 778, 1140 792, 1200 806" />
+  </g>
+</svg>
