@@ -105,13 +105,13 @@ export default async function AdminDashboardPage() {
         description="Manage your environmental content and monitor platform activity across THE LIVING EARTH."
         actions={
           <>
-            <Button asChild size="sm" className="gap-1.5 rounded-full px-4">
+            <Button asChild size="sm" className="gap-1.5 rounded-lg px-4">
               <Link href="/admin/articles/create">
                 <Plus className="size-4" aria-hidden="true" />
                 <span>New Article</span>
               </Link>
             </Button>
-            <Button asChild variant="outline" size="sm" className="gap-1.5 rounded-full px-4">
+            <Button asChild variant="outline" size="sm" className="gap-1.5 rounded-lg px-4">
               <Link href="/admin/statistics/create">
                 <Plus className="size-4" aria-hidden="true" />
                 <span>New Statistic</span>
@@ -128,14 +128,14 @@ export default async function AdminDashboardPage() {
             <Link
               key={card.label}
               href={card.href}
-              className="group rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="group rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
-              <Card className="h-full rounded-2xl border-border bg-card shadow-2xs transition-colors group-hover:border-primary/45">
+              <Card className="h-full rounded-xl border-border bg-card shadow-2xs transition-colors group-hover:border-primary/45">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardDescription className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                  <CardDescription className="text-xs font-medium text-muted-foreground">
                     {card.label}
                   </CardDescription>
-                  <span className="flex size-8 items-center justify-center rounded-full bg-secondary text-primary">
+                  <span className="flex size-8 items-center justify-center rounded-lg bg-secondary text-primary">
                     <Icon className="size-4" aria-hidden="true" />
                   </span>
                 </CardHeader>
@@ -173,7 +173,7 @@ export default async function AdminDashboardPage() {
       </section>
 
       <div className="grid gap-6 lg:grid-cols-7">
-        <Card className="rounded-2xl lg:col-span-4">
+        <Card className="rounded-xl lg:col-span-4">
           <CardHeader>
             <CardTitle className="font-heading text-xl">Content Overview</CardTitle>
             <CardDescription>

@@ -31,7 +31,7 @@ export function ReferenceList({ references }: ReferenceListProps) {
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-xs font-semibold text-primary">
+                <span className="font-mono text-xs font-medium text-primary">
                   [{index + 1}]
                 </span>
                 <Badge variant="outline">{SOURCE_TYPE_LABELS[ref.source_type]}</Badge>
@@ -55,7 +55,7 @@ export function ReferenceList({ references }: ReferenceListProps) {
               href={ref.source_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               <span>Visit Source</span>
               <ExternalLink className="size-3.5" aria-hidden="true" />

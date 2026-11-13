@@ -272,7 +272,7 @@ async function PillarDetailContent({
                 className={cn(
                   "inline-flex min-h-12 items-center border-b-2 px-1 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                   tab.active
-                    ? "border-primary font-semibold text-primary"
+                    ? "border-primary font-medium text-primary"
                     : "border-transparent text-muted-foreground hover:border-border hover:text-foreground",
                 )}
               >
@@ -283,9 +283,12 @@ async function PillarDetailContent({
 
           <Link
             href="/explore"
-            className="inline-flex items-center gap-1.5 py-2 text-xs font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="group inline-flex items-center gap-1.5 py-2 text-xs font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
-            <ArrowLeft className="size-3.5" aria-hidden="true" />
+            <ArrowLeft
+              className="size-3.5 transition-transform duration-200 group-hover:-translate-x-1 motion-reduce:transform-none"
+              aria-hidden="true"
+            />
             <span>All pillars</span>
           </Link>
         </div>
@@ -296,7 +299,7 @@ async function PillarDetailContent({
         <section
           id="overview"
           aria-labelledby="about-pillar-heading"
-          className="grid scroll-mt-24 items-center gap-8 rounded-3xl border border-border bg-card p-7 sm:p-10 lg:grid-cols-12"
+          className="grid scroll-mt-24 items-center gap-8 rounded-xl border border-border bg-card p-7 sm:p-10 lg:grid-cols-12"
         >
           <div className="space-y-4 lg:col-span-7">
             <h2
@@ -316,13 +319,13 @@ async function PillarDetailContent({
           </div>
 
           <div className="flex justify-center lg:col-span-5">
-            <div className="relative size-56 overflow-hidden rounded-full border-4 border-secondary shadow-md sm:size-64">
+            <div className="group relative size-56 overflow-hidden rounded-full border-4 border-secondary shadow-md transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.02] hover:shadow-lg sm:size-64 motion-reduce:transform-none">
               <Image
                 src={medallionSrc}
                 alt={`${pillar.name} circular globe visual`}
                 fill
                 sizes="256px"
-                className="object-cover"
+                className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] motion-reduce:transform-none"
               />
             </div>
           </div>
@@ -345,9 +348,9 @@ async function PillarDetailContent({
                 return (
                   <div
                     key={point.title}
-                    className="flex items-start gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary/40"
+                    className="group flex items-start gap-4 rounded-xl border border-border bg-card p-5 transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xs motion-reduce:transform-none"
                   >
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-secondary text-primary">
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-6 motion-reduce:transform-none">
                       <Icon className="size-5" aria-hidden="true" />
                     </span>
                     <div className="space-y-1">
@@ -370,7 +373,7 @@ async function PillarDetailContent({
           <SectionHeading
             headingId="pillar-articles-heading"
             title="Featured Articles"
-            actionLabel="View All Articles →"
+            actionLabel="View All Articles"
             actionHref={`/stories?pillar=${encodeURIComponent(pillar.slug)}`}
           />
 
@@ -403,7 +406,7 @@ async function PillarDetailContent({
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {topics.map((topic) => (
-                <div key={topic.id} className="rounded-2xl border border-border bg-card p-5">
+                <div key={topic.id} className="rounded-xl border border-border bg-card p-5">
                   <Badge variant="secondary" className="mb-2.5">
                     Topic
                   </Badge>
@@ -454,7 +457,7 @@ async function PillarDetailContent({
               headingId="pillar-cases-heading"
               title="Field Case Studies"
               description="Documented geographic conditions, ecological impacts, and conservation responses."
-              actionLabel="View Our Planet →"
+              actionLabel="View Our Planet"
               actionHref="/our-planet"
             />
 

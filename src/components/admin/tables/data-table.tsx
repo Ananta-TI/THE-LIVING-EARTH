@@ -40,7 +40,7 @@ export function DataTable<T>({
                 <TableHead
                   key={column.key}
                   className={cn(
-                    "h-11 px-4 text-xs font-semibold tracking-wide text-muted-foreground uppercase",
+                    "h-11 px-4 text-xs font-medium text-muted-foreground",
                     column.className,
                   )}
                 >

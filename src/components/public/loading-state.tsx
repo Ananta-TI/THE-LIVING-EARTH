@@ -18,7 +18,7 @@ export function LoadingState({
       </div>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: rows }).map((_, i) => (
-          <div key={i} className="h-72 animate-pulse rounded-2xl border border-border bg-card" />
+          <div key={i} className="h-72 animate-pulse rounded-xl border border-border bg-card" />
         ))}
       </div>
       <span className="sr-only">{label}</span>

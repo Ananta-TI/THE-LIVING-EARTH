@@ -68,7 +68,7 @@ export function StatisticsOverviewChart({
   }
 
   return (
-    <div className="space-y-4 rounded-2xl border border-border bg-card p-6">
+    <div className="space-y-4 rounded-xl border border-border bg-card p-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="font-heading text-xl font-medium text-foreground">

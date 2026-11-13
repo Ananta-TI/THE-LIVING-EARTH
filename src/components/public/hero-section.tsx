@@ -1,6 +1,10 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface HeroSectionProps {
@@ -9,70 +13,90 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({
-  headline = "Our Planet Is Changing. Understanding It Is Where Change Begins.",
-  description = "Explore documentary environmental stories, ecological field case studies, and verified planetary science across five interconnected systems.",
+  headline = "Our planet is changing. Understanding it is where change begins",
+  description = "Field stories, case studies and verified science across five connected systems: climate, oceans, forests, pollution and restoration.",
 }: HeroSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const prefersReduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
+
   return (
     <section
+      ref={sectionRef}
       aria-labelledby="hero-headline"
       className="relative isolate overflow-hidden border-b border-border bg-earth-deep-forest text-earth-ivory"
     >
-      <Image
-        src="/images/hero-planet.jpg"
-        alt="Misty evergreen rainforest ridges and winding river valley at dawn"
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-center"
-      />
+      <motion.div
+        aria-hidden="true"
+        style={prefersReduced ? undefined : { y: bgY, scale: bgScale }}
+        className="absolute inset-0 will-change-transform"
+      >
+        <Image
+          src="/images/hero-planet.jpg"
+          alt="Misty evergreen ridges and a winding river valley at dawn"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      </motion.div>
 
+      {/* Neutral scrim so the headline sits on calm, darkened valley */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-r from-[#0f2119]/92 via-[#172f25]/70 to-[#172f25]/30"
+        className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent"
       />
 
-      <div className="relative mx-auto flex min-h-[31rem] max-w-7xl flex-col justify-end px-4 py-16 sm:min-h-[36rem] sm:px-6 sm:py-20 lg:min-h-[40rem] lg:px-8 lg:py-24">
-        <div className="max-w-2xl space-y-5">
-          <p className="inline-flex items-center rounded-full border border-earth-sage/45 bg-earth-deep-forest/65 px-3.5 py-1 text-xs font-medium text-earth-soft-sage backdrop-blur-xs">
-            A Journey Through Our Changing Planet
-          </p>
-
+      <div className="relative mx-auto flex min-h-[32rem] max-w-7xl flex-col justify-center px-4 py-20 sm:min-h-[36rem] sm:px-6 lg:min-h-[42rem] lg:px-8">
+        <motion.div
+          initial={prefersReduced ? false : { opacity: 0.92, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-2xl space-y-6"
+        >
           <h1
             id="hero-headline"
-            className="font-heading text-4xl leading-[1.08] font-medium tracking-tight text-earth-ivory sm:text-5xl lg:text-[3.5rem]"
+            className="font-heading text-4xl leading-[1.08] font-normal tracking-tight text-earth-ivory sm:text-5xl lg:text-6xl"
           >
             {headline}
           </h1>
 
-          <p className="max-w-xl text-base leading-relaxed text-earth-ivory/90 sm:text-lg">
+          <p className="max-w-xl text-base leading-relaxed text-earth-ivory/85 sm:text-lg">
             {description}
           </p>
 
-          <div className="flex flex-wrap items-center gap-3.5 pt-2">
+          <div className="flex flex-wrap items-center gap-3 pt-2">
             <Button
               asChild
               size="lg"
-              className="h-11 rounded-full bg-earth-forest px-6 text-earth-ivory shadow-sm ring-1 ring-earth-sage/40 hover:bg-earth-deep-forest"
+              className="group/btn h-11 rounded-lg bg-earth-ivory px-5 text-earth-deep-forest transition-[background-color,transform] duration-200 hover:bg-white active:scale-[0.98]"
             >
               <Link href="/our-planet" className="gap-2">
-                <span>Explore Our Planet</span>
-                <ArrowRight className="size-4" aria-hidden="true" />
+                <span>Explore our planet</span>
+                <ArrowRight
+                  className="size-4 transition-transform duration-200 group-hover/btn:translate-x-1 motion-reduce:transform-none"
+                  aria-hidden="true"
+                />
               </Link>
             </Button>
 
             <Button
               asChild
-              variant="outline"
+              variant="ghost"
               size="lg"
-              className="h-11 rounded-full border-earth-ivory/50 bg-earth-deep-forest/45 px-6 text-earth-ivory backdrop-blur-xs hover:bg-earth-ivory hover:text-earth-deep-forest"
+              className="h-11 rounded-lg px-4 text-earth-ivory transition-[background-color,color,transform] duration-200 hover:bg-white/12 hover:text-earth-ivory active:scale-[0.98]"
             >
-              <Link href="/stories" className="gap-2">
-                <BookOpen className="size-4" aria-hidden="true" />
-                <span>Discover Our Stories</span>
-              </Link>
+              <Link href="/stories">Read the stories</Link>
             </Button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

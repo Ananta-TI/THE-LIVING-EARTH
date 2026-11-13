@@ -54,7 +54,7 @@ async function ExplorePillarsContent() {
       {allTopics.length > 0 ? (
         <section
           aria-labelledby="explore-topics-heading"
-          className="rounded-2xl border border-border bg-card p-6 sm:p-8"
+          className="rounded-xl border border-border bg-card p-6 sm:p-8"
         >
           <h2
             id="explore-topics-heading"
@@ -107,7 +107,7 @@ export default function ExplorePage() {
 
         <section
           aria-labelledby="explore-cross-nav-heading"
-          className="mt-14 rounded-3xl border border-border bg-card p-8"
+          className="mt-14 rounded-xl border border-border bg-card p-8"
         >
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
             <div className="max-w-2xl space-y-2">
@@ -124,13 +124,13 @@ export default function ExplorePage() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg" className="h-11 rounded-full px-6">
+              <Button asChild size="lg" className="h-11 rounded-lg px-6">
                 <Link href="/our-planet" className="gap-2">
                   <span>Explore Our Planet</span>
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="h-11 rounded-full px-6">
+              <Button asChild variant="outline" size="lg" className="h-11 rounded-lg px-6">
                 <Link href="/stories">Browse Stories</Link>
               </Button>
             </div>

@@ -47,7 +47,7 @@ export default async function AdminReferenceEditPage({
         </CardHeader>
         <CardContent className="grid gap-6 md:grid-cols-3">
           <div>
-            <h3 className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            <h3 className="mb-2 text-xs font-medium text-muted-foreground">
               Articles ({linkedArticles.length})
             </h3>
             {linkedArticles.length === 0 ? (
@@ -70,7 +70,7 @@ export default async function AdminReferenceEditPage({
           </div>
 
           <div>
-            <h3 className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            <h3 className="mb-2 text-xs font-medium text-muted-foreground">
               Case Studies ({linkedCaseStudies.length})
             </h3>
             {linkedCaseStudies.length === 0 ? (
@@ -93,7 +93,7 @@ export default async function AdminReferenceEditPage({
           </div>
 
           <div>
-            <h3 className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            <h3 className="mb-2 text-xs font-medium text-muted-foreground">
               Statistics ({linkedStatistics.length})
             </h3>
             {linkedStatistics.length === 0 ? (

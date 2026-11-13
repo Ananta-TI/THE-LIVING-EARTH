@@ -17,6 +17,7 @@ import { Breadcrumbs } from "@/components/public/breadcrumbs";
 import { CaseStudyCard } from "@/components/public/case-study-card";
 import { CTASection } from "@/components/public/cta-section";
 import { LoadingState } from "@/components/public/loading-state";
+import { MotionReveal } from "@/components/public/motion-reveal";
 import { PageHeroBanner } from "@/components/public/page-hero-banner";
 import { SectionHeading } from "@/components/public/section-heading";
 import { getPillarDetailBySlug } from "@/features/public/queries";
@@ -123,7 +124,7 @@ async function PublishedRestorationRecords() {
         headingId="solutions-published-heading"
         title="Published Restoration Stories & Case Studies"
         description="Verified reporting and field documentation tagged under Solutions & Restoration."
-        actionLabel="Explore Pillar →"
+        actionLabel="Explore Pillar"
         actionHref="/explore/solutions-restoration"
       />
 
@@ -170,31 +171,30 @@ export default function SolutionsPage() {
           />
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {SOLUTIONS_AREAS.map((area) => {
+            {SOLUTIONS_AREAS.map((area, idx) => {
               const Icon = area.icon;
               return (
-                <article
-                  key={area.title}
-                  className="flex flex-col items-center justify-between rounded-2xl border border-border bg-card p-6 text-center shadow-2xs transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-md"
-                >
-                  <div className="flex flex-col items-center">
-                    <span className="flex size-13 items-center justify-center rounded-full bg-secondary text-primary">
-                      <Icon className="size-6" aria-hidden="true" />
+                <MotionReveal key={area.title} delay={(idx % 4) * 0.05}>
+                  <article className="group flex h-full flex-col items-center justify-between rounded-xl border border-border bg-card p-6 text-center shadow-2xs transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-sm motion-reduce:transform-none">
+                    <div className="flex flex-col items-center">
+                      <span className="flex size-13 items-center justify-center rounded-lg bg-secondary text-primary transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-6 motion-reduce:transform-none">
+                        <Icon className="size-6" aria-hidden="true" />
+                      </span>
+
+                      <h2 className="mt-4 font-heading text-xl font-medium text-foreground">
+                        {area.title}
+                      </h2>
+
+                      <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                        {area.description}
+                      </p>
+                    </div>
+
+                    <span className="mt-5 inline-flex items-center rounded-full bg-secondary/70 px-3 py-1 text-[11px] font-medium text-primary">
+                      {area.tag}
                     </span>
-
-                    <h2 className="mt-4 font-heading text-xl font-medium text-foreground">
-                      {area.title}
-                    </h2>
-
-                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
-                      {area.description}
-                    </p>
-                  </div>
-
-                  <span className="mt-5 inline-flex items-center rounded-full bg-secondary/70 px-3 py-1 text-[11px] font-semibold text-primary">
-                    {area.tag}
-                  </span>
-                </article>
+                  </article>
+                </MotionReveal>
               );
             })}
           </div>

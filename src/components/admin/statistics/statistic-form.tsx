@@ -100,10 +100,10 @@ export function StatisticForm({ lookups, initialData }: StatisticFormProps) {
         >
           <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           <div className="space-y-1">
-            <p className="font-semibold">Scientific Reference Required First</p>
+            <p className="font-medium">Scientific Reference Required First</p>
             <p className="text-xs leading-relaxed">
               Every statistic in THE LIVING EARTH must link to a verified scientific reference.{" "}
-              <Link href="/admin/references/create" className="font-semibold underline">
+              <Link href="/admin/references/create" className="font-medium underline">
                 Register a scientific reference first
               </Link>{" "}
               before saving statistics.

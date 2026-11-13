@@ -90,7 +90,7 @@ export function ContactForm() {
       onSubmit={handleSubmit}
       noValidate
       aria-label="Send a message to THE LIVING EARTH"
-      className="space-y-6 rounded-3xl border border-border bg-card p-6 sm:p-8"
+      className="space-y-6 rounded-xl border border-border bg-card p-6 sm:p-8"
     >
       {successMessage ? (
         <div

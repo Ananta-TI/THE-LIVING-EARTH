@@ -29,7 +29,7 @@ export function StatisticCard({ statistic }: StatisticCardProps) {
   const typeMeta = DATA_TYPE_META[statistic.data_type];
 
   return (
-    <article className="flex h-full flex-col justify-between gap-4 rounded-2xl border border-border bg-card p-6">
+    <article className="flex h-full flex-col justify-between gap-4 rounded-xl border border-border bg-card p-6">
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <Badge variant="outline" className={typeMeta.className}>
@@ -45,7 +45,7 @@ export function StatisticCard({ statistic }: StatisticCardProps) {
         </h3>
 
         <div className="flex flex-wrap items-baseline gap-2 pt-1">
-          <span className="font-heading text-3xl font-semibold tracking-tight text-primary tabular-nums sm:text-4xl">
+          <span className="font-heading text-3xl font-medium tracking-tight text-primary tabular-nums sm:text-4xl">
             {formatNumber(statistic.value)}
           </span>
           <span className="text-sm font-medium text-muted-foreground">{statistic.unit}</span>

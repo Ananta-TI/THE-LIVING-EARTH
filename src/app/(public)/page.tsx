@@ -77,7 +77,7 @@ async function HomeDynamicSections() {
             headingId="home-pillars-heading"
             title="Explore Our Planet"
             description="Five interconnected environmental domains documenting Earth's changing biosphere."
-            actionLabel="View all →"
+            actionLabel="View all"
             actionHref="/explore"
           />
 
@@ -97,7 +97,7 @@ async function HomeDynamicSections() {
             headingId="home-stories-heading"
             title="Featured Stories"
             description="Long-form ecological reporting and explanatory essays grounded in scientific evidence."
-            actionLabel="View all →"
+            actionLabel="View all"
             actionHref="/stories"
           />
 
@@ -136,7 +136,7 @@ async function HomeDynamicSections() {
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-r from-[#0d1f17] via-[#132a20]/92 to-[#132a20]/30"
+          className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/10"
         />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -155,27 +155,26 @@ async function HomeDynamicSections() {
               </div>
 
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                {keyStatistics.slice(0, 3).map((stat) => {
+                {keyStatistics.slice(0, 3).map((stat, idx) => {
                   const isPercent = stat.unit === "%";
                   const formattedValue = isPercent
                     ? `~${formatNumber(stat.value)}%`
                     : `${formatNumber(stat.value)}${stat.unit}`;
 
                   return (
-                    <div
-                      key={stat.id}
-                      className="border-t border-earth-sage/40 pt-4"
-                    >
-                      <p className="font-heading text-4xl font-medium tracking-tight text-earth-ivory tabular-nums sm:text-5xl">
-                        {formattedValue}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-earth-ivory/95">
-                        {stat.indicator}
-                      </p>
-                      <p className="mt-1 text-xs text-earth-soft-sage/85">
-                        {stat.reference?.organization ?? "Verified Source"} · {stat.measurement_year}
-                      </p>
-                    </div>
+                    <MotionReveal key={stat.id} delay={idx * 0.06}>
+                      <div className="border-t border-earth-sage/40 pt-4 transition-colors duration-300 hover:border-earth-soft-sage">
+                        <p className="font-heading text-4xl font-medium tracking-tight text-earth-ivory tabular-nums sm:text-5xl">
+                          {formattedValue}
+                        </p>
+                        <p className="mt-2 text-sm font-medium text-earth-ivory/95">
+                          {stat.indicator}
+                        </p>
+                        <p className="mt-1 text-xs text-earth-soft-sage/85">
+                          {stat.reference?.organization ?? "Verified Source"} · {stat.measurement_year}
+                        </p>
+                      </div>
+                    </MotionReveal>
                   );
                 })}
               </div>
@@ -183,26 +182,17 @@ async function HomeDynamicSections() {
               <div>
                 <Link
                   href="/our-planet#sources"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wide text-earth-soft-sage uppercase hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth-sage"
+                  className="group inline-flex items-center gap-1.5 text-xs font-medium text-earth-soft-sage transition-colors hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth-sage"
                 >
                   <span>Inspect Data &amp; Scientific Sources</span>
-                  <ArrowRight className="size-3.5" aria-hidden="true" />
+                  <ArrowRight
+                    className="size-3.5 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
+                    aria-hidden="true"
+                  />
                 </Link>
               </div>
             </div>
-
-            <div className="hidden lg:col-span-4 lg:flex lg:justify-end">
-              <div className="relative aspect-[4/3] w-full max-w-xs overflow-hidden rounded-2xl border border-white/15 shadow-xl">
-                <Image
-                  src="/images/pillar-solutions.jpg"
-                  alt="Green sprout growing in dark soil"
-                  fill
-                  sizes="320px"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          </div>
+</div>
         </div>
       </section>
     </>
@@ -233,18 +223,18 @@ export default function HomePage() {
             headingId="home-solutions-heading"
             title="Solutions & Restoration"
             description="Practical ecological stewardship combining clean infrastructure, primary habitat protection, and material circularity."
-            actionLabel="View all →"
+            actionLabel="View all"
             actionHref="/solutions"
           />
 
           <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {SOLUTIONS_CARDS.map((card) => {
+            {SOLUTIONS_CARDS.map((card, idx) => {
               const Icon = card.icon;
               return (
-                <MotionReveal key={card.title}>
+                <MotionReveal key={card.title} delay={idx * 0.06}>
                   <Link
                     href="/solutions"
-                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xs transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-2xs transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
                   >
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
                       <Image
@@ -252,16 +242,16 @@ export default function HomePage() {
                         alt={card.title}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
+                        className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] motion-reduce:transform-none"
                       />
                     </div>
                     <div className="flex flex-1 flex-col justify-between p-5">
                       <div>
                         <div className="flex items-center gap-2.5">
-                          <span className="inline-flex size-8 items-center justify-center rounded-full bg-secondary text-primary">
+                          <span className="inline-flex size-8 items-center justify-center rounded-lg bg-secondary text-primary transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-6 motion-reduce:transform-none">
                             <Icon className="size-4" aria-hidden="true" />
                           </span>
-                          <h3 className="font-heading text-lg font-medium text-foreground group-hover:text-primary">
+                          <h3 className="font-heading text-lg font-medium text-foreground transition-colors group-hover:text-primary">
                             {card.title}
                           </h3>
                         </div>
@@ -269,9 +259,12 @@ export default function HomePage() {
                           {card.description}
                         </p>
                       </div>
-                      <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary">
+                      <span className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-primary">
                         <span>Explore pathway</span>
-                        <ArrowRight className="size-3.5" aria-hidden="true" />
+                        <ArrowRight
+                          className="size-3.5 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
+                          aria-hidden="true"
+                        />
                       </span>
                     </div>
                   </Link>

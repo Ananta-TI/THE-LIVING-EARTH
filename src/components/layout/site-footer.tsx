@@ -25,7 +25,7 @@ export function SiteFooter() {
           <div className="space-y-4 lg:col-span-5">
             <Link
               href="/"
-              className="inline-flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="group/logo inline-flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               <BrandLogo tone="light" />
             </Link>
@@ -35,7 +35,7 @@ export function SiteFooter() {
           </div>
 
           <div className="lg:col-span-2">
-            <h2 className="font-sans text-xs font-semibold tracking-wider text-earth-deep-forest uppercase">
+            <h2 className="font-sans text-xs font-medium text-earth-deep-forest">
               Quick Links
             </h2>
             <ul className="mt-4 space-y-2 text-sm">
@@ -43,7 +43,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="inline-flex min-h-9 items-center text-muted-foreground transition-colors hover:text-earth-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    className="inline-flex min-h-9 items-center text-muted-foreground transition-[color,transform] duration-200 hover:translate-x-1 hover:text-earth-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
                   >
                     {item.label}
                   </Link>
@@ -53,7 +53,7 @@ export function SiteFooter() {
           </div>
 
           <div className="lg:col-span-3">
-            <h2 className="font-sans text-xs font-semibold tracking-wider text-earth-deep-forest uppercase">
+            <h2 className="font-sans text-xs font-medium text-earth-deep-forest">
               Resources
             </h2>
             <ul className="mt-4 space-y-2 text-sm">
@@ -61,7 +61,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="inline-flex min-h-9 items-center text-muted-foreground transition-colors hover:text-earth-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    className="inline-flex min-h-9 items-center text-muted-foreground transition-[color,transform] duration-200 hover:translate-x-1 hover:text-earth-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
                   >
                     {item.label}
                   </Link>
@@ -71,35 +71,35 @@ export function SiteFooter() {
           </div>
 
           <div className="lg:col-span-2">
-            <h2 className="font-sans text-xs font-semibold tracking-wider text-earth-deep-forest uppercase">
+            <h2 className="font-sans text-xs font-medium text-earth-deep-forest">
               Explore &amp; Connect
             </h2>
             <div className="mt-4 flex items-center gap-2.5">
               <Link
                 href="/explore"
                 aria-label="Explore environmental pillars"
-                className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-earth-forest transition-colors hover:bg-earth-forest hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-earth-forest transition-[background-color,color,transform] duration-200 hover:-translate-y-0.5 hover:bg-earth-forest hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
               >
                 <Compass className="size-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/our-planet"
                 aria-label="Our Planet environmental overview"
-                className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-earth-forest transition-colors hover:bg-earth-forest hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-earth-forest transition-[background-color,color,transform] duration-200 hover:-translate-y-0.5 hover:bg-earth-forest hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
               >
                 <Globe2 className="size-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/solutions"
                 aria-label="Conservation and restoration solutions"
-                className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-earth-forest transition-colors hover:bg-earth-forest hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-earth-forest transition-[background-color,color,transform] duration-200 hover:-translate-y-0.5 hover:bg-earth-forest hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
               >
                 <Sprout className="size-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/contact"
                 aria-label="Contact THE LIVING EARTH editorial desk"
-                className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-earth-forest transition-colors hover:bg-earth-forest hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-earth-forest transition-[background-color,color,transform] duration-200 hover:-translate-y-0.5 hover:bg-earth-forest hover:text-earth-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
               >
                 <Mail className="size-4" aria-hidden="true" />
               </Link>

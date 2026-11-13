@@ -16,7 +16,7 @@ export function AdminHeader({
   unreadMessagesCount = 0,
 }: AdminHeaderProps) {
   return (
-    <header className="sticky top-0 z-20 flex min-h-16 items-center justify-between gap-3 border-b border-border bg-card/95 px-4 backdrop-blur-xs sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-20 flex min-h-16 items-center justify-between gap-3 border-b border-border bg-card/95 px-4 sm:px-6 lg:px-8">
       <div className="flex min-w-0 items-center gap-3">
         <AdminMobileNav unreadMessagesCount={unreadMessagesCount} />
         <AdminBreadcrumbs />
@@ -26,7 +26,7 @@ export function AdminHeader({
         <div className="hidden items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 sm:flex">
           <ShieldCheck className="size-3.5 text-primary" aria-hidden="true" />
           <div className="text-left leading-tight">
-            <p className="text-xs font-semibold text-foreground">{adminName}</p>
+            <p className="text-xs font-medium text-foreground">{adminName}</p>
             {adminEmail ? (
               <p className="text-[11px] text-muted-foreground">{adminEmail}</p>
             ) : null}

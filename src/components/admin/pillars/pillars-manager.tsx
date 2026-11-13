@@ -121,7 +121,7 @@ export function PillarsManager({ pillars }: PillarsManagerProps) {
             <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="rounded bg-primary/10 px-2 py-0.5 font-mono text-xs font-semibold text-primary">
+                  <span className="rounded bg-primary/10 px-2 py-0.5 font-mono text-xs font-medium text-primary">
                     Order #{pillar.display_order}
                   </span>
                   <StatusBadge status={pillar.is_active ? "active" : "inactive"} />
@@ -290,7 +290,7 @@ export function PillarsManager({ pillars }: PillarsManagerProps) {
             <div className="space-y-5 text-sm">
               <div>
                 <div className="mb-2 flex items-center justify-between">
-                  <h3 className="font-semibold text-foreground">
+                  <h3 className="font-medium text-foreground">
                     Topics ({inspecting.topicsCount})
                   </h3>
                   <Link href="/admin/topics" className="text-xs font-medium text-primary hover:underline">
@@ -316,7 +316,7 @@ export function PillarsManager({ pillars }: PillarsManagerProps) {
 
               <div>
                 <div className="mb-2 flex items-center justify-between">
-                  <h3 className="font-semibold text-foreground">
+                  <h3 className="font-medium text-foreground">
                     Articles ({inspecting.articlesCount})
                   </h3>
                   <Link href="/admin/articles" className="text-xs font-medium text-primary hover:underline">

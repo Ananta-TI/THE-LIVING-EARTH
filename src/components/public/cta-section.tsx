@@ -21,14 +21,14 @@ export function CTASection({
   secondaryHref,
 }: CTASectionProps) {
   return (
-    <section className="relative isolate overflow-hidden rounded-3xl border border-border bg-earth-deep-forest px-6 py-12 text-earth-ivory sm:px-12 sm:py-16">
+    <section className="group relative isolate overflow-hidden rounded-xl border border-border bg-earth-deep-forest px-6 py-12 text-earth-ivory sm:px-12 sm:py-16">
       <Image
         src="/images/hero-planet.jpg"
         alt=""
         aria-hidden="true"
         fill
         sizes="(min-width: 1280px) 1200px, 100vw"
-        className="object-cover object-center opacity-35"
+        className="object-cover object-center opacity-35 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transform-none"
       />
       <div
         aria-hidden="true"
@@ -47,11 +47,14 @@ export function CTASection({
           <Button
             asChild
             size="lg"
-            className="h-11 rounded-full bg-earth-ivory px-6 text-earth-deep-forest hover:bg-earth-soft-sage"
+            className="group/btn h-11 rounded-lg bg-earth-ivory px-6 text-earth-deep-forest transition-[background-color,transform] duration-200 hover:bg-earth-soft-sage active:scale-[0.98]"
           >
             <Link href={primaryHref} className="gap-2">
               <span>{primaryLabel}</span>
-              <ArrowRight className="size-4" aria-hidden="true" />
+              <ArrowRight
+                className="size-4 transition-transform duration-200 group-hover/btn:translate-x-1 motion-reduce:transform-none"
+                aria-hidden="true"
+              />
             </Link>
           </Button>
           {secondaryLabel && secondaryHref ? (
@@ -59,7 +62,7 @@ export function CTASection({
               asChild
               variant="outline"
               size="lg"
-              className="h-11 rounded-full border-earth-ivory/40 bg-transparent px-6 text-earth-ivory hover:bg-earth-ivory/15 hover:text-earth-ivory"
+              className="h-11 rounded-lg border-earth-ivory/40 bg-transparent px-6 text-earth-ivory transition-[background-color,border-color,transform] duration-200 hover:border-earth-ivory hover:bg-earth-ivory/15 hover:text-earth-ivory active:scale-[0.98]"
             >
               <Link href={secondaryHref}>{secondaryLabel}</Link>
             </Button>

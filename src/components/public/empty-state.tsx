@@ -20,8 +20,8 @@ export function EmptyState({
   secondaryHref,
 }: EmptyStateProps) {
   return (
-    <div className="rounded-2xl border border-dashed border-border bg-card/70 px-6 py-12 text-center">
-      <span className="mx-auto mb-3 flex size-11 items-center justify-center rounded-full bg-secondary text-primary">
+    <div className="rounded-xl border border-dashed border-border bg-card/70 px-6 py-12 text-center">
+      <span className="mx-auto mb-3 flex size-11 items-center justify-center rounded-lg bg-secondary text-primary">
         <Sprout className="size-5" aria-hidden="true" />
       </span>
       <h3 className="font-heading text-xl font-medium text-foreground">{title}</h3>

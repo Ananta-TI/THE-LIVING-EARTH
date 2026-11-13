@@ -150,7 +150,7 @@ async function OurPlanetDynamicSection() {
           headingId="planet-cases-heading"
           title="Featured Global Case Studies"
           description="Regional field investigations connecting ecological pressures, observable impacts, and documented conservation responses."
-          actionLabel="Explore Pillars →"
+          actionLabel="Explore Pillars"
           actionHref="/explore"
         />
 
@@ -211,7 +211,7 @@ async function OurPlanetDynamicSection() {
           {references.length > 0 ? (
             <ReferenceList references={references} />
           ) : (
-            <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+            <div className="rounded-xl border border-border bg-card p-6 sm:p-8">
               <div className="flex items-start gap-3">
                 <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
                 <div className="space-y-2 text-sm leading-relaxed text-muted-foreground">
@@ -301,22 +301,25 @@ export default function OurPlanetPage() {
                 </h2>
                 <Link
                   href="/case-studies/mangrove-restoration-in-coastal-indonesia"
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                  className="group inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
                   <span>View all</span>
-                  <ArrowRight className="size-3.5" aria-hidden="true" />
+                  <ArrowRight
+                    className="size-3.5 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
+                    aria-hidden="true"
+                  />
                 </Link>
               </div>
 
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <div className="overflow-hidden rounded-2xl border border-border bg-card">
+                <div className="group overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 hover:border-primary/40">
                   <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
                     <Image
                       src="/images/mangrove-coastal.jpg"
                       alt="Restored coastal mangrove belt stabilizing tropical shoreline"
                       fill
                       sizes="(max-width: 640px) 100vw, 400px"
-                      className="object-cover"
+                      className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transform-none"
                     />
                   </div>
                   <div className="p-4">
@@ -329,14 +332,14 @@ export default function OurPlanetPage() {
                   </div>
                 </div>
 
-                <div className="overflow-hidden rounded-2xl border border-border bg-card">
+                <div className="group overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 hover:border-primary/40">
                   <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
                     <Image
                       src="/images/about-earth.jpg"
                       alt="Estuarine river delta and nursery habitat recovery"
                       fill
                       sizes="(max-width: 640px) 100vw, 400px"
-                      className="object-cover"
+                      className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transform-none"
                     />
                   </div>
                   <div className="p-4">
@@ -354,9 +357,9 @@ export default function OurPlanetPage() {
 
           {/* Right Sidebar: Location, Pillar, and Related Resources (Matching Screen 6) */}
           <aside aria-label="Case study metadata and related resources" className="space-y-6 lg:col-span-4">
-            <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-2xs">
+            <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-2xs">
               <div className="flex items-center gap-3.5">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-primary">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary">
                   <MapPin className="size-4" aria-hidden="true" />
                 </span>
                 <div>
@@ -370,7 +373,7 @@ export default function OurPlanetPage() {
                   href="/explore/oceans-water"
                   className="group flex items-center gap-3.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-primary">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary">
                     <Layers className="size-4" aria-hidden="true" />
                   </span>
                   <div>
@@ -383,7 +386,7 @@ export default function OurPlanetPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
               <h3 className="font-heading text-xl font-medium text-foreground">
                 Related Resources
               </h3>
@@ -394,12 +397,12 @@ export default function OurPlanetPage() {
                     <li key={item.label}>
                       <Link
                         href={item.href}
-                        className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-secondary/65 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                        className="group flex items-center gap-3 rounded-xl p-2 transition-[background-color,transform] duration-200 hover:translate-x-0.5 hover:bg-secondary/65 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
                       >
-                        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-primary">
+                        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary transition-transform duration-200 group-hover:scale-105 group-hover:-rotate-6 motion-reduce:transform-none">
                           <Icon className="size-4" aria-hidden="true" />
                         </span>
-                        <span className="text-sm font-medium text-foreground group-hover:text-primary">
+                        <span className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
                           {item.label}
                         </span>
                       </Link>
@@ -426,11 +429,11 @@ export default function OurPlanetPage() {
                 <article
                   key={theme.id}
                   id={theme.id}
-                  className="flex scroll-mt-24 flex-col justify-between rounded-2xl border border-border bg-card p-6"
+                  className="group flex scroll-mt-24 flex-col justify-between rounded-xl border border-border bg-card p-6 transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xs motion-reduce:transform-none"
                 >
                   <div>
                     <div className="flex items-center gap-3">
-                      <span className="inline-flex size-10 items-center justify-center rounded-full bg-secondary text-primary">
+                      <span className="inline-flex size-10 items-center justify-center rounded-lg bg-secondary text-primary transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-6 motion-reduce:transform-none">
                         <Icon className="size-5" aria-hidden="true" />
                       </span>
                       <h3 className="font-heading text-xl font-medium text-foreground">
@@ -458,10 +461,13 @@ export default function OurPlanetPage() {
                   <div className="mt-5 border-t border-border/70 pt-3.5">
                     <Link
                       href={theme.pillarHref}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                      className="group/link inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                     >
                       <span>Explore related pillar</span>
-                      <ArrowRight className="size-3.5" aria-hidden="true" />
+                      <ArrowRight
+                        className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-1 motion-reduce:transform-none"
+                        aria-hidden="true"
+                      />
                     </Link>
                   </div>
                 </article>

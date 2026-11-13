@@ -57,7 +57,7 @@ export function SectionHeading({
         <Link
           href={actionHref}
           className={cn(
-            "group inline-flex min-h-11 shrink-0 items-center gap-2 text-sm font-semibold underline-offset-4 transition-colors hover:underline focus-visible:outline-2 focus-visible:outline-offset-2",
+            "group inline-flex min-h-11 shrink-0 items-center gap-2 text-sm font-medium underline-offset-4 transition-colors hover:underline focus-visible:outline-2 focus-visible:outline-offset-2",
             tone === "dark"
               ? "text-earth-sage hover:text-earth-ivory focus-visible:outline-earth-sage"
               : "text-primary hover:text-primary/80 focus-visible:outline-ring",
@@ -65,7 +65,7 @@ export function SectionHeading({
         >
           <span>{actionLabel}</span>
           <ArrowRight
-            className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none"
+            className="size-4 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
             aria-hidden="true"
           />
         </Link>

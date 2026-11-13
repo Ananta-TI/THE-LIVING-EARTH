@@ -20,7 +20,7 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
     : caseStudy.country;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-primary/45">
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-2xs transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-sm motion-reduce:transform-none">
       <Link
         href={`/case-studies/${caseStudy.slug}`}
         className="relative aspect-[16/10] w-full overflow-hidden bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
@@ -30,7 +30,7 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
           alt={`${caseStudy.title} — ${locationText}`}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
+          className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transform-none"
         />
       </Link>
 
@@ -47,7 +47,7 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
           <h3 className="font-heading text-xl leading-snug font-medium text-foreground">
             <Link
               href={`/case-studies/${caseStudy.slug}`}
-              className="transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="transition-colors duration-200 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {caseStudy.title}
             </Link>
@@ -65,10 +65,13 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
 
           <Link
             href={`/case-studies/${caseStudy.slug}`}
-            className="inline-flex shrink-0 items-center gap-1 font-semibold text-primary underline-offset-4 hover:underline"
+            className="group/case inline-flex shrink-0 items-center gap-1 font-medium text-primary underline-offset-4 hover:underline"
           >
             <span>Explore Case</span>
-            <ArrowRight className="size-3.5" aria-hidden="true" />
+            <ArrowRight
+              className="size-3.5 transition-transform duration-200 group-hover/case:translate-x-1 motion-reduce:transform-none"
+              aria-hidden="true"
+            />
           </Link>
         </div>
       </div>

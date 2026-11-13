@@ -31,7 +31,7 @@ export default function ContactPage() {
         <div className="grid gap-10 lg:grid-cols-12">
           {/* Left Editorial Contact Cards matching Mockup Screen 9 */}
           <aside aria-label="Editorial contact notes" className="space-y-6 lg:col-span-5">
-            <div className="rounded-3xl border border-border bg-card p-7 shadow-2xs">
+            <div className="rounded-xl border border-border bg-card p-7 shadow-2xs">
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-earth-forest text-earth-ivory">
@@ -80,23 +80,29 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-border bg-card p-7 shadow-2xs">
+            <div className="rounded-xl border border-border bg-card p-7 shadow-2xs">
               <h2 className="font-heading text-xl font-medium text-foreground">
                 Quick Navigation
               </h2>
               <div className="mt-4 flex flex-col gap-3 text-sm font-medium">
                 <Link
                   href="/explore"
-                  className="inline-flex items-center gap-2 text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className="group inline-flex items-center gap-2 text-primary transition-[color,transform] duration-200 hover:translate-x-0.5 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
                 >
-                  <Compass className="size-4" aria-hidden="true" />
+                  <Compass
+                    className="size-4 transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-6 motion-reduce:transform-none"
+                    aria-hidden="true"
+                  />
                   <span>Explore Five Environmental Pillars</span>
                 </Link>
                 <Link
                   href="/stories"
-                  className="inline-flex items-center gap-2 text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className="group inline-flex items-center gap-2 text-primary transition-[color,transform] duration-200 hover:translate-x-0.5 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
                 >
-                  <BookOpen className="size-4" aria-hidden="true" />
+                  <BookOpen
+                    className="size-4 transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-6 motion-reduce:transform-none"
+                    aria-hidden="true"
+                  />
                   <span>Read Published Stories</span>
                 </Link>
               </div>

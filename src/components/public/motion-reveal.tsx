@@ -10,8 +10,8 @@ interface MotionRevealProps {
 }
 
 /**
- * Restrained GPU-composited scroll reveal that avoids hiding critical content
- * when reduced-motion is active.
+ * Gentle GPU-composited scroll-triggered reveal with calm deceleration
+ * and automatic reduced-motion fallback.
  */
 export function MotionReveal({ children, className, delay = 0 }: MotionRevealProps) {
   const prefersReduced = useReducedMotion();
@@ -22,10 +22,10 @@ export function MotionReveal({ children, className, delay = 0 }: MotionRevealPro
 
   return (
     <motion.div
-      initial={{ opacity: 0.92, y: 12 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.12 }}
-      transition={{ duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, amount: "some" }}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}

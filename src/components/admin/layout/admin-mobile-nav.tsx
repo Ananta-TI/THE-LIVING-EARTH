@@ -68,7 +68,7 @@ export function AdminMobileNav({ unreadMessagesCount = 0 }: AdminMobileNavProps)
                   <span>{item.label}</span>
                 </span>
                 {showUnread ? (
-                  <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                  <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[11px] font-medium text-primary">
                     {unreadMessagesCount}
                   </span>
                 ) : null}

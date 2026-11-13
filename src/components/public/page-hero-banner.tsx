@@ -1,5 +1,8 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useRef, type ReactNode } from "react";
 import Image from "next/image";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface PageHeroBannerProps {
@@ -23,38 +26,59 @@ export function PageHeroBanner({
   compact = false,
   children,
 }: PageHeroBannerProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const prefersReduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+
   return (
     <section
+      ref={sectionRef}
       aria-labelledby="page-hero-title"
       className="relative isolate overflow-hidden border-b border-border bg-earth-deep-forest text-earth-ivory"
     >
-      <Image
-        src={imageSrc}
-        alt={imageAlt}
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-center"
-      />
+      <motion.div
+        aria-hidden="true"
+        style={prefersReduced ? undefined : { y: bgY, scale: bgScale }}
+        className="absolute inset-0 will-change-transform"
+      >
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      </motion.div>
 
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-b from-earth-deep-forest/65 via-earth-deep-forest/70 to-earth-deep-forest/90"
+        className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/10"
       />
 
       <div
         className={cn(
           "relative mx-auto flex max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8",
-          compact ? "min-h-[15rem] py-12 sm:min-h-[18rem] sm:py-16" : "min-h-[18rem] py-16 sm:min-h-[21rem] sm:py-20",
+          compact
+            ? "min-h-[15rem] py-12 sm:min-h-[18rem] sm:py-16"
+            : "min-h-[18rem] py-16 sm:min-h-[21rem] sm:py-20",
           align === "center" ? "items-center text-center" : "items-start text-left",
         )}
       >
-        <div className={cn("space-y-4", align === "center" ? "max-w-2xl" : "max-w-3xl")}>
-          {eyebrow ? (
-            <p className="inline-flex items-center rounded-full border border-earth-sage/40 bg-earth-deep-forest/65 px-3.5 py-1 text-xs font-medium tracking-wide text-earth-soft-sage backdrop-blur-xs">
-              {eyebrow}
-            </p>
-          ) : null}
+        <motion.div
+          initial={prefersReduced ? false : { opacity: 0.92, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className={cn("space-y-4", align === "center" ? "max-w-2xl" : "max-w-3xl")}
+        >
+          {eyebrow ? <p className="text-sm text-earth-ivory/75">{eyebrow}</p> : null}
 
           <h1
             id="page-hero-title"
@@ -68,7 +92,7 @@ export function PageHeroBanner({
           </p>
 
           {children ? <div className="pt-2">{children}</div> : null}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

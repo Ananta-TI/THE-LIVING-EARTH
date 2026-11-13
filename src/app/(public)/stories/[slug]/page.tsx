@@ -150,7 +150,7 @@ async function StoryDetailContent({
           </p>
         </header>
 
-        <figure className="mt-8 overflow-hidden rounded-3xl border border-border bg-muted">
+        <figure className="mt-8 overflow-hidden rounded-xl border border-border bg-muted">
           <div className="relative aspect-[16/9] w-full">
             <Image
               src={imageSrc}

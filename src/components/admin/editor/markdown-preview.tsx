@@ -38,7 +38,7 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
 
     if (raw.startsWith("**") && raw.endsWith("**")) {
       tokens.push(
-        <strong key={key} className="font-semibold text-foreground">
+        <strong key={key} className="font-medium text-foreground">
           {renderInline(raw.slice(2, -2), `${key}-b`)}
         </strong>,
       );
@@ -172,7 +172,7 @@ export function MarkdownPreview({ content, className }: MarkdownPreviewProps) {
         );
       } else {
         blocks.push(
-          <h4 key={key} className="font-heading text-base font-semibold text-foreground">
+          <h4 key={key} className="font-heading text-base font-medium text-foreground">
             {renderInline(text, key)}
           </h4>,
         );

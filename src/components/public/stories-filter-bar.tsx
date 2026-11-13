@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { motion, useReducedMotion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,6 +43,7 @@ export function StoriesFilterBar({
   totalCount,
 }: StoriesFilterBarProps) {
   const router = useRouter();
+  const prefersReduced = useReducedMotion();
   const [searchValue, setSearchValue] = useState(initialQuery);
 
   function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
@@ -62,7 +64,7 @@ export function StoriesFilterBar({
 
   return (
     <div className="space-y-4">
-      {/* Horizontal Category Underline Tabs (Matching Mockup Screen 5) */}
+      {/* Horizontal Category Underline Tabs */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border">
         <div
           role="group"
@@ -74,13 +76,24 @@ export function StoriesFilterBar({
             onClick={() => handlePillarSelect("")}
             aria-pressed={initialPillarSlug === ""}
             className={cn(
-              "inline-flex min-h-11 items-center border-b-2 px-1 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+              "relative inline-flex min-h-11 items-center px-1 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
               initialPillarSlug === ""
-                ? "border-primary font-semibold text-primary"
-                : "border-transparent font-medium text-muted-foreground hover:border-border hover:text-foreground",
+                ? "font-medium text-primary"
+                : "font-medium text-muted-foreground hover:text-foreground",
             )}
           >
-            All
+            <span>All</span>
+            {initialPillarSlug === "" ? (
+              prefersReduced ? (
+                <span className="absolute right-0 -bottom-px left-0 h-0.5 bg-primary" />
+              ) : (
+                <motion.span
+                  layoutId="stories-pillar-underline"
+                  transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                  className="absolute right-0 -bottom-px left-0 h-0.5 bg-primary"
+                />
+              )
+            ) : null}
           </button>
 
           {pillars.map((pillar) => {
@@ -94,13 +107,24 @@ export function StoriesFilterBar({
                 aria-pressed={active}
                 title={pillar.name}
                 className={cn(
-                  "inline-flex min-h-11 items-center border-b-2 px-1 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                  "relative inline-flex min-h-11 items-center px-1 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                   active
-                    ? "border-primary font-semibold text-primary"
-                    : "border-transparent font-medium text-muted-foreground hover:border-border hover:text-foreground",
+                    ? "font-medium text-primary"
+                    : "font-medium text-muted-foreground hover:text-foreground",
                 )}
               >
-                {shortLabel}
+                <span>{shortLabel}</span>
+                {active ? (
+                  prefersReduced ? (
+                    <span className="absolute right-0 -bottom-px left-0 h-0.5 bg-primary" />
+                  ) : (
+                    <motion.span
+                      layoutId="stories-pillar-underline"
+                      transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                      className="absolute right-0 -bottom-px left-0 h-0.5 bg-primary"
+                    />
+                  )
+                ) : null}
               </button>
             );
           })}
@@ -111,7 +135,7 @@ export function StoriesFilterBar({
         </p>
       </div>
 
-      {/* Rounded Full-Width Search Input (Matching Mockup Screen 5) */}
+      {/* Rounded Full-Width Search Input */}
       <form
         onSubmit={handleSearchSubmit}
         role="search"
@@ -131,11 +155,14 @@ export function StoriesFilterBar({
             type="search"
             value={searchValue}
             onChange={(event) => setSearchValue(event.target.value)}
-            placeholder="Search articles..."
-            className="h-11 rounded-full border-border bg-card pl-11 pr-4 text-sm shadow-2xs"
+            placeholder="Search articles"
+            className="h-11 rounded-lg border-border bg-card pr-4 pl-11 text-sm shadow-2xs transition-colors focus:border-primary"
           />
         </div>
-        <Button type="submit" className="h-11 rounded-full px-6">
+        <Button
+          type="submit"
+          className="h-11 rounded-lg px-6 transition-[background-color,transform] active:scale-[0.98]"
+        >
           Search
         </Button>
         {hasFilters ? (
@@ -143,7 +170,7 @@ export function StoriesFilterBar({
             type="button"
             variant="outline"
             onClick={handleReset}
-            className="h-11 gap-1.5 rounded-full px-4"
+            className="h-11 gap-1.5 rounded-lg px-4 transition-[background-color,transform] active:scale-[0.98]"
           >
             <X className="size-4" aria-hidden="true" />
             <span>Reset</span>

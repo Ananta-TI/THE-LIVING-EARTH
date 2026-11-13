@@ -140,9 +140,9 @@ async function CaseStudyDetailContent({
           </p>
 
           {/* Verified Study Metadata Bar */}
-          <dl className="grid gap-4 rounded-2xl border border-border bg-secondary/35 p-5 sm:grid-cols-2 lg:grid-cols-3">
+          <dl className="grid gap-4 rounded-xl border border-border bg-secondary/35 p-5 sm:grid-cols-2 lg:grid-cols-3">
             <div>
-              <dt className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              <dt className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                 <MapPin className="size-3.5 text-primary" aria-hidden="true" />
                 <span>Location</span>
               </dt>
@@ -151,7 +151,7 @@ async function CaseStudyDetailContent({
 
             {caseStudy.organization ? (
               <div>
-                <dt className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                <dt className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                   <Building2 className="size-3.5 text-primary" aria-hidden="true" />
                   <span>Lead / Documenting Body</span>
                 </dt>
@@ -163,7 +163,7 @@ async function CaseStudyDetailContent({
 
             {caseStudy.start_date || caseStudy.end_date ? (
               <div>
-                <dt className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                <dt className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                   <Calendar className="size-3.5 text-primary" aria-hidden="true" />
                   <span>Observation Period</span>
                 </dt>
@@ -176,7 +176,7 @@ async function CaseStudyDetailContent({
 
             {hasCoordinates ? (
               <div>
-                <dt className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                <dt className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                   <Compass className="size-3.5 text-primary" aria-hidden="true" />
                   <span>Coordinates</span>
                 </dt>
@@ -188,7 +188,7 @@ async function CaseStudyDetailContent({
           </dl>
         </header>
 
-        <figure className="mt-8 overflow-hidden rounded-3xl border border-border bg-muted">
+        <figure className="mt-8 overflow-hidden rounded-xl border border-border bg-muted">
           <div className="relative aspect-[16/9] w-full">
             <Image
               src={imageSrc}

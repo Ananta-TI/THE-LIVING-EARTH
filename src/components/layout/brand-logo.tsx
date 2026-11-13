@@ -20,7 +20,7 @@ export function BrandLogo({
     <span className={cn("inline-flex items-center gap-3", className)}>
       <span
         className={cn(
-          "flex shrink-0 items-center justify-center rounded-full shadow-xs",
+          "flex shrink-0 items-center justify-center rounded-full shadow-xs transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/logo:-rotate-6 group-hover/logo:scale-105 motion-reduce:transform-none motion-reduce:transition-none",
           compact ? "size-9" : "size-10",
           isDarkSurface
             ? "bg-earth-forest text-earth-ivory ring-1 ring-earth-sage/35"
@@ -31,7 +31,10 @@ export function BrandLogo({
           viewBox="0 0 32 32"
           fill="none"
           aria-hidden="true"
-          className={compact ? "size-5" : "size-5.5"}
+          className={cn(
+            "transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/logo:rotate-6 motion-reduce:transform-none",
+            compact ? "size-5" : "size-5.5",
+          )}
         >
           <path
             d="M15.5 26C15.5 18.5 18 12.2 25.5 7.5C24.5 15.8 20.5 20.5 15.5 21.5"
@@ -59,9 +62,11 @@ export function BrandLogo({
       <span className="flex flex-col leading-none">
         <span
           className={cn(
-            "font-heading font-semibold tracking-[0.04em] uppercase",
+            "font-heading font-semibold tracking-[0.04em] uppercase transition-colors duration-200",
             compact ? "text-sm sm:text-base" : "text-base sm:text-lg",
-            isDarkSurface ? "text-earth-ivory" : "text-earth-deep-forest",
+            isDarkSurface
+              ? "text-earth-ivory"
+              : "text-earth-deep-forest group-hover/logo:text-earth-forest",
           )}
         >
           {SITE_CONFIG.name}

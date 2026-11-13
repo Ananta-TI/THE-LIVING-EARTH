@@ -67,7 +67,7 @@ export default async function AdminMessageDetailPage({
           </div>
 
           <div className="border-t border-border pt-4">
-            <p className="mb-2.5 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            <p className="mb-2.5 text-xs font-medium text-muted-foreground">
               Workflow Status
             </p>
             <MessageStatusActions messageId={msg.id} currentStatus={msg.status} />

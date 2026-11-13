@@ -18,7 +18,7 @@ export function ErrorState({
   return (
     <div
       role="alert"
-      className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 sm:p-8"
+      className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 sm:p-8"
     >
       <div className="flex items-start gap-3">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-destructive/15 text-destructive">

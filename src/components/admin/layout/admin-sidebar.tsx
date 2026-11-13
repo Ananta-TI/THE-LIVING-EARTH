@@ -33,7 +33,7 @@ export function AdminSidebar({ unreadMessagesCount = 0 }: AdminSidebarProps) {
           <ShieldCheck className="size-4 text-earth-soft-sage" aria-hidden="true" />
         </span>
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-earth-ivory">Admin</p>
+          <p className="truncate text-sm font-medium text-earth-ivory">Admin</p>
           <p className="truncate text-[11px] text-earth-sage">Administrator</p>
         </div>
       </div>
@@ -64,7 +64,7 @@ export function AdminSidebar({ unreadMessagesCount = 0 }: AdminSidebarProps) {
                   {showUnread ? (
                     <span
                       className={cn(
-                        "rounded-full px-2 py-0.5 text-[11px] font-semibold tabular-nums",
+                        "rounded-lg px-2 py-0.5 text-[11px] font-medium tabular-nums",
                         active
                           ? "bg-earth-ivory text-earth-deep-forest"
                           : "bg-earth-sage/25 text-earth-ivory",

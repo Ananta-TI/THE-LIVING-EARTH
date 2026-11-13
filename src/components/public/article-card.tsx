@@ -18,7 +18,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
   const readingMinutes = estimateReadingTimeMinutes(article.content);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xs transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-md">
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-2xs transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-sm motion-reduce:transform-none">
       <Link
         href={`/stories/${article.slug}`}
         className="relative aspect-[16/10] w-full overflow-hidden bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
@@ -28,18 +28,18 @@ export function ArticleCard({ article }: ArticleCardProps) {
           alt={article.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105 motion-reduce:transform-none"
+          className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transform-none"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-[#0d1f17]/75 via-transparent to-transparent"
+          className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
         />
         <div className="absolute bottom-3 left-3 flex flex-wrap items-center gap-1.5">
-          <span className="inline-flex items-center rounded-full border border-white/20 bg-[#172f25]/85 px-2.5 py-0.5 text-[11px] font-medium text-earth-ivory backdrop-blur-xs">
+          <span className="inline-flex items-center rounded-full bg-black/55 px-2.5 py-0.5 text-[11px] font-medium text-earth-ivory">
             {article.pillarName}
           </span>
           {article.topicName ? (
-            <span className="inline-flex items-center rounded-full bg-black/45 px-2.5 py-0.5 text-[10px] font-medium text-earth-ivory/90 backdrop-blur-xs">
+            <span className="inline-flex items-center rounded-full bg-black/45 px-2.5 py-0.5 text-[10px] font-medium text-earth-ivory/90">
               {article.topicName}
             </span>
           ) : null}
@@ -51,7 +51,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
           <h3 className="font-heading text-xl leading-snug font-medium text-foreground sm:text-[22px]">
             <Link
               href={`/stories/${article.slug}`}
-              className="transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="transition-colors duration-200 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {article.title}
             </Link>
@@ -77,10 +77,13 @@ export function ArticleCard({ article }: ArticleCardProps) {
 
           <Link
             href={`/stories/${article.slug}`}
-            className="inline-flex items-center gap-1 rounded-full bg-secondary/75 px-3 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+            className="group/read inline-flex items-center gap-1 text-xs font-medium text-primary underline-offset-4 hover:underline"
           >
             <span>Read more</span>
-            <ArrowRight className="size-3" aria-hidden="true" />
+            <ArrowRight
+              className="size-3 transition-transform duration-200 group-hover/read:translate-x-1 motion-reduce:transform-none"
+              aria-hidden="true"
+            />
           </Link>
         </div>
       </div>

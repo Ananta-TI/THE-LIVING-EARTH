@@ -93,7 +93,7 @@ export function StatisticsTable({ items, pillars }: StatisticsTableProps) {
       header: "Measurement",
       render: (row) => (
         <div className="text-sm">
-          <span className="font-semibold text-foreground tabular-nums">
+          <span className="font-medium text-foreground tabular-nums">
             {formatNumber(row.value)}
           </span>{" "}
           <span className="text-xs text-muted-foreground">{row.unit}</span>
