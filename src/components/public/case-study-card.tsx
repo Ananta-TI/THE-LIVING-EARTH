@@ -11,7 +11,6 @@ interface CaseStudyCardProps {
 
 export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
   const imageSrc = resolveEditorialImageUrl(caseStudy.cover_image_path, {
-    defaultBucket: "case-study-images",
     pillarSlug: caseStudy.pillarSlug,
   });
 

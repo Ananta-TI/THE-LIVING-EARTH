@@ -13,12 +13,17 @@ import { MarkdownArticle } from "@/components/public/markdown-article";
 import { ReferenceList } from "@/components/public/reference-list";
 import { SectionHeading } from "@/components/public/section-heading";
 import { Badge } from "@/components/ui/badge";
+import { PUBLISHED_CASE_STUDIES } from "@/data";
 import { getCaseStudyDetailBySlug } from "@/features/public/queries";
 import { formatDateTime } from "@/lib/utils/format";
 import { resolveEditorialImageUrl } from "@/lib/utils/media-url";
 
 interface CaseStudyPageProps {
   readonly params: Promise<{ readonly slug: string }>;
+}
+
+export function generateStaticParams() {
+  return PUBLISHED_CASE_STUDIES.map((caseStudy) => ({ slug: caseStudy.slug }));
 }
 
 export async function generateMetadata({ params }: CaseStudyPageProps): Promise<Metadata> {
@@ -49,7 +54,6 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
       images: [
         {
           url: resolveEditorialImageUrl(caseStudy.cover_image_path, {
-            defaultBucket: "case-study-images",
             pillarSlug: caseStudy.pillarSlug,
           }),
           alt: caseStudy.title,
@@ -70,8 +74,8 @@ async function CaseStudyDetailContent({
   if (result.status === "unconfigured") {
     return (
       <ErrorState
-        title="Database configuration required"
-        description="Public database configuration is required to read published case studies."
+        title="Case study unavailable"
+        description="This case study is not available right now."
         actionHref="/our-planet"
         actionLabel="Back to Our Planet"
       />
@@ -95,7 +99,6 @@ async function CaseStudyDetailContent({
 
   const { caseStudy, references, relatedCaseStudies } = result.data;
   const imageSrc = resolveEditorialImageUrl(caseStudy.cover_image_path, {
-    defaultBucket: "case-study-images",
     pillarSlug: caseStudy.pillarSlug,
   });
   const locationLabel = caseStudy.region

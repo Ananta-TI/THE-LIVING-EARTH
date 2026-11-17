@@ -1,3 +1,5 @@
+import siteSettings from "@/data/site-settings.json";
+
 export interface NavItem {
   readonly label: string;
   readonly href: string;
@@ -10,6 +12,11 @@ export const SITE_CONFIG = {
   description:
     "An editorial environmental knowledge and storytelling platform dedicated to exploring global ecological challenges, verified scientific data, and conservation solutions.",
   locale: "en-US",
+  contactEmail:
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ||
+    siteSettings.general.contact_email ||
+    siteSettings.site_identity.contactEmail ||
+    "editorial@thelivingearth.org",
 } as const;
 
 export function getSiteBaseUrl(): string {
@@ -17,6 +24,17 @@ export function getSiteBaseUrl(): string {
   if (configured && /^https?:\/\//i.test(configured)) {
     return configured.replace(/\/+$/, "");
   }
+
+  const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (vercelProductionUrl) {
+    return `https://${vercelProductionUrl.replace(/^https?:\/\//i, "").replace(/\/+$/, "")}`;
+  }
+
+  const vercelUrl = process.env.VERCEL_URL?.trim();
+  if (vercelUrl) {
+    return `https://${vercelUrl.replace(/^https?:\/\//i, "").replace(/\/+$/, "")}`;
+  }
+
   return "http://localhost:3000";
 }
 
@@ -78,58 +96,5 @@ export const SUPPORTING_NAV_ITEMS: readonly NavItem[] = [
     label: "Submit a Data Inquiry",
     href: "/contact",
     description: "Contact the editorial desk or report a factual correction",
-  },
-] as const;
-
-export const ADMIN_NAV_ITEMS: readonly NavItem[] = [
-  {
-    label: "Dashboard",
-    href: "/admin",
-    description: "Editorial overview, live counts, and quick actions",
-  },
-  {
-    label: "Articles",
-    href: "/admin/articles",
-    description: "Editorial stories, drafts, and published features",
-  },
-  {
-    label: "Pillars",
-    href: "/admin/pillars",
-    description: "Core environmental content pillars",
-  },
-  {
-    label: "Topics",
-    href: "/admin/topics",
-    description: "Subtopics and thematic taxonomy under each pillar",
-  },
-  {
-    label: "Case Studies",
-    href: "/admin/case-studies",
-    description: "Global geographic environmental case studies",
-  },
-  {
-    label: "Statistics",
-    href: "/admin/statistics",
-    description: "Verified scientific indicators and datasets",
-  },
-  {
-    label: "References",
-    href: "/admin/references",
-    description: "Scientific citations and authoritative sources",
-  },
-  {
-    label: "Media Library",
-    href: "/admin/media",
-    description: "Editorial imagery and Supabase storage assets",
-  },
-  {
-    label: "Messages",
-    href: "/admin/messages",
-    description: "Public contact submissions and corrections inbox",
-  },
-  {
-    label: "Settings",
-    href: "/admin/settings",
-    description: "Platform identity, SEO defaults, and footer config",
   },
 ] as const;

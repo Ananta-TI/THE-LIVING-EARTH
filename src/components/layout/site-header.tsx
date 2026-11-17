@@ -4,18 +4,29 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-} from "motion/react";
-import { ArrowRight, Menu, X } from "lucide-react";
+  ArrowUpRight,
+  BookOpen,
+  Compass,
+  Globe2,
+  House,
+  Info,
+  Mail,
+  Sprout,
+  type LucideIcon,
+} from "lucide-react";
 import { BrandLogo } from "@/components/layout/brand-logo";
-import { Button } from "@/components/ui/button";
 import { MAIN_NAV_ITEMS } from "@/config/site";
 import { cn } from "@/lib/utils";
+
+const NAV_ICONS: Readonly<Record<string, LucideIcon>> = {
+  "/": House,
+  "/about": Info,
+  "/explore": Compass,
+  "/stories": BookOpen,
+  "/our-planet": Globe2,
+  "/solutions": Sprout,
+  "/contact": Mail,
+};
 
 function isActivePath(pathname: string, href: string): boolean {
   if (href === "/") {
@@ -26,235 +37,277 @@ function isActivePath(pathname: string, href: string): boolean {
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const prefersReduced = useReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [hoveredHref, setHoveredHref] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
 
-  const { scrollY, scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 180,
-    damping: 28,
-    restDelta: 0.001,
-  });
+  const isHome = pathname === "/";
+  const hasFloatingSurface = isScrolled || mobileMenuOpen;
+  const isLightSurface = hasFloatingSurface || !isHome;
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const nextScrolled = latest > 18;
-    setIsScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
-  });
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 24);
+    };
+
+    const handlePopState = () => {
+      setMobileMenuOpen(false);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
 
-    function handleKeyDown(event: KeyboardEvent) {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMobileMenuOpen(false);
         toggleButtonRef.current?.focus();
       }
-    }
+    };
+
+    const desktopQuery = window.matchMedia("(min-width: 1280px)");
+    const handleDesktopViewport = () => {
+      if (desktopQuery.matches) {
+        setMobileMenuOpen(false);
+      }
+    };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    desktopQuery.addEventListener("change", handleDesktopViewport);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      desktopQuery.removeEventListener("change", handleDesktopViewport);
+    };
   }, [mobileMenuOpen]);
 
   return (
-    <motion.header
-      initial={prefersReduced ? false : { opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        "sticky top-0 z-40 border-b transition-[background-color,border-color,box-shadow] duration-300",
-        isScrolled
-          ? "border-border bg-background/95 shadow-[0_6px_20px_-14px_rgba(23,47,37,0.28)]"
-          : "border-border/60 bg-background/88",
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-[4.25rem] lg:px-8">
-        <Link
-          href="/"
-          onClick={() => setMobileMenuOpen(false)}
-          className="group/logo inline-flex min-h-11 items-center rounded-md py-1 transition-opacity hover:opacity-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-        >
-          <BrandLogo tone="light" compact />
-        </Link>
+    <>
+      {/* Keeps content clear of the fixed header on every route except the home hero. */}
+      {!isHome ? <div aria-hidden="true" className="h-[4.875rem]" /> : null}
 
-        <nav
-          aria-label="Primary navigation"
-          className="hidden lg:block"
-          onMouseLeave={() => setHoveredHref(null)}
-        >
-          <ul className="flex items-center gap-0.5">
-            {MAIN_NAV_ITEMS.map((item) => {
-              const active = isActivePath(pathname, item.href);
-              const hovered = hoveredHref === item.href;
-
-              return (
-                <li
-                  key={item.href}
-                  onMouseEnter={() => setHoveredHref(item.href)}
-                  className="relative"
-                >
-                  <Link
-                    href={item.href}
-                    aria-current={active ? "page" : undefined}
-                    onFocus={() => setHoveredHref(item.href)}
-                    onBlur={() => setHoveredHref(null)}
-                    className={cn(
-                      "relative z-10 inline-flex min-h-10 items-center rounded-lg px-3.5 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                      active
-                        ? "text-earth-deep-forest"
-                        : "text-foreground/75 hover:text-earth-deep-forest",
-                    )}
-                  >
-                    {hovered && !prefersReduced ? (
-                      <motion.span
-                        layoutId="header-nav-hover"
-                        transition={{ type: "spring", stiffness: 420, damping: 32 }}
-                        aria-hidden="true"
-                        className="absolute inset-0 -z-10 rounded-lg bg-secondary/80"
-                      />
-                    ) : null}
-
-                    {active && !prefersReduced ? (
-                      <motion.span
-                        layoutId="header-nav-active-pill"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                        aria-hidden="true"
-                        className="absolute inset-0 -z-20 rounded-lg bg-secondary"
-                      />
-                    ) : active ? (
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-0 -z-20 rounded-lg bg-secondary"
-                      />
-                    ) : null}
-
-                    <span>{item.label}</span>
-
-                    {active && !prefersReduced ? (
-                      <motion.span
-                        layoutId="header-nav-active-bar"
-                        transition={{ type: "spring", stiffness: 420, damping: 32 }}
-                        aria-hidden="true"
-                        className="absolute right-3.5 bottom-1 left-3.5 h-0.5 rounded-full bg-earth-forest"
-                      />
-                    ) : active ? (
-                      <span
-                        aria-hidden="true"
-                        className="absolute right-3.5 bottom-1 left-3.5 h-0.5 rounded-full bg-earth-forest"
-                      />
-                    ) : null}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-
-        <div className="flex items-center gap-2.5">
-          <Button
-            asChild
-            size="sm"
-            className="group/cta hidden h-10 rounded-lg bg-earth-forest px-4.5 text-xs font-medium text-earth-ivory shadow-xs transition-[background-color,transform] duration-200 hover:bg-earth-deep-forest active:scale-[0.98] sm:inline-flex"
-          >
-            <Link href="/our-planet" className="gap-1.5">
-              <span>Explore Our Planet</span>
-              <ArrowRight
-                className="size-3.5 transition-transform duration-200 group-hover/cta:translate-x-0.5 motion-reduce:transform-none"
-                aria-hidden="true"
-              />
-            </Link>
-          </Button>
-
-          <button
-            ref={toggleButtonRef}
-            type="button"
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-primary-nav"
-            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            className="inline-flex size-11 items-center justify-center rounded-lg border border-border bg-card text-foreground transition-[background-color,transform] duration-200 hover:bg-secondary active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring lg:hidden"
-          >
-            {mobileMenuOpen ? (
-              <X className="size-5" aria-hidden="true" />
-            ) : (
-              <Menu className="size-5" aria-hidden="true" />
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Subtle Scroll Progress Line Along Bottom Edge of Header */}
-      {!prefersReduced ? (
-        <motion.div
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex w-full justify-center">
+        {/* Readability scrim over the photographic home hero. */}
+        <div
           aria-hidden="true"
-          style={{ scaleX: smoothProgress }}
-          className="pointer-events-none h-[2px] w-full origin-left bg-earth-forest/75"
+          className={cn(
+            "pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-earth-deep-forest/60 via-earth-deep-forest/25 to-transparent transition-opacity duration-500 motion-reduce:transition-none",
+            isLightSurface ? "opacity-0" : "opacity-100",
+          )}
         />
-      ) : null}
 
-      <AnimatePresence>
-        {mobileMenuOpen ? (
-          <motion.nav
-            id="mobile-primary-nav"
-            aria-label="Mobile navigation"
-            initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="border-t border-border bg-card px-4 py-4 sm:px-6 lg:hidden"
-          >
-            <ul className="flex flex-col gap-1">
-              {MAIN_NAV_ITEMS.map((item, idx) => {
-                const active = isActivePath(pathname, item.href);
-                return (
-                  <motion.li
-                    key={item.href}
-                    initial={prefersReduced ? false : { opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      duration: 0.2,
-                      delay: prefersReduced ? 0 : idx * 0.025,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
+        <div
+          className={cn(
+            "pointer-events-auto relative flex w-full flex-col transition-all duration-500 ease-in-out motion-reduce:transition-none",
+            hasFloatingSurface
+              ? "mt-3 w-[94%] max-w-[1220px] rounded-3xl border border-white/60 bg-background/90 shadow-[0_18px_50px_-24px_rgba(23,47,37,0.45)] backdrop-blur-2xl backdrop-saturate-150 xl:rounded-full"
+              : "mt-0 max-w-full border border-transparent bg-transparent",
+          )}
+        >
+          <div className="relative z-10 mx-auto w-full max-w-[1400px]">
+            <div
+              className={cn(
+                "flex w-full items-center justify-between gap-3 transition-all duration-500 ease-in-out motion-reduce:transition-none",
+                hasFloatingSurface
+                  ? "px-5 py-2.5 lg:px-7"
+                  : "px-4 py-4 sm:px-6 lg:px-10",
+              )}
+            >
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="THE LIVING EARTH — Home"
+                className={cn(
+                  "group flex shrink-0 items-center rounded-full py-1 transition-opacity duration-300 hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
+                  isLightSurface
+                    ? "focus-visible:ring-primary"
+                    : "focus-visible:ring-earth-sage",
+                )}
+              >
+                <BrandLogo tone={isLightSurface ? "light" : "dark"} compact subtitle="" />
+              </Link>
+
+              <nav
+                aria-label="Primary navigation"
+                className="hidden items-center gap-1 xl:flex"
+              >
+                {MAIN_NAV_ITEMS.map((item) => {
+                  const active = isActivePath(pathname, item.href);
+                  const Icon = NAV_ICONS[item.href] ?? Compass;
+
+                  return (
                     <Link
+                      key={item.href}
                       href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "flex min-h-11 flex-col justify-center rounded-xl px-3.5 py-2.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                        "group relative flex items-center gap-1.5 rounded-full px-3 py-2 text-[13px] font-bold transition-colors duration-300 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
+                        isLightSurface
+                          ? "focus-visible:ring-primary"
+                          : "focus-visible:ring-earth-sage",
                         active
-                          ? "bg-secondary text-earth-deep-forest"
-                          : "text-foreground hover:bg-muted/70",
+                          ? isLightSurface
+                            ? "text-primary"
+                            : "text-earth-ivory"
+                          : isLightSurface
+                            ? "text-foreground/70 hover:text-primary"
+                            : "text-earth-ivory/75 hover:text-earth-ivory",
                       )}
                     >
-                      <span className="text-sm font-medium">{item.label}</span>
-                      <span className="text-xs text-muted-foreground">{item.description}</span>
+                      <Icon
+                        size={14}
+                        aria-hidden="true"
+                        className={cn(
+                          "transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none",
+                          active
+                            ? isLightSurface
+                              ? "text-primary"
+                              : "text-earth-ivory"
+                            : isLightSurface
+                              ? "opacity-55 group-hover:text-primary"
+                              : "opacity-70",
+                        )}
+                      />
+                      <span>{item.label}</span>
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          "absolute -bottom-1 left-1/2 h-[2px] -translate-x-1/2 rounded-full transition-all duration-300 motion-reduce:transition-none",
+                          active ? "w-6" : "w-0 group-hover:w-6",
+                          isLightSurface ? "bg-primary" : "bg-earth-sage",
+                        )}
+                      />
                     </Link>
-                  </motion.li>
-                );
-              })}
-            </ul>
-            <div className="mt-3 border-t border-border pt-3">
-              <Button
-                asChild
-                className="h-11 w-full rounded-lg bg-earth-forest text-earth-ivory hover:bg-earth-deep-forest"
-              >
+                  );
+                })}
+              </nav>
+
+              <div className="hidden shrink-0 items-center xl:flex">
                 <Link
                   href="/our-planet"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="justify-center gap-2"
+                  className={cn(
+                    "group/cta inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-bold shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-95 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transform-none motion-reduce:transition-none",
+                    isLightSurface
+                      ? "bg-primary text-primary-foreground hover:bg-earth-deep-forest focus-visible:ring-primary"
+                      : "bg-earth-ivory text-earth-deep-forest hover:bg-white focus-visible:ring-earth-sage",
+                  )}
                 >
                   <span>Explore Our Planet</span>
-                  <ArrowRight className="size-4" aria-hidden="true" />
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className={cn(
+                      "size-4 transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 motion-reduce:transform-none",
+                      isLightSurface ? "text-earth-soft-sage" : "text-earth-forest",
+                    )}
+                  />
                 </Link>
-              </Button>
+              </div>
+
+              <div className="flex items-center xl:hidden">
+                <button
+                  ref={toggleButtonRef}
+                  type="button"
+                  onClick={() => setMobileMenuOpen((prev) => !prev)}
+                  aria-expanded={mobileMenuOpen}
+                  aria-controls="mobile-primary-nav"
+                  aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                  className={cn(
+                    "flex h-10 w-10 flex-col items-center justify-center space-y-1.5 rounded-full border shadow-sm backdrop-blur-md transition-colors duration-300 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
+                    isLightSurface
+                      ? "border-border bg-background/70 text-foreground hover:bg-background focus-visible:ring-primary"
+                      : "border-white/25 bg-earth-deep-forest/35 text-earth-ivory hover:bg-earth-deep-forest/55 focus-visible:ring-earth-sage",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "block h-[2px] w-5 rounded-full bg-current transition-all duration-300 motion-reduce:transition-none",
+                      mobileMenuOpen && "translate-y-[8px] rotate-45",
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "block h-[2px] w-5 rounded-full bg-current transition-all duration-300 motion-reduce:transition-none",
+                      mobileMenuOpen ? "opacity-0" : "opacity-100",
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "block h-[2px] w-5 rounded-full bg-current transition-all duration-300 motion-reduce:transition-none",
+                      mobileMenuOpen && "-translate-y-[8px] -rotate-45",
+                    )}
+                  />
+                </button>
+              </div>
             </div>
-          </motion.nav>
-        ) : null}
-      </AnimatePresence>
-    </motion.header>
+
+            <nav
+              id="mobile-primary-nav"
+              aria-label="Mobile navigation"
+              aria-hidden={!mobileMenuOpen}
+              inert={!mobileMenuOpen}
+              className={cn(
+                "grid overflow-hidden transition-all duration-500 ease-in-out motion-reduce:transition-none xl:hidden",
+                mobileMenuOpen
+                  ? "grid-rows-[1fr] opacity-100"
+                  : "grid-rows-[0fr] opacity-0",
+              )}
+            >
+              <div className="min-h-0">
+                <div className="mt-1 flex max-h-[calc(100dvh-7rem)] flex-col overflow-y-auto overscroll-contain px-5 pb-6 sm:px-6">
+                  <div className="mb-2 h-px w-full bg-border/70" />
+
+                  {MAIN_NAV_ITEMS.map((item) => {
+                    const active = isActivePath(pathname, item.href);
+                    const Icon = NAV_ICONS[item.href] ?? Compass;
+
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          "flex items-center gap-3 border-b border-border/60 py-3 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none",
+                          active
+                            ? "font-bold text-primary"
+                            : "text-foreground/75 hover:text-primary",
+                        )}
+                      >
+                        <Icon
+                          size={14}
+                          aria-hidden="true"
+                          className={active ? "text-primary" : "opacity-60"}
+                        />
+                        <span>{item.label}</span>
+                      </Link>
+                    );
+                  })}
+
+                  <Link
+                    href="/our-planet"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-bold text-primary-foreground shadow-lg transition active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none motion-reduce:transform-none"
+                  >
+                    <span>Explore Our Planet</span>
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="size-4 text-earth-soft-sage"
+                    />
+                  </Link>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </header>
+    </>
   );
 }

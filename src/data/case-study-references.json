@@ -1,0 +1,14 @@
+[
+  {
+    "case_study_id": "cs-mangrove-indonesia",
+    "reference_id": "ref-noaa-acidification"
+  },
+  {
+    "case_study_id": "cs-alpine-glaciers",
+    "reference_id": "ref-ipcc-ar6"
+  },
+  {
+    "case_study_id": "cs-borneo-forest-corridor",
+    "reference_id": "ref-fao-fra"
+  }
+]

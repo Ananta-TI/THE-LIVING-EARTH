@@ -123,8 +123,8 @@ async function OurPlanetDynamicSection() {
     return (
       <section className="mt-14">
         <ErrorState
-          title="Database configuration required"
-          description="Published case studies, verified statistics, and scientific references require active public database access."
+          title="Content unavailable"
+          description="Case studies, statistics, and references are not available right now."
         />
       </section>
     );
@@ -164,7 +164,7 @@ async function OurPlanetDynamicSection() {
           ) : (
             <EmptyState
               title="Regional case studies are being curated"
-              description="Verified field case studies will appear here as soon as editorial review is published in the CMS."
+              description="Verified field case studies will appear here as soon as editorial review is complete."
               actionLabel="Browse Stories"
               actionHref="/stories"
             />
@@ -218,7 +218,7 @@ async function OurPlanetDynamicSection() {
                   <p className="font-medium text-foreground">Strict Citation &amp; Provenance Policy</p>
                   <p>
                     No quantitative dataset is displayed without an assigned institutional source,
-                    publication date, and unit classification in the editorial database. Primary
+                    publication date, and unit classification in the editorial records. Primary
                     references will list automatically here alongside published statistics and
                     articles.
                   </p>

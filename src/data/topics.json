@@ -1,0 +1,57 @@
+[
+  {
+    "id": "topic-rising-temperatures",
+    "pillar_id": "pillar-climate-atmosphere",
+    "name": "Rising Temperatures",
+    "slug": "rising-temperatures",
+    "description": "Global surface warming anomalies and regional heatwave intensification.",
+    "display_order": 1,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "topic-extreme-weather",
+    "pillar_id": "pillar-climate-atmosphere",
+    "name": "Extreme Weather",
+    "slug": "extreme-weather",
+    "description": "Shifts in monsoon reliability, severe droughts, and cyclonic rainfall.",
+    "display_order": 2,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "topic-sea-level-rise",
+    "pillar_id": "pillar-climate-atmosphere",
+    "name": "Sea Level Rise",
+    "slug": "sea-level-rise",
+    "description": "Thermal ocean expansion and cryosphere ice-sheet mass loss.",
+    "display_order": 3,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "topic-coral-reefs",
+    "pillar_id": "pillar-oceans-water",
+    "name": "Coral Reefs & Blue Carbon",
+    "slug": "coral-reefs-blue-carbon",
+    "description": "Tropical reef thermal resilience, seagrass meadows, and mangrove nurseries.",
+    "display_order": 1,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "topic-primary-forests",
+    "pillar_id": "pillar-forests-biodiversity",
+    "name": "Primary Forest Conservation",
+    "slug": "primary-forest-conservation",
+    "description": "Old-growth canopy retention, biodiversity corridors, and watershed protection.",
+    "display_order": 1,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  }
+]

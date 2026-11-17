@@ -72,8 +72,8 @@ export default function ContactPage() {
                       Privacy &amp; Handling
                     </h2>
                     <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                      Messages are stored securely for editorial review only and are never
-                      displayed publicly or shared with third parties.
+                      This form prepares a message in your own email app. Your note goes straight
+                      to the editorial desk and is never stored on this website.
                     </p>
                   </div>
                 </div>

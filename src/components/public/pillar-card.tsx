@@ -21,7 +21,6 @@ export function PillarCard({
   variant = "portrait",
 }: PillarCardProps) {
   const imageSrc = resolveEditorialImageUrl(coverImagePath, {
-    defaultBucket: "pillar-images",
     pillarSlug: slug,
   });
 

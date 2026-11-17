@@ -1,20 +1,20 @@
 ---
 name: responsive-design
-description: Use this skill when creating, reviewing, or modifying responsive layouts, components, navigation, typography scaling, grids, media containers, tables, charts, or admin interfaces across desktop, laptop, tablet, and mobile viewports for THE LIVING EARTH.
+description: Use this skill when creating, reviewing, or modifying responsive layouts, components, navigation, typography scaling, grids, media containers, tables, or charts across desktop, laptop, tablet, and mobile viewports for THE LIVING EARTH.
 ---
 
 # Responsive Design
 
 ## Purpose
 
-Ensure every editorial page, storytelling layout, data container, form, and optional admin view in **THE LIVING EARTH** (*A Journey Through Our Changing Planet*) adapts cleanly across desktop, laptop, tablet, smartphone, and small mobile viewports in both portrait and landscape orientations without horizontal overflow or content loss.
+Ensure every editorial page, storytelling layout, data container, and form in **THE LIVING EARTH** (*A Journey Through Our Changing Planet*) adapts cleanly across desktop, laptop, tablet, smartphone, and small mobile viewports in both portrait and landscape orientations without horizontal overflow or content loss.
 
 ## When to Use
 
 - Designing or refactoring page layouts, editorial grids, hero compositions, or multi-column sections (`Home`, `About`, `Explore`, `Stories`, `Our Planet`, `Solutions`, `Contact`).
 - Adapting the 7-item main navigation, mobile menu, breadcrumbs, pillar cards, or filter bars across screen sizes.
 - Making comparison tables, `Statistic Card` grids, Recharts wrappers, static geographic maps, and forms responsive.
-- Reviewing public pages or optional CMS/admin views for horizontal overflow, distorted media, unreadable mobile type, or cramped touch targets.
+- Reviewing public pages for horizontal overflow, distorted media, unreadable mobile type, or cramped touch targets.
 
 *Do not use this skill alone for visual aesthetic direction (use `frontend-design`), animation choreography (use `motion-interaction-design`), or WCAG semantic/keyboard rules (use `accessibility-ux`).*
 
@@ -43,7 +43,7 @@ Ensure every editorial page, storytelling layout, data container, form, and opti
 ## Project-Specific Rules
 
 - **Editorial Whitespace & Portrait/Landscape Resilience**: Preserve calm editorial margins (`px-4` to `px-6` minimum on mobile, scaling up on `md:`/`lg:`) across all five content pillars (*Climate & Atmosphere*, *Oceans & Water*, *Forests & Biodiversity*, *Pollution & Human Impact*, *Solutions & Restoration*) in both portrait and landscape mobile orientations.
-- **Public MVP & Optional Admin Parity**: Optimize first for the seven public pages and supporting pages (`Metodologi & Sumber`, `Glosarium`, `Kredit & Lisensi`); if CMS/admin tables or editors are built, adapt toolbars and multi-column tables cleanly for tablet/mobile without horizontal page scroll.
+- **Public Route Parity**: Optimize the seven public pages and supporting pages (`Metodologi & Sumber`, `Glosarium`, `Kredit & Lisensi`); adapt multi-column tables cleanly for tablet/mobile without horizontal page scroll.
 - **Scope Boundary**: Focus strictly on layout geometry, breakpoint adaptation, media proportions, and touch sizing. Defer palette/typography choices to `frontend-design`, motion timing to `motion-interaction-design`, and focus/ARIA rules to `accessibility-ux`.
 
 ## Workflow

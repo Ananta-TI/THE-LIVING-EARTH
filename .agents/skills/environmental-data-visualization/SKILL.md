@@ -15,7 +15,7 @@ Translate verified scientific data into accurate, transparent, scannable, and ed
 - Rendering environmental metrics, projections, comparisons, or case-study evidence across the five pillars.
 - Formatting chart axes, tooltips, legends, epistemic claim labels, methodology caveats, and source citations.
 
-*Do not use this skill for general visual layout/typography (use `frontend-design`), screen-reader table/keyboard mechanics (use `accessibility-ux`), or Supabase/static data loading architecture (use `nextjs-frontend-architecture`).*
+*Do not use this skill for general visual layout/typography (use `frontend-design`), screen-reader table/keyboard mechanics (use `accessibility-ux`), or static JSON content-loading architecture (use `nextjs-frontend-architecture`).*
 
 ## Responsibilities
 

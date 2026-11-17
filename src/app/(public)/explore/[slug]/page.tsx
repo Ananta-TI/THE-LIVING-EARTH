@@ -16,12 +16,19 @@ import { ReferenceList } from "@/components/public/reference-list";
 import { SectionHeading } from "@/components/public/section-heading";
 import { StatisticCard } from "@/components/public/statistic-card";
 import { Badge } from "@/components/ui/badge";
+import { PILLARS } from "@/data";
 import { getPillarDetailBySlug } from "@/features/public/queries";
 import { cn } from "@/lib/utils";
 import { resolveEditorialImageUrl } from "@/lib/utils/media-url";
 
 interface PillarPageProps {
   readonly params: Promise<{ readonly slug: string }>;
+}
+
+export function generateStaticParams() {
+  return PILLARS.filter((pillar) => pillar.is_active).map((pillar) => ({
+    slug: pillar.slug,
+  }));
 }
 
 const PILLAR_CONTEXT_ESSAYS: Record<
@@ -181,7 +188,6 @@ export async function generateMetadata({ params }: PillarPageProps): Promise<Met
       images: [
         {
           url: resolveEditorialImageUrl(pillar.cover_image_path, {
-            defaultBucket: "pillar-images",
             pillarSlug: pillar.slug,
           }),
           alt: pillar.name,
@@ -203,8 +209,8 @@ async function PillarDetailContent({
     return (
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <ErrorState
-          title="Database configuration required"
-          description="Public database access must be configured to load this environmental pillar."
+          title="Pillar unavailable"
+          description="This environmental pillar is not available right now."
           actionHref="/explore"
           actionLabel="Back to Explore"
         />
@@ -231,7 +237,6 @@ async function PillarDetailContent({
 
   const { pillar, topics, articles, caseStudies, statistics, references } = result.data;
   const coverSrc = resolveEditorialImageUrl(pillar.cover_image_path, {
-    defaultBucket: "pillar-images",
     pillarSlug: pillar.slug,
   });
   const contextEssay = PILLAR_CONTEXT_ESSAYS[pillar.slug];

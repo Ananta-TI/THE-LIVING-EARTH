@@ -14,7 +14,6 @@ interface FeaturedStoryProps {
 
 export function FeaturedStory({ article }: FeaturedStoryProps) {
   const imageSrc = resolveEditorialImageUrl(article.cover_image_path, {
-    defaultBucket: "article-images",
     pillarSlug: article.pillarSlug,
   });
   const readingMinutes = estimateReadingTimeMinutes(article.content);

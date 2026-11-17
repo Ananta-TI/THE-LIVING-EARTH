@@ -1,5 +1,3 @@
-import { getSupabasePublicEnv } from "@/lib/validations/env";
-
 const PILLAR_FALLBACK_IMAGES: Record<string, string> = {
   "climate-atmosphere": "/images/pillar-climate.jpg",
   "oceans-water": "/images/sea-turtle.jpg",
@@ -7,13 +5,6 @@ const PILLAR_FALLBACK_IMAGES: Record<string, string> = {
   "pollution-human-impact": "/images/pillar-pollution.jpg",
   "solutions-restoration": "/images/pillar-solutions.jpg",
 };
-
-const KNOWN_BUCKETS = [
-  "article-images",
-  "case-study-images",
-  "pillar-images",
-  "site-assets",
-] as const;
 
 export function getPillarFallbackImage(slug?: string | null): string {
   if (slug && PILLAR_FALLBACK_IMAGES[slug]) {
@@ -23,13 +14,15 @@ export function getPillarFallbackImage(slug?: string | null): string {
 }
 
 /**
- * Resolves a stored `cover_image_path` (full URL, bucket-prefixed path,
- * or filename inside a known bucket) into a safe image URL with a domain-matched fallback.
+ * Resolves a JSON `cover_image_path` into a public image URL.
+ *
+ * Editorial JSON stores local paths such as `/images/pillar-forests.jpg`.
+ * Absolute HTTP(S) URLs are also supported for future external assets.
+ * Missing or legacy values fall back to a pillar image.
  */
 export function resolveEditorialImageUrl(
   rawPath: string | null | undefined,
   options?: {
-    readonly defaultBucket?: (typeof KNOWN_BUCKETS)[number];
     readonly pillarSlug?: string | null;
   },
 ): string {
@@ -38,21 +31,9 @@ export function resolveEditorialImageUrl(
     return getPillarFallbackImage(options?.pillarSlug);
   }
 
-  if (trimmed.startsWith("https://") || trimmed.startsWith("http://") || trimmed.startsWith("/")) {
+  if (trimmed.startsWith("/") || /^https?:\/\//i.test(trimmed)) {
     return trimmed;
   }
 
-  const env = getSupabasePublicEnv();
-  if (!env.configured || !env.url) {
-    return getPillarFallbackImage(options?.pillarSlug);
-  }
-
-  const normalized = trimmed.replace(/^\/+/, "");
-  const matchedBucket = KNOWN_BUCKETS.find((bucket) => normalized.startsWith(`${bucket}/`));
-  if (matchedBucket) {
-    return `${env.url}/storage/v1/object/public/${normalized}`;
-  }
-
-  const bucket = options?.defaultBucket ?? "article-images";
-  return `${env.url}/storage/v1/object/public/${bucket}/${normalized}`;
+  return getPillarFallbackImage(options?.pillarSlug);
 }

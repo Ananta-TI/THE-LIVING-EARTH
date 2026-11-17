@@ -53,8 +53,8 @@ async function StoriesArchiveContent({
   if (result.status === "unconfigured") {
     return (
       <ErrorState
-        title="Stories database configuration required"
-        description="Published stories require an active public Supabase configuration."
+        title="Stories unavailable"
+        description="Story content is not available right now."
       />
     );
   }
@@ -100,7 +100,7 @@ async function StoriesArchiveContent({
           description={
             search || pillarSlug
               ? "Try broadening your search title or clearing the environmental pillar filter."
-              : "Long-form environmental essays and dispatches will appear here once published in the editorial CMS."
+              : "Long-form environmental essays and dispatches will appear here once the editorial desk publishes them."
           }
           actionLabel={search || pillarSlug ? "Clear Filters" : "Explore Pillars"}
           actionHref={search || pillarSlug ? "/stories" : "/explore"}

@@ -1,0 +1,53 @@
+[
+  {
+    "id": "stat-global-temp-rise",
+    "pillar_id": "pillar-climate-atmosphere",
+    "indicator": "Global Temp Rise",
+    "value": 1.2,
+    "unit": "°C",
+    "measurement_year": 2023,
+    "publication_date": "2023-03-20",
+    "geographic_scope": "Global Mean Surface",
+    "data_type": "historical_observation",
+    "methodology": "Observed human-induced warming of global mean surface temperature relative to the 1850–1900 pre-industrial baseline.",
+    "limitations": "Decadal averaging across land and marine surface temperature stations.",
+    "reference_id": "ref-ipcc-ar6",
+    "status": "published",
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "stat-ocean-acidification",
+    "pillar_id": "pillar-oceans-water",
+    "indicator": "Ocean Acidification",
+    "value": 30,
+    "unit": "%",
+    "measurement_year": 2023,
+    "publication_date": "2023-06-15",
+    "geographic_scope": "Global Surface Oceans",
+    "data_type": "historical_observation",
+    "methodology": "Approximate percentage increase in surface ocean acidity (hydrogen ion concentration) since the beginning of the industrial era.",
+    "limitations": "Calculated from ~0.1 pH unit decline across open-ocean time-series stations.",
+    "reference_id": "ref-noaa-acidification",
+    "status": "published",
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "stat-forest-cover",
+    "pillar_id": "pillar-forests-biodiversity",
+    "indicator": "Global Forest Cover",
+    "value": 31,
+    "unit": "%",
+    "measurement_year": 2022,
+    "publication_date": "2022-05-02",
+    "geographic_scope": "Global Land Area",
+    "data_type": "current_estimate",
+    "methodology": "Share of Earth's total land surface covered by forest ecosystems (~4.06 billion hectares), vital for carbon storage and terrestrial biodiversity.",
+    "limitations": "Includes primary, naturally regenerating, and planted forest area.",
+    "reference_id": "ref-fao-fra",
+    "status": "published",
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  }
+]

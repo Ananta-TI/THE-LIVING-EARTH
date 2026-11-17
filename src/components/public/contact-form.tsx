@@ -1,16 +1,15 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
+import { AlertCircle, CheckCircle2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { submitContactAction } from "@/features/contact/actions";
+import { SITE_CONFIG } from "@/config/site";
 import { contactSubmissionSchema } from "@/features/contact/schemas";
 
 export function ContactForm() {
-  const [renderedAt] = useState<number>(() => Date.now());
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -20,9 +19,8 @@ export function ContactForm() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormError(null);
     setSuccessMessage(null);
@@ -33,7 +31,6 @@ export function ContactForm() {
       subject,
       message,
       website,
-      renderedAt,
     };
 
     const clientCheck = contactSubmissionSchema.safeParse(payload);
@@ -53,36 +50,27 @@ export function ContactForm() {
     }
 
     setFieldErrors({});
-    setIsSubmitting(true);
 
-    try {
-      const result = await submitContactAction(payload);
-      if (!result.ok) {
-        setFieldErrors(result.fieldErrors ?? {});
-        setFormError(
-          result.error ??
-            "Unable to submit your message right now. Your input has been preserved.",
-        );
-        return;
-      }
-
-      setSuccessMessage(
-        result.message ??
-          "Thank you for reaching out. Your message has been sent to THE LIVING EARTH editorial desk.",
-      );
-      setName("");
-      setEmail("");
-      setSubject("");
-      setMessage("");
-      setWebsite("");
-      setFieldErrors({});
-    } catch {
-      setFormError(
-        "A network issue prevented submission. Your input has been preserved—please try again.",
-      );
-    } finally {
-      setIsSubmitting(false);
+    // Honeypot trap: silently accept submissions from automated bots.
+    if (website.trim().length > 0) {
+      setSuccessMessage("Thank you for reaching out.");
+      return;
     }
+
+    const body = [
+      `Name: ${name.trim()}`,
+      `Email: ${email.trim()}`,
+      "",
+      message.trim(),
+    ].join("\n");
+    const mailtoUrl = `mailto:${SITE_CONFIG.contactEmail}?subject=${encodeURIComponent(
+      subject.trim(),
+    )}&body=${encodeURIComponent(body)}`;
+
+    setSuccessMessage(
+      `Your email app should open with your message ready to send. If it does not, write directly to ${SITE_CONFIG.contactEmail}.`,
+    );
+    window.location.href = mailtoUrl;
   }
 
   return (
@@ -103,7 +91,7 @@ export function ContactForm() {
             aria-hidden="true"
           />
           <div>
-            <p className="font-medium">Message delivered</p>
+            <p className="font-medium">Email draft ready</p>
             <p className="mt-1 text-muted-foreground">{successMessage}</p>
           </div>
         </div>
@@ -119,7 +107,7 @@ export function ContactForm() {
             aria-hidden="true"
           />
           <div>
-            <p className="font-medium text-destructive">Unable to send message</p>
+            <p className="font-medium text-destructive">Please review your message</p>
             <p className="mt-1 text-muted-foreground">{formError}</p>
           </div>
         </div>
@@ -243,20 +231,19 @@ export function ContactForm() {
 
       <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
         <p className="text-xs text-muted-foreground">
-          Submitted inquiries are reviewed only by authorized platform editors.
+          This form opens your own email app—nothing is stored on this website. You can also
+          write directly to{" "}
+          <a
+            href={`mailto:${SITE_CONFIG.contactEmail}`}
+            className="font-medium text-primary underline-offset-2 hover:underline"
+          >
+            {SITE_CONFIG.contactEmail}
+          </a>
+          .
         </p>
-        <Button type="submit" size="lg" disabled={isSubmitting} className="h-11 gap-2 px-6">
-          {isSubmitting ? (
-            <>
-              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-              <span>Sending message...</span>
-            </>
-          ) : (
-            <>
-              <Send className="size-4" aria-hidden="true" />
-              <span>Submit Message</span>
-            </>
-          )}
+        <Button type="submit" size="lg" className="h-11 gap-2 px-6">
+          <Send className="size-4" aria-hidden="true" />
+          <span>Open Email Draft</span>
         </Button>
       </div>
     </form>

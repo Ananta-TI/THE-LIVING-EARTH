@@ -1,0 +1,57 @@
+[
+  {
+    "id": "pillar-climate-atmosphere",
+    "name": "Climate & Atmosphere",
+    "slug": "climate-atmosphere",
+    "description": "Understanding our changing climate—from rising global temperatures and atmospheric carbon to extreme weather and cryosphere shifts.",
+    "cover_image_path": "/images/pillar-climate.jpg",
+    "display_order": 1,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "pillar-oceans-water",
+    "name": "Oceans & Water",
+    "slug": "oceans-water",
+    "description": "Marine ecosystems, coral reefs, ocean heat absorption, carbonate chemistry, and global freshwater watershed security.",
+    "cover_image_path": "/images/sea-turtle.jpg",
+    "display_order": 2,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "pillar-forests-biodiversity",
+    "name": "Forests & Biodiversity",
+    "slug": "forests-biodiversity",
+    "description": "Primary rainforests, boreal carbon sinks, wildlife corridors, and the living web of terrestrial biodiversity.",
+    "cover_image_path": "/images/pillar-forests.jpg",
+    "display_order": 3,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "pillar-pollution-human-impact",
+    "name": "Pollution & Human Impact",
+    "slug": "pollution-human-impact",
+    "description": "Air quality, industrial emissions, plastic polymers, and human extraction footprints across land and water.",
+    "cover_image_path": "/images/pillar-pollution.jpg",
+    "display_order": 4,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "pillar-solutions-restoration",
+    "name": "Solutions & Restoration",
+    "slug": "solutions-restoration",
+    "description": "Renewable energy transitions, mangrove and forest restoration, circular material systems, and community stewardship.",
+    "cover_image_path": "/images/pillar-solutions.jpg",
+    "display_order": 5,
+    "is_active": true,
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  }
+]

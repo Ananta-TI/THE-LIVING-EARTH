@@ -1,0 +1,30 @@
+{
+  "general": {
+    "site_name": "THE LIVING EARTH",
+    "tagline": "A Journey Through Our Changing Planet",
+    "description": "An environmental knowledge and storytelling platform dedicated to ecological awareness, verified scientific data, and conservation.",
+    "contact_email": ""
+  },
+  "social_media": {
+    "instagram_url": "",
+    "youtube_url": "",
+    "x_url": "",
+    "linkedin_url": ""
+  },
+  "seo_defaults": {
+    "default_title": "THE LIVING EARTH — A Journey Through Our Changing Planet",
+    "default_description": "Explore climate, oceans, forests, biodiversity, human impact, and environmental restoration through verified science and storytelling.",
+    "og_image_path": ""
+  },
+  "footer": {
+    "mission_statement": "Helping people understand our changing planet through verified scientific information, environmental storytelling, and real-world conservation.",
+    "methodology_note": "All published statistics cite primary scientific journals, international agencies, or official monitoring datasets.",
+    "copyright_text": "© THE LIVING EARTH"
+  },
+  "site_identity": {
+    "siteTitle": "THE LIVING EARTH",
+    "tagline": "A Journey Through Our Changing Planet",
+    "contactEmail": "editorial@thelivingearth.org",
+    "featuredHeroSlug": "the-urgent-need-for-climate-action"
+  }
+}

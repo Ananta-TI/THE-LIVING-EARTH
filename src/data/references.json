@@ -1,0 +1,41 @@
+[
+  {
+    "id": "ref-ipcc-ar6",
+    "title": "Climate Change 2023: Synthesis Report (Sixth Assessment Report)",
+    "organization": "Intergovernmental Panel on Climate Change (IPCC)",
+    "author": "IPCC Core Writing Team",
+    "publication_date": "2023-03-20",
+    "source_type": "international_organization",
+    "source_url": "https://www.ipcc.ch/report/ar6/syr/",
+    "accessed_at": "2025-04-24",
+    "notes": "Primary reference for global mean surface temperature rise (~1.1–1.2°C above 1850–1900).",
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "ref-noaa-acidification",
+    "title": "Ocean Acidification: Saturation State & Surface pH Observations",
+    "organization": "National Oceanic and Atmospheric Administration (NOAA PMEL)",
+    "author": "NOAA Pacific Marine Environmental Laboratory",
+    "publication_date": "2023-06-15",
+    "source_type": "government_data",
+    "source_url": "https://www.pmel.noaa.gov/co2/story/What+is+Ocean+Acidification%3F",
+    "accessed_at": "2025-04-24",
+    "notes": "Verified marine carbonate chemistry indicator (~30% increase in surface acidity).",
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  },
+  {
+    "id": "ref-fao-fra",
+    "title": "Global Forest Resources Assessment (FRA): Forest Extent and Changes",
+    "organization": "Food and Agriculture Organization of the United Nations (FAO)",
+    "author": "FAO Forestry Division",
+    "publication_date": "2022-05-02",
+    "source_type": "international_organization",
+    "source_url": "https://www.fao.org/forest-resources-assessment/en/",
+    "accessed_at": "2025-04-24",
+    "notes": "Global terrestrial forest cover benchmark (~31% of global land area).",
+    "created_at": "2025-01-10T00:00:00Z",
+    "updated_at": "2025-04-24T00:00:00Z"
+  }
+]

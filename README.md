@@ -35,12 +35,14 @@ Menjadi ruang belajar digital yang memadukan narasi editorial, integritas ilmiah
 - **Motion for React** (`motion/react`) dengan dukungan `prefers-reduced-motion`
 - **Recharts** untuk visualisasi data lingkungan
 
-### Backend, Database & Validasi
-- **Supabase** (PostgreSQL, Supabase Auth, Supabase Storage, `@supabase/ssr`)
-- **Zod**, **React Hook Form**, dan `@hookform/resolvers`
+### Content & Validation
+- **JSON statis** di `src/data/` sebagai satu-satunya sumber konten
+- **Zod** untuk validasi formulir kontak
 
 ### Deployment Target
-- GitHub, Vercel, dan Supabase Cloud
+- **Vercel** — seluruh halaman publik dibaca dari JSON saat build dan disajikan sebagai konten statis/read-only.
+
+> Tidak ada database, autentikasi, storage, atau CMS admin. Konten diubah dengan mengedit file JSON lalu melakukan commit dan deploy ulang.
 
 ---
 
@@ -49,38 +51,57 @@ Menjadi ruang belajar digital yang memadukan narasi editorial, integritas ilmiah
 ```text
 .
 ├── .agents/
-│   └── skills/                         # Project-specific Antigravity frontend skills
-├── public/                             # Static public assets
+│   └── skills/                         # Project-specific frontend skills
+├── docs/
+│   └── content-architecture.md         # Panduan struktur dan alur kerja konten JSON
+├── public/
+│   └── images/                         # Gambar editorial statis
 ├── src/
 │   ├── app/
-│   │   ├── (public)/
-│   │   │   ├── layout.tsx              # Public editorial shell (header, main, footer)
-│   │   │   └── page.tsx                # Foundation verification landing page
-│   │   ├── admin/
-│   │   │   ├── login/
-│   │   │   │   └── page.tsx            # Foundation admin login placeholder
-│   │   │   ├── layout.tsx              # Separated admin/CMS layout shell
-│   │   │   └── page.tsx                # Foundation admin workspace placeholder
+│   │   ├── (public)/                   # Public editorial routes
+│   │   │   ├── layout.tsx              # Public shell (header, main, footer)
+│   │   │   ├── page.tsx                # Home
+│   │   │   ├── about/page.tsx
+│   │   │   ├── explore/page.tsx
+│   │   │   ├── explore/[slug]/page.tsx
+│   │   │   ├── stories/page.tsx
+│   │   │   ├── stories/[slug]/page.tsx
+│   │   │   ├── our-planet/page.tsx
+│   │   │   ├── case-studies/[slug]/page.tsx
+│   │   │   ├── solutions/page.tsx
+│   │   │   └── contact/page.tsx
 │   │   ├── globals.css                 # Tailwind v4 + brand & semantic design tokens
 │   │   ├── layout.tsx                  # Root layout (fonts, metadata, skip link, motion config)
+│   │   ├── robots.ts                   # robots.txt
+│   │   ├── sitemap.ts                  # sitemap.xml dari konten JSON
 │   │   └── not-found.tsx               # Accessible 404 fallback page
 │   ├── components/
-│   │   ├── layout/                     # SiteHeader, SiteFooter, AdminShell
+│   │   ├── layout/                     # SiteHeader, SiteFooter, BrandLogo
 │   │   ├── providers/                  # MotionProvider (reduced-motion config)
-│   │   └── ui/                         # shadcn/ui primitives (Button)
+│   │   ├── public/                     # Editorial UI (cards, charts, form, markdown, dll.)
+│   │   └── ui/                         # shadcn/ui primitives
 │   ├── config/
-│   │   └── site.ts                     # Brand identity & canonical navigation config
+│   │   └── site.ts                     # Brand identity, navigation, contact email
+│   ├── data/
+│   │   ├── articles.json
+│   │   ├── case-studies.json
+│   │   ├── pillars.json
+│   │   ├── topics.json
+│   │   ├── statistics.json
+│   │   ├── references.json
+│   │   ├── article-references.json
+│   │   ├── case-study-references.json
+│   │   ├── site-settings.json
+│   │   └── index.ts                    # Loader, map, filter, dan helper referensi
+│   ├── features/
+│   │   ├── contact/schemas.ts          # Validasi formulir kontak
+│   │   └── public/queries.ts           # Query API publik (membaca JSON)
 │   ├── lib/
-│   │   ├── constants/
-│   │   │   └── pillars.ts              # Five content pillars metadata & routes
-│   │   ├── supabase/
-│   │   │   ├── client.ts               # Browser Supabase client (@supabase/ssr)
-│   │   │   └── server.ts               # Cookie-aware Server Supabase client (@supabase/ssr)
-│   │   ├── validations/
-│   │   │   └── env.ts                  # Zod environment variable validation helpers
-│   │   └── utils.ts                    # Class name helper (cn)
+│   │   ├── constants/pillars.ts        # Metadata lima pilar konten
+│   │   └── utils/                      # Format, media URL, reading time, slug
 │   └── types/
-│       └── content.ts                  # Core domain TypeScript types
+│       ├── content-data.ts             # Tipe record konten JSON
+│       └── content.ts                  # Tipe domain PRD (referensi)
 ├── .env.example                        # Template environment variables
 ├── components.json                     # shadcn/ui CLI configuration
 ├── eslint.config.mjs                   # ESLint configuration
@@ -93,7 +114,7 @@ Menjadi ruang belajar digital yang memadukan narasi editorial, integritas ilmiah
 
 ## 5. Installation Instructions
 
-Pastikan **Node.js** dan **npm** telah terpasang di perangkat Anda, lalu pasang seluruh dependensi proyek:
+Pastikan **Node.js** dan **npm** telah terpasang, lalu pasang seluruh dependensi:
 
 ```bash
 npm install
@@ -109,37 +130,46 @@ Jalankan server pengembangan lokal:
 npm run dev
 ```
 
-Buka `http://localhost:3000` untuk melihat tata letak publik fondasi, atau `http://localhost:3000/admin` untuk melihat shell layout administrasi yang terpisah.
+Buka `http://localhost:3000`.
 
 ---
 
 ## 7. Environment Variable Setup
 
-Salin berkas `.env.example` menjadi `.env.local`:
+Semua konten sudah berada di dalam repository, jadi aplikasi dapat dijalankan tanpa file env. Jika ingin menyesuaikan URL kanonis atau alamat email editorial, salin `.env.example` menjadi `.env.local`:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Variabel lingkungan yang digunakan pada fase ini:
+Variabel yang tersedia:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SITE_URL=https://thelivingearth.org
+NEXT_PUBLIC_CONTACT_EMAIL=editorial@thelivingearth.org
 ```
 
-Aplikasi tetap dapat di-build dan dijalankan secara lokal meskipun variabel di atas belum diisi; helper `getSupabasePublicEnv()` dan `isSupabaseConfigured()` di `src/lib/validations/env.ts` akan melaporkan status konfigurasi secara aman tanpa mematahkan proses build.
+| Variabel | Kegunaan |
+|---|---|
+| `NEXT_PUBLIC_SITE_URL` | URL kanonis untuk metadata, sitemap, dan robots. Fallback: `http://localhost:3000`. Di Vercel, URL produksi otomatis dipakai dari `VERCEL_PROJECT_PRODUCTION_URL` bila variabel ini kosong. |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | Alamat email tujuan formulir kontak. Fallback: nilai di `src/data/site-settings.json`. |
 
 ---
 
-## 8. Supabase Configuration Instructions
+## 8. Content Workflow
 
-1. Buat proyek baru di [Supabase Cloud](https://supabase.com).
-2. Buka **Project Settings → API**, lalu salin **Project URL** ke `NEXT_PUBLIC_SUPABASE_URL` dan **anon/public key** ke `NEXT_PUBLIC_SUPABASE_ANON_KEY` di `.env.local`.
-3. Gunakan `createClient()` dari:
-   - `src/lib/supabase/client.ts` untuk Client Components.
-   - `src/lib/supabase/server.ts` untuk Server Components, Server Actions, dan Route Handlers.
-4. **Aturan keamanan:** Jangan pernah menyimpan `SUPABASE_SERVICE_ROLE_KEY` pada variabel `NEXT_PUBLIC_*`, jangan menggunakannya di browser/Client Components, dan jangan melakukan commit berkas `.env.local` ke repositori.
+Konten publik **tidak** disimpan di database. Semua data editorial berada di `src/data/*.json` dan dibaca saat build:
+
+1. Edit file JSON yang relevan (misalnya `src/data/articles.json`).
+2. Pastikan `status` bernilai `"published"` agar konten tampil di situs publik.
+3. Jalankan `npx tsc --noEmit` dan `npm run build` untuk memvalidasi tipe dan prerender.
+4. Commit dan deploy ulang ke Vercel.
+
+Detail struktur setiap file, relasi antar-record, dan aturan penulisan tersedia di [`docs/content-architecture.md`](docs/content-architecture.md).
+
+### Formulir Kontak
+
+Formulir kontak tidak menyimpan data ke server. Setelah validasi, formulir membuka aplikasi email pengunjung melalui tautan `mailto:` yang sudah terisi nama, email, subjek, dan isi pesan. Alamat tujuan diambil dari `NEXT_PUBLIC_CONTACT_EMAIL` atau `site-settings.json`.
 
 ---
 
@@ -155,23 +185,28 @@ Aplikasi tetap dapat di-build dan dijalankan secara lokal meskipun variabel di a
 
 ---
 
-## 10. Current Development Status
+## 10. Deployment
 
-**Selesai (Fase 1 — Project Initialization & Foundation):**
-- Inisialisasi Next.js App Router, TypeScript strict, Tailwind CSS v4, dan `shadcn/ui`.
-- Pemasangan seluruh dependensi stack (`@supabase/supabase-js`, `@supabase/ssr`, `zod`, `react-hook-form`, `@hookform/resolvers`, `lucide-react`, `motion`, `recharts`).
-- Pengaturan token desain editorial (`Forest`, `Deep Forest`, `Sage`, `Ivory`, `Earth Brown`, `Charcoal`, `Muted`) serta pasangan font `Newsreader` dan `Plus Jakarta Sans`.
-- Pemisahan layout dasar publik (`(public)`) dan administrasi (`admin`), konfigurasi `MotionConfig reducedMotion="user"`, serta fondasi klien Supabase SSR dan validasi env.
+Target utama adalah **Vercel**:
 
-**Belum diimplementasikan (sesuai batasan ruang lingkup fase inisialisasi):**
-- Skema basis data PostgreSQL, migrasi SQL, dan Row Level Security (RLS).
-- Alur autentikasi Supabase Auth dan fitur CRUD CMS.
-- Halaman konten publik lengkap (`About`, `Explore`, `Stories`, `Our Planet`, `Solutions`, `Contact`) serta dataset terverifikasi.
+1. Hubungkan repository ke Vercel.
+2. Set environment variable opsional (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_EMAIL`).
+3. Deploy. Seluruh konten publik dibaca dari JSON saat build dan tidak memerlukan database.
+
+Tidak diperlukan konfigurasi database atau layanan eksternal lainnya.
 
 ---
 
-## 11. Next Development Milestones
+## 11. Current Development Status
 
-1. **Phase 2 — Supabase Database Architecture, Schema Design, Migrations & Row Level Security (RLS):** Merancang skema tabel untuk pilar, topik, artikel, studi kasus, statistik, referensi, aset media, dan pesan kontak beserta kebijakan RLS.
-2. **Phase 3 — Content Modeling, Verification Pipeline & Editorial CMS / Auth:** Membangun autentikasi admin dan mekanisme `Content Status Gate` (`Verified` vs. `Needs Verification`).
-3. **Phase 4 — Public Editorial Pages & Verified Data Storytelling:** Mengimplementasikan halaman publik, artikel dua lapis (`Inti Cerita` & `Kajian Lanjut`), `Statistic Card`, grafik Recharts interaktif, dan formulir kontak.
+**Selesai:**
+- Seluruh konten editorial disimpan sebagai JSON statis di `src/data/`.
+- Situs publik lengkap: Home, About, Explore, Stories, Our Planet, Solutions, Contact.
+- Detail pilar, artikel, dan studi kasus dengan `generateStaticParams` untuk prerender.
+- Visualisasi statistik, kartu editorial, referensi ilmiah, sitemap, dan robots.
+- Formulir kontak berbasis `mailto:` tanpa penyimpanan server.
+- Tidak ada autentikasi, storage, database, atau CMS admin; seluruh situs publik berjalan dari JSON.
+
+**Pengembangan berikutnya (opsional):**
+- Menambah artikel, studi kasus, statistik, atau referensi baru melalui file JSON.
+- Menyesuaikan identitas situs dan alamat email editorial melalui `src/data/site-settings.json`.

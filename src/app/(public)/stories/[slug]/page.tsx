@@ -13,6 +13,7 @@ import { MarkdownArticle } from "@/components/public/markdown-article";
 import { ReferenceList } from "@/components/public/reference-list";
 import { SectionHeading } from "@/components/public/section-heading";
 import { Badge } from "@/components/ui/badge";
+import { PUBLISHED_ARTICLES } from "@/data";
 import { getStoryDetailBySlug } from "@/features/public/queries";
 import { formatDateTime } from "@/lib/utils/format";
 import { resolveEditorialImageUrl } from "@/lib/utils/media-url";
@@ -20,6 +21,10 @@ import { estimateReadingTimeMinutes } from "@/lib/utils/reading-time";
 
 interface StoryDetailPageProps {
   readonly params: Promise<{ readonly slug: string }>;
+}
+
+export function generateStaticParams() {
+  return PUBLISHED_ARTICLES.map((article) => ({ slug: article.slug }));
 }
 
 export async function generateMetadata({ params }: StoryDetailPageProps): Promise<Metadata> {
@@ -38,7 +43,6 @@ export async function generateMetadata({ params }: StoryDetailPageProps): Promis
 
   const { article } = result.data;
   const imageUrl = resolveEditorialImageUrl(article.cover_image_path, {
-    defaultBucket: "article-images",
     pillarSlug: article.pillarSlug,
   });
 
@@ -74,8 +78,8 @@ async function StoryDetailContent({
   if (result.status === "unconfigured") {
     return (
       <ErrorState
-        title="Database configuration required"
-        description="Public database configuration is required to read published stories."
+        title="Story unavailable"
+        description="This story is not available right now."
         actionHref="/stories"
         actionLabel="Back to Stories"
       />
@@ -99,7 +103,6 @@ async function StoryDetailContent({
 
   const { article, references, relatedArticles } = result.data;
   const imageSrc = resolveEditorialImageUrl(article.cover_image_path, {
-    defaultBucket: "article-images",
     pillarSlug: article.pillarSlug,
   });
   const readingMinutes = estimateReadingTimeMinutes(article.content);
