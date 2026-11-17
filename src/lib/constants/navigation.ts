@@ -26,3 +26,17 @@ export function isActivePath(pathname: string, href: string): boolean {
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
+
+/**
+ * True when a dropdown should read as active, i.e. when the current route is
+ * one of its links. Siblings such as `/our-planet` and `/solutions` live inside
+ * the same menu as `/stories`, so matching only the trigger href would leave the
+ * menu looking inactive while one of its children is open.
+ */
+export function isActiveNavGroup(
+  pathname: string,
+  item: { readonly href: string; readonly links?: readonly { readonly href: string }[] },
+): boolean {
+  if (isActivePath(pathname, item.href)) return true;
+  return (item.links ?? []).some((link) => isActivePath(pathname, link.href));
+}

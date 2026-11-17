@@ -15,8 +15,13 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { BrandLogo } from "@/components/layout/brand-logo";
-import { MAIN_NAV_ITEMS } from "@/config/site";
-import { hasDarkPageHero, isActivePath } from "@/lib/constants/navigation";
+import { NavDropdown } from "@/components/layout/nav-dropdown";
+import { MAIN_NAV_ITEMS, isNavMenuItem } from "@/config/site";
+import {
+  hasDarkPageHero,
+  isActiveNavGroup,
+  isActivePath,
+} from "@/lib/constants/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV_ICONS: Readonly<Record<string, LucideIcon>> = {
@@ -67,7 +72,7 @@ export function SiteHeader() {
       }
     };
 
-    const desktopQuery = window.matchMedia("(min-width: 1280px)");
+    const desktopQuery = window.matchMedia("(min-width: 1024px)");
     const handleDesktopViewport = () => {
       if (desktopQuery.matches) {
         setMobileMenuOpen(false);
@@ -102,7 +107,7 @@ export function SiteHeader() {
           className={cn(
             "pointer-events-auto relative flex w-full flex-col transition-all duration-500 ease-in-out motion-reduce:transition-none",
             hasFloatingSurface
-              ? "mt-3 w-[94%] max-w-[1220px] rounded-3xl border border-white/60 bg-background/90 shadow-[0_18px_50px_-24px_rgba(23,47,37,0.45)] backdrop-blur-2xl backdrop-saturate-150 xl:rounded-full"
+              ? "mt-3 w-[94%] max-w-[1220px] rounded-3xl border border-white/60 bg-background/90 shadow-[0_18px_50px_-24px_rgba(23,47,37,0.45)] backdrop-blur-2xl backdrop-saturate-150 lg:rounded-full"
               : "mt-0 max-w-full border border-transparent bg-transparent",
           )}
         >
@@ -131,11 +136,24 @@ export function SiteHeader() {
 
               <nav
                 aria-label="Primary navigation"
-                className="hidden items-center gap-1 xl:flex"
+                className="hidden items-center gap-1 lg:flex"
               >
                 {MAIN_NAV_ITEMS.map((item) => {
-                  const active = isActivePath(pathname, item.href);
+                  const active = isActiveNavGroup(pathname, item);
                   const Icon = NAV_ICONS[item.href] ?? Compass;
+
+                  if (isNavMenuItem(item)) {
+                    return (
+                      <NavDropdown
+                        key={item.href}
+                        item={item}
+                        pathname={pathname}
+                        isLightSurface={isLightSurface}
+                        active={active}
+                        Icon={Icon}
+                      />
+                    );
+                  }
 
                   return (
                     <Link
@@ -143,7 +161,7 @@ export function SiteHeader() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "group relative flex items-center gap-1.5 rounded-full px-3 py-2 text-[13px] font-bold transition-colors duration-300 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
+                        "group relative flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-bold transition-colors duration-300 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
                         isLightSurface
                           ? "focus-visible:ring-primary"
                           : "focus-visible:ring-earth-sage",
@@ -184,9 +202,9 @@ export function SiteHeader() {
                 })}
               </nav>
 
-              <div className="hidden shrink-0 items-center xl:flex">
+              <div className="hidden shrink-0 items-center lg:flex">
                 <Link
-                  href="/our-planet"
+                  href="/explore"
                   className={cn(
                     "group/cta inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-bold shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-95 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transform-none motion-reduce:transition-none",
                     isLightSurface
@@ -205,7 +223,7 @@ export function SiteHeader() {
                 </Link>
               </div>
 
-              <div className="flex items-center xl:hidden">
+              <div className="flex items-center lg:hidden">
                 <button
                   ref={toggleButtonRef}
                   type="button"
@@ -248,7 +266,7 @@ export function SiteHeader() {
               aria-hidden={!mobileMenuOpen}
               inert={!mobileMenuOpen}
               className={cn(
-                "grid overflow-hidden transition-all duration-500 ease-in-out motion-reduce:transition-none xl:hidden",
+                "grid overflow-hidden transition-all duration-500 ease-in-out motion-reduce:transition-none lg:hidden",
                 mobileMenuOpen
                   ? "grid-rows-[1fr] opacity-100"
                   : "grid-rows-[0fr] opacity-0",
@@ -259,34 +277,61 @@ export function SiteHeader() {
                   <div className="mb-2 h-px w-full bg-border/70" />
 
                   {MAIN_NAV_ITEMS.map((item) => {
-                    const active = isActivePath(pathname, item.href);
+                    const active = isActiveNavGroup(pathname, item);
                     const Icon = NAV_ICONS[item.href] ?? Compass;
 
                     return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        aria-current={active ? "page" : undefined}
-                        className={cn(
-                          "flex items-center gap-3 border-b border-border/60 py-3 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none",
-                          active
-                            ? "font-bold text-primary"
-                            : "text-foreground/75 hover:text-primary",
-                        )}
-                      >
-                        <Icon
-                          size={14}
-                          aria-hidden="true"
-                          className={active ? "text-primary" : "opacity-60"}
-                        />
-                        <span>{item.label}</span>
-                      </Link>
+                      <div key={item.href} className="border-b border-border/60">
+                        <Link
+                          href={item.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          aria-current={isActivePath(pathname, item.href) ? "page" : undefined}
+                          className={cn(
+                            "flex items-center gap-3 py-3 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none",
+                            active
+                              ? "font-bold text-primary"
+                              : "text-foreground/75 hover:text-primary",
+                          )}
+                        >
+                          <Icon
+                            size={14}
+                            aria-hidden="true"
+                            className={active ? "text-primary" : "opacity-60"}
+                          />
+                          <span>{item.label}</span>
+                        </Link>
+
+                        {isNavMenuItem(item) ? (
+                          <ul className="-mt-1 mb-2 ml-7 flex flex-col gap-0.5 border-l border-border/60 pl-3">
+                            {item.links.map((link) => {
+                              const linkActive = isActivePath(pathname, link.href);
+
+                              return (
+                                <li key={link.href}>
+                                  <Link
+                                    href={link.href}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    aria-current={linkActive ? "page" : undefined}
+                                    className={cn(
+                                      "block rounded-lg py-1.5 text-[13px] transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none",
+                                      linkActive
+                                        ? "font-semibold text-primary"
+                                        : "text-foreground/60 hover:text-primary",
+                                    )}
+                                  >
+                                    {link.label}
+                                  </Link>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        ) : null}
+                      </div>
                     );
                   })}
 
                   <Link
-                    href="/our-planet"
+                    href="/explore"
                     onClick={() => setMobileMenuOpen(false)}
                     className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-bold text-primary-foreground shadow-lg transition active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none motion-reduce:transform-none"
                   >
