@@ -46,7 +46,7 @@ export function EditorialPageHero({
         className="absolute inset-0 bg-gradient-to-b from-black/72 via-black/58 to-black/78"
       />
 
-      <div className="relative mx-auto w-full max-w-[1400px] px-4 pt-32 pb-12 sm:px-6 sm:pt-36 sm:pb-14 lg:px-10 lg:pt-40 lg:pb-16">
+      <div className="relative mx-auto flex min-h-[34rem] w-full max-w-[1400px] flex-col justify-end px-4 pt-36 pb-12 sm:min-h-[38rem] sm:px-6 sm:pt-40 sm:pb-14 lg:min-h-[42rem] lg:px-10 lg:pt-44 lg:pb-16">
         {index || context ? (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] tracking-[0.14em] text-earth-sage">
             {index ? <span className="tabular-nums">{index}</span> : null}
@@ -55,7 +55,7 @@ export function EditorialPageHero({
           </div>
         ) : null}
 
-        <div className="mt-6 grid gap-8 lg:grid-cols-12 lg:gap-10">
+        <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
           <h1
             id="page-hero-title"
             className="font-heading text-[2.4rem] leading-[1.02] tracking-[-0.02em] text-earth-ivory lg:col-span-7 sm:text-5xl lg:text-[3.6rem]"

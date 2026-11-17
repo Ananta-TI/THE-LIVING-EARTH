@@ -4,6 +4,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Pointer-capability variant.
+ *
+ * Hover reveals only make sense where a real pointer can hover. Keying off
+ * screen width would strand touch laptops (no reveal) and show the plate
+ * outright on mouse-driven tablets. `hover-capable:` states the actual
+ * requirement: a hover-capable fine pointer.
+ */
+@custom-variant hover-capable (@media (hover: hover) and (pointer: fine));
+
 @theme inline {
   /* Core Semantic Surface & Ink Tokens */
   --color-background: var(--background);

@@ -19,11 +19,16 @@ export function FieldNoteGrid({ notes, startIndex = 0 }: FieldNoteGridProps) {
       {notes.map((note, index) => (
         <li
           key={`${note.kind}-${note.slug}`}
-          className="group/note border-b border-border px-0 py-7 sm:px-6 sm:[&:nth-child(odd)]:pl-0 sm:[&:nth-child(2n)]:border-l lg:px-7 lg:[&:nth-child(2n)]:border-l-0 lg:[&:nth-child(3n+1)]:pl-0 lg:[&:nth-child(3n+2)]:border-l lg:[&:nth-child(3n)]:border-l"
+          className="group/note flex border-b border-border px-0 py-7 sm:px-6 sm:[&:nth-child(odd)]:pl-0 sm:[&:nth-child(2n)]:border-l lg:px-7 lg:[&:nth-child(2n)]:border-l-0 lg:[&:nth-child(3n+1)]:pl-0 lg:[&:nth-child(3n+2)]:border-l lg:[&:nth-child(3n)]:border-l"
         >
           <Link
             href={note.href}
-            className="block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+            /* A fixed row rhythm: the ordinal sits at the top, the title claims
+               a reserved two-line block so wrapping never shifts the meta line,
+               and the kicker is pushed to the bottom of every card. Without the
+               reservation a one-line title pulls its own kicker up and the row
+               reads ragged. */
+            className="flex w-full flex-col focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           >
             <div className="flex items-baseline justify-between gap-4 font-mono text-[10px] tracking-[0.12em] text-earth-muted">
               <span className="tabular-nums">
@@ -32,11 +37,11 @@ export function FieldNoteGrid({ notes, startIndex = 0 }: FieldNoteGridProps) {
               <span className="truncate">{note.location}</span>
             </div>
 
-            <h3 className="mt-4 font-heading text-lg leading-snug text-foreground transition-colors duration-200 group-hover/note:text-primary">
+            <h3 className="mt-4 min-h-[3.1rem] font-heading text-lg leading-snug text-foreground transition-colors duration-200 group-hover/note:text-primary">
               {note.title}
             </h3>
 
-            <p className="mt-3 flex items-center gap-2 font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+            <p className="mt-auto flex items-center gap-2 pt-3 font-mono text-[10px] tracking-[0.12em] text-earth-muted">
               <span className="uppercase">
                 {note.kind === "story" ? "Field note" : "Case study"}
               </span>

@@ -17,7 +17,11 @@ const HERO_PAGE_SET: ReadonlySet<string> = new Set(HERO_PAGE_PATHS);
  * Detail pages that open on a light breadcrumb area are excluded.
  */
 export function hasDarkPageHero(pathname: string): boolean {
-  return HERO_PAGE_SET.has(pathname) || pathname.startsWith("/explore/");
+  return (
+    HERO_PAGE_SET.has(pathname) ||
+    pathname.startsWith("/explore/") ||
+    pathname.startsWith("/case-studies/")
+  );
 }
 
 export function isActivePath(pathname: string, href: string): boolean {

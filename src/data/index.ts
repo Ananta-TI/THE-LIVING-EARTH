@@ -69,18 +69,20 @@ export function getActiveTopicsForPillar(pillarId: string): readonly TopicRecord
   );
 }
 
+/**
+ * Resolve the references genuinely linked to one article or case study.
+ *
+ * Only rows present in the join table are returned. Previously every remaining
+ * reference in the catalogue was appended to each record, which made a study
+ * that cites one source appear to cite all of them — the page then listed
+ * unrelated material under "supporting documentation".
+ */
 function resolveReferences(
   linkedReferenceIds: readonly string[],
 ): readonly ReferenceRecord[] {
-  const linked = linkedReferenceIds
+  return linkedReferenceIds
     .map((referenceId) => REFERENCES_BY_ID.get(referenceId))
     .filter((reference): reference is ReferenceRecord => Boolean(reference));
-  const linkedIds = new Set(linked.map((reference) => reference.id));
-  const remaining = REFERENCES.filter((reference) => !linkedIds.has(reference.id)).sort(
-    (a, b) => (b.publication_date ?? "").localeCompare(a.publication_date ?? ""),
-  );
-
-  return [...linked, ...remaining];
 }
 
 export function getReferencesForArticle(articleId: string): readonly ReferenceRecord[] {
