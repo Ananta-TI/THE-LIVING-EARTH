@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { BookOpen, Eye, Leaf, Users } from "lucide-react";
 import { EditorialPageHero } from "@/components/public/editorial-page-hero";
 import { EditorialSection } from "@/components/public/editorial-section";
 import { GlareHover } from "@/components/public/glare-hover";
@@ -19,18 +20,22 @@ const CORE_VALUES = [
   {
     title: "Knowledge",
     description: "Verified facts grounded in peer-reviewed research.",
+    icon: BookOpen,
   },
   {
     title: "Action",
     description: "Practical, evidence-led conservation pathways.",
+    icon: Leaf,
   },
   {
     title: "Clarity",
     description: "Accessible storytelling without alarmism.",
+    icon: Eye,
   },
   {
     title: "Collaboration",
     description: "Shared civic, scientific, and community care.",
+    icon: Users,
   },
 ] as const;
 
@@ -50,6 +55,13 @@ const APPROACH_STEPS = [
     title: "Balanced solutions analysis",
     body: "Instead of simplified silver bullets, we examine ecological trade-offs, implementation timelines, and how systemic policy aligns with daily action.",
   },
+] as const;
+
+const PUBLISHING_FACTS = [
+  { value: "5", label: "Domains tracked" },
+  { value: "4", label: "Working principles" },
+  { value: "3", label: "Editorial layers per entry" },
+  { value: "1", label: "Source per figure, minimum" },
 ] as const;
 
 export default function AboutPage() {
@@ -77,7 +89,7 @@ export default function AboutPage() {
                 <h3 className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
                   VISION
                 </h3>
-                <p className="mt-4 font-heading text-xl leading-snug text-foreground sm:text-2xl">
+                <p className="mt-4 font-heading text-xl leading-snug text-foreground sm:text-2xl lg:text-[1.85rem]">
                   A publicly literate world where nature and humanity thrive together — guided by
                   calm, accurate understanding of how climate, water, forests, and human systems
                   depend on one another.
@@ -100,17 +112,28 @@ export default function AboutPage() {
                   WORKING PRINCIPLES
                 </h3>
                 <dl className="mt-4 border-t border-border">
-                  {CORE_VALUES.map((value) => (
-                    <div
-                      key={value.title}
-                      className="flex flex-col gap-1 border-b border-border py-3.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
-                    >
-                      <dt className="font-heading text-lg text-foreground">{value.title}</dt>
-                      <dd className="text-sm text-muted-foreground sm:text-right">
-                        {value.description}
-                      </dd>
-                    </div>
-                  ))}
+                  {CORE_VALUES.map((value, index) => {
+                    const Icon = value.icon;
+                    return (
+                      <div
+                        key={value.title}
+                        className="group/principle flex items-center gap-5 border-b border-border py-4 transition-colors duration-200 hover:bg-muted/40"
+                      >
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-background text-primary transition-transform duration-300 group-hover/principle:scale-110 group-hover/principle:-rotate-6 motion-reduce:transform-none">
+                          <Icon className="size-4" aria-hidden="true" />
+                        </span>
+                        <dt className="w-32 shrink-0 font-heading text-lg text-foreground">
+                          {value.title}
+                        </dt>
+                        <dd className="flex-1 text-sm text-muted-foreground">
+                          {value.description}
+                        </dd>
+                        <span className="font-mono text-[10px] tracking-[0.12em] text-earth-muted tabular-nums">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </dl>
               </div>
             </div>
@@ -123,7 +146,7 @@ export default function AboutPage() {
                     alt="Aerial view of coastal river delta channels flowing through mangroves to the sea"
                     fill
                     sizes="(min-width: 1024px) 40vw, 100vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transform-none"
                   />
                 </div>
               </GlareHover>
@@ -135,12 +158,38 @@ export default function AboutPage() {
           </div>
         </EditorialSection>
 
+        {/* By the numbers — a compact typographic band. */}
+        <EditorialSection
+          className="mt-20 scroll-mt-28 sm:mt-28"
+          headingId="about-facts-heading"
+          index="Section 03"
+          title="By the numbers"
+          lede="The shape of the record, stated plainly."
+        >
+          <div className="group grid border-t border-border sm:grid-cols-2 lg:grid-cols-4">
+            {PUBLISHING_FACTS.map((fact) => (
+              <div
+                key={fact.label}
+                className="border-b border-border px-0 py-7 sm:px-6 sm:[&:nth-child(2n)]:border-l lg:px-7 lg:[&:nth-child(2n)]:border-l-0 lg:[&:nth-child(4n+1)]:pl-0 lg:[&:nth-child(4n+2)]:border-l lg:[&:nth-child(4n)]:border-l"
+              >
+                <p className="font-heading text-[3.2rem] leading-none tracking-[-0.03em] text-foreground tabular-nums">
+                  {fact.value}
+                </p>
+                <p className="mt-3 font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                  {fact.label.toUpperCase()}
+                </p>
+                <span className="mt-4 block h-px w-0 bg-primary transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-12 motion-reduce:transition-none" />
+              </div>
+            ))}
+          </div>
+        </EditorialSection>
+
         {/* Editorial method, framed as a numbered record rather than three cards. */}
         <EditorialSection
           id="approach"
           className="mt-20 scroll-mt-28 sm:mt-28"
           headingId="about-approach-heading"
-          index="Section 03"
+          index="Section 04"
           title="How each entry is made"
           lede="Every topic on THE LIVING EARTH follows a three-layer editorial approach connecting scientific measurements with place-based reporting and balanced restoration options."
         >
@@ -148,12 +197,12 @@ export default function AboutPage() {
             {APPROACH_STEPS.map((item) => (
               <li
                 key={item.step}
-                className="grid gap-4 border-b border-border py-8 lg:grid-cols-12 lg:gap-10"
+                className="group/step grid gap-4 border-b border-border py-8 lg:grid-cols-12 lg:gap-10"
               >
                 <p className="font-mono text-[11px] text-earth-muted tabular-nums lg:col-span-2">
                   {item.step}
                 </p>
-                <h3 className="font-heading text-xl leading-snug text-foreground lg:col-span-4 sm:text-2xl">
+                <h3 className="font-heading text-xl leading-snug text-foreground transition-colors duration-200 group-hover/step:text-primary lg:col-span-4 sm:text-2xl">
                   {item.title}
                 </h3>
                 <p className="max-w-[62ch] text-[15px] leading-relaxed text-muted-foreground lg:col-span-6">
@@ -168,7 +217,7 @@ export default function AboutPage() {
         <EditorialSection
           className="mt-20 scroll-mt-28 sm:mt-28"
           headingId="about-domains-heading"
-          index="Section 04"
+          index="Section 05"
           title="The five domains we cover"
           lede="Each domain holds its own topics, published notes, field studies, and measurements."
           aside={
@@ -217,7 +266,7 @@ export default function AboutPage() {
         <EditorialSection
           className="mt-20 scroll-mt-28 sm:mt-28"
           headingId="about-contact-heading"
-          index="Section 05"
+          index="Section 06"
           title="Corrections and contributions"
           lede="If a figure on this site is wrong, we want to hear it first. Send the citation and we will review, correct, and republish with a note."
           aside={
