@@ -13,9 +13,19 @@ interface HeroPlateProps {
 
 const Swap = PixelSwapImpl as unknown as React.ComponentType<Record<string, unknown>>;
 
+/**
+ * One photographed layer.
+ *
+ * `key` is deliberately part of the element so that changing the source mounts
+ * a brand-new `<img>` node rather than mutating `src` on the existing one.
+ * `next/image` keeps the old bitmap on screen while swapping `src` in place,
+ * which made every domain change render the *previous* photograph even though
+ * the markup already pointed at the new one.
+ */
 function Frame({ src, alt }: { src: string; alt: string }) {
   return (
     <Image
+      key={src}
       src={src}
       alt={alt}
       fill
@@ -102,18 +112,27 @@ export function HeroPixelSwap({ imageSrc, alt = "", firstSrc }: HeroPlateProps) 
       firstContent={<Frame src={plate.incoming} alt={alt} />}
       secondContent={<Frame src={plate.behind} alt="" />}
       replayRef={replayRef}
-      pattern="pointer"
-      pixelSize={48}
+      /* `pointer` starts the wipe at the cursor, but the hero is decorative and
+         the cursor sits on the rail to the right, which pushed the wipe into
+         one corner and read as "no effect". `center` always expands from the
+         middle so the transition is equally visible wherever the cursor is.
+         `pixelSize` and `duration` are tuned for a 1440px-wide hero: a larger
+         tile count divides the same duration into an imperceptibly fast wave. */
+      pattern="center"
+      pixelSize={160}
       pixelRadius={0}
       gap={0}
       pixelScale={0}
       pixelSpin={0}
-      duration={400}
-      pixelDuration={350}
-      randomness={0.2}
-      bounce={0.3}
+      duration={1400}
+      pixelDuration={700}
+      randomness={0.35}
+      bounce={0.35}
       trigger="hover"
       intro
+      /* The domain rail is the real control; the plate is decorative, so it must
+         not become a tab stop that steals focus and swaps the image by itself. */
+      focusable={false}
       className="pointer-events-none absolute inset-0 h-full w-full"
       style={{ borderRadius: 0, aspectRatio: "auto", height: "100%" }}
     />

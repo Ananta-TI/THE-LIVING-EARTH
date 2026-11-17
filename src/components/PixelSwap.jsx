@@ -135,6 +135,7 @@ function PixelSwap({
   onActiveChange,
   onComplete,
   replayRef,
+  focusable = true,
   aspectRatio = '16 / 10',
   className = '',
   style
@@ -178,7 +179,13 @@ function PixelSwap({
     engine.running = false;
     rootRef.current?.removeAttribute('data-swapping');
     if (engine.mode === 'intro') {
-      setLayer(0, !shownRef.current, '');
+      // The intro wipe only ever paints layer 0, so it must end with layer 0
+      // alone on screen. Layer 1 is the frame that stood in for it beforehand
+      // (and hosts re-use it as the outgoing photograph), and it sits at a
+      // higher z-index — leaving it visible would permanently cover the
+      // image the wipe just revealed.
+      setLayer(0, true, '');
+      setLayer(1, false, '');
       engine.mode = 'swap';
       if (desiredRef.current !== shownRef.current) requestRef.current(desiredRef.current, pointRef.current);
       return;
@@ -327,7 +334,18 @@ function PixelSwap({
     if (!replayRef) return undefined;
     const replay = () => {
       const engine = engineRef.current;
-      if (!engine || engine.running) return;
+      // If a wipe is already running, wait for it instead of dropping the
+      // request, otherwise a fast domain change silently loses its effect.
+      if (engine?.running) {
+        const wait = window.setInterval(() => {
+          if (!engineRef.current?.running) {
+            window.clearInterval(wait);
+            replay();
+          }
+        }, 60);
+        window.setTimeout(() => window.clearInterval(wait), 1500);
+        return;
+      }
       shownRef.current = false;
       desiredRef.current = false;
       setLayer(0, false, '');
@@ -420,7 +438,7 @@ function PixelSwap({
       if (event.target === event.currentTarget && event.currentTarget.matches(':focus-visible')) ask(true, null);
     };
     handlers.onBlur = () => ask(false, null);
-    handlers.tabIndex = 0;
+    handlers.tabIndex = focusable ? 0 : -1;
   } else if (trigger === 'click') {
     handlers.onClick = event => ask(!desiredRef.current, pointOf(event));
     handlers.onKeyDown = event => {
