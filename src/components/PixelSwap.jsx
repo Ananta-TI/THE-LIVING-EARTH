@@ -134,6 +134,7 @@ function PixelSwap({
   active,
   onActiveChange,
   onComplete,
+  replayRef,
   aspectRatio = '16 / 10',
   className = '',
   style
@@ -312,6 +313,32 @@ function PixelSwap({
 
   const launchRef = useRef(launch);
   launchRef.current = launch;
+
+  /**
+   * Host escape hatch: replay the wipe on an already-mounted instance.
+   *
+   * The intro wipe only runs once per mount, and remounting would briefly drop
+   * the photographed layers (which shows the container background as a
+   * flicker). Hosts that swap `firstContent` / `secondContent` can instead call
+   * this after publishing the new pair, so the pixels break the outgoing frame
+   * apart without ever unmounting the images.
+   */
+  useEffect(() => {
+    if (!replayRef) return undefined;
+    const replay = () => {
+      const engine = engineRef.current;
+      if (!engine || engine.running) return;
+      shownRef.current = false;
+      desiredRef.current = false;
+      setLayer(0, false, '');
+      setLayer(1, true, '');
+      launchRef.current('intro', true, null);
+    };
+    replayRef.current = replay;
+    return () => {
+      if (replayRef.current === replay) replayRef.current = null;
+    };
+  }, [replayRef]);
 
   useIsoLayoutEffect(() => {
     if (!intro || shownRef.current) return;

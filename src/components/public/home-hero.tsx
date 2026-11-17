@@ -90,8 +90,6 @@ export function HomeHero({ slides }: HomeHeroProps) {
       <div aria-hidden="true" className="absolute inset-0">
         {slides[index] ? (
           <HeroPixelSwap
-            key="hero-swap"
-            frameKey={slides[index].slug}
             imageSrc={slides[index].imageSrc}
             firstSrc={slides[0]?.imageSrc ?? "/images/hero-planet.jpg"}
           />
