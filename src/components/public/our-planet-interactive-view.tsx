@@ -117,7 +117,7 @@ export function OurPlanetInteractiveView({
     <div className="overflow-x-clip bg-background text-foreground">
       <section
         ref={heroRef}
-        className="relative isolate flex min-h-[88svh] flex-col justify-end overflow-hidden bg-earth-deep-forest text-earth-ivory"
+        className="relative isolate flex min-h-[38rem] flex-col justify-end overflow-hidden bg-earth-deep-forest text-earth-ivory sm:min-h-[42rem] lg:min-h-[46rem]"
       >
         <motion.div
           style={prefersReduced ? undefined : { y: heroImgY }}
@@ -133,15 +133,6 @@ export function OurPlanetInteractiveView({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-earth-deep-forest via-earth-deep-forest/45 to-black/30" />
         </motion.div>
-
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/4 -left-8 z-10 select-none opacity-[0.06]"
-        >
-          <span className="font-heading text-[22vw] leading-none tracking-tighter whitespace-nowrap text-earth-ivory">
-            PLANETARY RECORD
-          </span>
-        </div>
 
         <motion.div
           style={prefersReduced ? undefined : { y: heroTextY, opacity: heroOpacity }}

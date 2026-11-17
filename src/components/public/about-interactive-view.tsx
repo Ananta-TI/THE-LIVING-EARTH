@@ -123,7 +123,7 @@ export function AboutInteractiveView() {
     <div className="overflow-x-clip bg-background text-foreground">
       <section
         ref={heroRef}
-        className="relative isolate flex min-h-[88svh] flex-col justify-end overflow-hidden bg-earth-deep-forest text-earth-ivory"
+        className="relative isolate flex min-h-[38rem] flex-col justify-end overflow-hidden bg-earth-deep-forest text-earth-ivory sm:min-h-[42rem] lg:min-h-[46rem]"
       >
         <motion.div
           style={prefersReduced ? undefined : { y: heroImgY }}
