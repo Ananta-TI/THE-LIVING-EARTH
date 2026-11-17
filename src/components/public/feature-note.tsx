@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { GlareHover } from "@/components/public/glare-hover";
 import type { PublicArticleCard } from "@/features/public/queries";
 import { getNoteFragment, getNoteStandfirst } from "@/lib/utils/field-notes";
 import { formatDateTime } from "@/lib/utils/format";
@@ -92,6 +93,15 @@ export function FeatureNote({ article, sequence }: FeatureNoteProps) {
               sizes="(max-width: 1024px) 100vw, 34vw"
               className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/plate:scale-[1.035] motion-reduce:transform-none"
             />
+            <GlareHover
+              className="pointer-events-none absolute inset-0 h-full"
+              mode="loop"
+              interval={7}
+              variant="sheen"
+              glareOpacity={0.16}
+            >
+              <span className="block h-full w-full" />
+            </GlareHover>
           </div>
         </Link>
 

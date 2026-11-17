@@ -6,6 +6,7 @@ import { EditorialPageHero } from "@/components/public/editorial-page-hero";
 import { EditorialSection } from "@/components/public/editorial-section";
 import { EmptyState } from "@/components/public/empty-state";
 import { ErrorState } from "@/components/public/error-state";
+import { GlareHover } from "@/components/public/glare-hover";
 import { LoadingState } from "@/components/public/loading-state";
 import { ReferenceList } from "@/components/public/reference-list";
 import { StatisticsOverviewChart } from "@/components/public/statistics-overview-chart";
@@ -145,15 +146,17 @@ async function PlanetEvidence() {
                       </span>
 
                       <div className="max-w-[14rem] shrink-0 sm:max-w-[17rem]">
-                        <div className="relative aspect-4/3 w-full overflow-hidden bg-secondary">
-                          <Image
-                            src={imageSrc}
-                            alt=""
-                            fill
-                            sizes="(max-width: 1024px) 60vw, 22vw"
-                            className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/row:scale-[1.035] motion-reduce:transform-none"
-                          />
-                        </div>
+                        <GlareHover>
+                          <div className="relative aspect-4/3 w-full overflow-hidden bg-secondary">
+                            <Image
+                              src={imageSrc}
+                              alt=""
+                              fill
+                              sizes="(max-width: 1024px) 60vw, 22vw"
+                              className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/row:scale-[1.035] motion-reduce:transform-none"
+                            />
+                          </div>
+                        </GlareHover>
                       </div>
 
                       <div className="min-w-0 flex-1 pt-1">

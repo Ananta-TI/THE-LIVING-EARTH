@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AnimatedContent } from "@/components/public/animated-content";
 
 interface ClosingBandProps {
   readonly pillars: readonly { readonly name: string; readonly slug: string }[];
@@ -15,7 +16,7 @@ export function ClosingBand({ pillars }: ClosingBandProps) {
       className="mx-auto w-full max-w-[1400px] px-4 py-20 sm:px-6 sm:py-28 lg:px-10"
     >
       <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
-        <div className="lg:col-span-7">
+        <AnimatedContent distance={28} duration={0.8} threshold={0.05} className="lg:col-span-7">
           <h2
             id="home-closing-heading"
             className="font-heading text-[2.2rem] leading-[1.05] tracking-[-0.02em] text-foreground sm:text-5xl lg:text-[3.6rem]"
@@ -45,9 +46,17 @@ export function ClosingBand({ pillars }: ClosingBandProps) {
               See what restoration looks like
             </Link>
           </div>
-        </div>
+        </AnimatedContent>
 
-        <nav aria-label="Planetary domains" className="lg:col-span-5">
+        <AnimatedContent
+          distance={28}
+          duration={0.8}
+          delay={0.1}
+          threshold={0.05}
+          stagger={0.06}
+          className="lg:col-span-5"
+        >
+          <nav aria-label="Planetary domains">
           <ul className="border-t border-border">
             {pillars.map((pillar) => (
               <li key={pillar.slug} className="border-b border-border">
@@ -69,6 +78,7 @@ export function ClosingBand({ pillars }: ClosingBandProps) {
             ))}
           </ul>
         </nav>
+        </AnimatedContent>
       </div>
     </section>
   );

@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Third-party React Bits components installed verbatim from the shadcn
+    // registry. They rely on imperative GSAP/rAF/ref patterns that the React
+    // compiler lint rules flag by design; they are not authored in-house.
+    "src/components/AnimatedContent.jsx",
+    "src/components/PixelSwap.jsx",
+    "src/components/GlareHover.jsx",
   ]),
 ]);
 

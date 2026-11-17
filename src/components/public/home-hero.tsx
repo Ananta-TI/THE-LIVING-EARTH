@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   motion,
@@ -11,6 +10,7 @@ import {
   useTransform,
 } from "motion/react";
 import { cn } from "@/lib/utils";
+import { HeroPixelSwap } from "@/components/public/hero-pixel-swap";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const SLIDE_INTERVAL_MS = 6200;
@@ -83,39 +83,19 @@ export function HomeHero({ slides }: HomeHeroProps) {
       aria-labelledby="hero-headline"
       className="relative isolate overflow-hidden bg-earth-deep-forest text-earth-ivory"
     >
-      {/* Filmstrip: every frame stays mounted and fully painted. The outgoing
-          frame wipes downward to reveal the incoming one, so no empty plate is
-          ever visible mid-transition. All frames sit below the scrim (z-10). */}
+      {/* Hero plate. PixelSwap owns the whole hero image: its bottom layer holds
+          the outgoing photograph and its top layer the incoming one, so domain
+          changes are revealed by the pixel-grid wipe. The first image is
+          priority-loaded so the hero is never empty. */}
       <div aria-hidden="true" className="absolute inset-0">
-        {slides.map((slide, slideIndex) => {
-          const isActive = slideIndex === index;
-
-          return (
-            <motion.div
-              key={slide.slug}
-              className="absolute inset-0"
-              initial={false}
-              animate={{
-                clipPath: isActive
-                  ? "inset(0% 0% 0% 0%)"
-                  : "inset(0% 0% 100% 0%)",
-                scale: isActive ? 1.02 : 1.05,
-              }}
-              transition={{ duration: prefersReduced ? 0 : 1.1, ease: EASE }}
-            >
-              <div className="relative size-full">
-                <Image
-                  src={slide.imageSrc}
-                  alt=""
-                  fill
-                  priority={slideIndex === 0}
-                  sizes="100vw"
-                  className="object-cover object-center"
-                />
-              </div>
-            </motion.div>
-          );
-        })}
+        {slides[index] ? (
+          <HeroPixelSwap
+            key="hero-swap"
+            frameKey={slides[index].slug}
+            imageSrc={slides[index].imageSrc}
+            fallbackSrc={slides[0]?.imageSrc ?? "/images/hero-planet.jpg"}
+          />
+        ) : null}
       </div>
 
       {/* Legibility: base wash, directional scrim, a right-hand ramp that keeps

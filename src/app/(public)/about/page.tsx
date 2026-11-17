@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { EditorialPageHero } from "@/components/public/editorial-page-hero";
 import { EditorialSection } from "@/components/public/editorial-section";
+import { GlareHover } from "@/components/public/glare-hover";
 import { CONTENT_PILLARS } from "@/lib/constants/pillars";
 
 export const metadata: Metadata = {
@@ -115,15 +116,17 @@ export default function AboutPage() {
             </div>
 
             <figure className="lg:col-span-5">
-              <div className="relative aspect-4/3 w-full overflow-hidden bg-secondary lg:aspect-3/4">
-                <Image
-                  src="/images/about-earth.jpg"
-                  alt="Aerial view of coastal river delta channels flowing through mangroves to the sea"
-                  fill
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
+              <GlareHover>
+                <div className="relative aspect-4/3 w-full overflow-hidden bg-secondary lg:aspect-3/4">
+                  <Image
+                    src="/images/about-earth.jpg"
+                    alt="Aerial view of coastal river delta channels flowing through mangroves to the sea"
+                    fill
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              </GlareHover>
               <figcaption className="mt-4 border-t border-border pt-3 font-mono text-[10px] leading-relaxed tracking-[0.1em] text-earth-muted">
                 COASTAL DELTAS CONNECT TERRESTRIAL WATERSHEDS, MANGROVE BIODIVERSITY, AND MARINE
                 CURRENTS INTO A SINGLE LIVING SYSTEM.

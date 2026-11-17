@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { AnimatedContent } from "@/components/public/animated-content";
 import { ClosingBand } from "@/components/public/closing-band";
 import { FeatureNote } from "@/components/public/feature-note";
 import { FieldDataPanel } from "@/components/public/field-data-panel";
@@ -65,7 +66,9 @@ async function HomeDynamicSections() {
           <h2 id="home-lead-note-heading" className="sr-only">
             Lead field note
           </h2>
-          <FeatureNote article={lead} sequence="01" />
+          <AnimatedContent distance={30} duration={0.8} threshold={0.05} blur={4}>
+            <FeatureNote article={lead} sequence="01" />
+          </AnimatedContent>
         </section>
       ) : null}
 
@@ -79,7 +82,15 @@ async function HomeDynamicSections() {
           description="Dispatches and case studies, listed in the order they were recorded."
         />
         <div className="mt-10">
-          <FieldNoteGrid notes={notes} startIndex={lead ? 1 : 0} />
+          <AnimatedContent
+            distance={22}
+            duration={0.7}
+            threshold={0.05}
+            stagger={0.05}
+            trigger="scroll"
+          >
+            <FieldNoteGrid notes={notes} startIndex={lead ? 1 : 0} />
+          </AnimatedContent>
         </div>
       </section>
 

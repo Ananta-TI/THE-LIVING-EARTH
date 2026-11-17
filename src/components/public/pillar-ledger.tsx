@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { GlareHover } from "@/components/public/glare-hover";
 import { resolveEditorialImageUrl } from "@/lib/utils/media-url";
 
 interface PillarLedgerItem {
@@ -24,15 +25,17 @@ function LedgerImage({
   readonly name: string;
 }) {
   return (
-    <div className="relative aspect-4/3 w-full overflow-hidden bg-secondary lg:aspect-3/4">
-      <Image
-        src={src}
-        alt={`${name} environmental domain`}
-        fill
-        sizes="(max-width: 1024px) 100vw, 30vw"
-        className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/row:scale-[1.035] motion-reduce:transform-none"
-      />
-    </div>
+    <GlareHover className="h-full">
+      <div className="relative aspect-4/3 w-full overflow-hidden bg-secondary lg:aspect-3/4">
+        <Image
+          src={src}
+          alt={`${name} environmental domain`}
+          fill
+          sizes="(max-width: 1024px) 100vw, 30vw"
+          className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/row:scale-[1.035] motion-reduce:transform-none"
+        />
+      </div>
+    </GlareHover>
   );
 }
 

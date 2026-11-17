@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AnimatedContent } from "@/components/public/animated-content";
 import type { PublicStatisticWithSource } from "@/features/public/queries";
 import { formatNumber } from "@/lib/utils/format";
 
@@ -48,7 +49,8 @@ export function FieldDataPanel({ statistics }: FieldDataPanelProps) {
           </Link>
         </div>
 
-        <ul className="grid gap-x-10 gap-y-12 pt-10 lg:grid-cols-3">
+        <AnimatedContent distance={26} duration={0.75} threshold={0.05} stagger={0.08}>
+          <ul className="grid gap-x-10 gap-y-12 pt-10 lg:grid-cols-3">
           {statistics.slice(0, 3).map((stat) => {
             const { value, unit } = reading(stat);
             const published = stat.publication_date
@@ -82,7 +84,8 @@ export function FieldDataPanel({ statistics }: FieldDataPanelProps) {
               </li>
             );
           })}
-        </ul>
+          </ul>
+        </AnimatedContent>
       </div>
     </section>
   );

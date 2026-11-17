@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AnimatedContent } from "@/components/public/animated-content";
 
 interface EditorialSectionProps {
   readonly id?: string;
@@ -60,7 +61,11 @@ export function EditorialSection({
         ) : null}
       </header>
 
-      <div className="mt-10">{children}</div>
+      <div className="mt-10">
+        <AnimatedContent distance={24} duration={0.75} threshold={0.05} stagger={0.06}>
+          {children}
+        </AnimatedContent>
+      </div>
     </section>
   );
 }

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AnimatedContent } from "@/components/public/animated-content";
 import { EditorialPageHero } from "@/components/public/editorial-page-hero";
 import { EditorialSection } from "@/components/public/editorial-section";
 import { LoadingState } from "@/components/public/loading-state";
@@ -96,7 +97,9 @@ async function ExploreLedger() {
       </div>
 
       <div className="mt-10">
-        <PillarLedger pillars={pillars} />
+        <AnimatedContent distance={24} duration={0.75} threshold={0.05} stagger={0.07}>
+          <PillarLedger pillars={pillars} />
+        </AnimatedContent>
       </div>
     </>
   );
@@ -105,7 +108,8 @@ async function ExploreLedger() {
 /** Static list: the questions each domain is responsible for answering. */
 function DomainQuestions() {
   return (
-    <ol className="grid border-t border-border lg:grid-cols-5">
+    <AnimatedContent distance={24} duration={0.7} threshold={0.05} stagger={0.08}>
+      <ol className="grid border-t border-border lg:grid-cols-5">
       {DOMAIN_QUESTIONS.map((item, index) => (
         <li
           key={item.domain}
@@ -128,7 +132,8 @@ function DomainQuestions() {
           </Link>
         </li>
       ))}
-    </ol>
+      </ol>
+    </AnimatedContent>
   );
 }
 
