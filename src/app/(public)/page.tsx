@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { AnimatedContent } from "@/components/public/animated-content";
 import { ClosingBand } from "@/components/public/closing-band";
 import { EditorialSection } from "@/components/public/editorial-section";
@@ -71,6 +72,29 @@ async function HomeDynamicSections() {
           </AnimatedContent>
         </section>
       ) : null}
+
+      {/* Photographic interlude: breaks the text-heavy flow with a full-bleed plate. */}
+      <section
+        aria-hidden="true"
+        className="relative mt-20 h-[46vh] min-h-[22rem] overflow-hidden sm:mt-28 sm:h-[52vh]"
+      >
+        <Image
+          src="/images/pillar-forests.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-earth-deep-forest/40 via-transparent to-earth-deep-forest/60" />
+        <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-10">
+          <p className="font-mono text-[10px] tracking-[0.16em] text-earth-ivory/80">
+            04°20′S · 114°35′E
+          </p>
+          <p className="mt-1 font-heading text-lg text-earth-ivory sm:text-xl">
+            Central Kalimantan peatland canopy
+          </p>
+        </div>
+      </section>
 
       <section
         aria-labelledby="home-notes-heading"
