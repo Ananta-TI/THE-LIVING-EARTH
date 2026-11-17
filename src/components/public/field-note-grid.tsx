@@ -37,10 +37,10 @@ export function FieldNoteGrid({ notes, startIndex = 0 }: FieldNoteGridProps) {
                 <span className="truncate">{note.location}</span>
               </div>
 
-              {/* Hover-revealed cover plate. */}
+              {/* Cover plate — always visible, grows on hover. */}
               <div
                 aria-hidden="true"
-                className="relative mt-4 h-[3px] overflow-hidden rounded-sm bg-muted transition-[height,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] opacity-0 hover-capable:group-hover/note:h-32 hover-capable:group-hover/note:opacity-100 hover-capable:group-focus-visible/note:h-32 hover-capable:group-focus-visible/note:opacity-100 motion-reduce:h-32 motion-reduce:opacity-100 motion-reduce:transition-none"
+                className="relative mt-4 h-40 overflow-hidden rounded-sm bg-muted transition-[height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover-capable:group-hover/note:h-52 motion-reduce:transition-none"
               >
                 <Image
                   src={imageSrc}

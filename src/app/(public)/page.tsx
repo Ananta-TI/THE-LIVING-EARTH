@@ -72,6 +72,25 @@ async function HomeDynamicSections() {
         </section>
       ) : null}
 
+      {/* Typographic statement — large, on a dark plate. */}
+      <section className="relative mt-20 overflow-hidden bg-earth-deep-forest text-earth-ivory sm:mt-28">
+        <div className="mx-auto w-full max-w-[1400px] px-4 py-20 sm:px-6 sm:py-28 lg:px-10">
+          <p className="font-mono text-[10px] tracking-[0.16em] text-earth-sage">
+            THE RECORD
+          </p>
+          <p className="mt-6 max-w-[22ch] font-heading text-[2.2rem] leading-[1.05] tracking-[-0.025em] text-earth-ivory sm:text-[3rem] lg:text-[4rem]">
+            Five domains.
+            <br />
+            <span className="text-earth-sage">One connected planet.</span>
+          </p>
+          <p className="mt-8 max-w-[52ch] text-[15px] leading-relaxed text-earth-ivory/70">
+            Every measurement, dispatch, and case study on this site is filed under one of five
+            planetary domains. They do not stand alone — a warming atmosphere reshapes ocean
+            chemistry, which reshapes forests, which reshapes the people who depend on them.
+          </p>
+        </div>
+      </section>
+
       {/* Typographic statement — a large, single-line moment. */}
       <section
         aria-hidden="true"
