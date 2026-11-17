@@ -1,14 +1,10 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Breadcrumbs } from "@/components/public/breadcrumbs";
-import { CTASection } from "@/components/public/cta-section";
+import { EditorialPageHero } from "@/components/public/editorial-page-hero";
+import { EditorialSection } from "@/components/public/editorial-section";
 import { LoadingState } from "@/components/public/loading-state";
-import { PageHeroBanner } from "@/components/public/page-hero-banner";
-import { PillarGrid, type PillarGridItem } from "@/components/public/pillar-grid";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { PillarLedger } from "@/components/public/pillar-ledger";
 import { getExploreOverview } from "@/features/public/queries";
 import { CONTENT_PILLARS } from "@/lib/constants/pillars";
 
@@ -21,132 +17,211 @@ export const metadata: Metadata = {
   },
 };
 
-const FALLBACK_EXPLORE_PILLARS: readonly PillarGridItem[] = CONTENT_PILLARS.map((p) => ({
-  id: p.slug,
-  slug: p.slug,
-  name: p.title,
-  description: p.subtitle,
+interface ExplorePillarItem {
+  readonly id: string;
+  readonly slug: string;
+  readonly name: string;
+  readonly description: string;
+  readonly cover_image_path: string | null;
+  readonly topics: readonly {
+    readonly id: string;
+    readonly name: string;
+    readonly slug: string;
+    readonly description: string;
+  }[];
+  readonly publishedArticlesCount: number;
+}
+
+const FALLBACK_PILLARS: readonly ExplorePillarItem[] = CONTENT_PILLARS.map((pillar) => ({
+  id: pillar.slug,
+  slug: pillar.slug,
+  name: pillar.title,
+  description: pillar.subtitle,
   cover_image_path: null,
+  topics: [],
+  publishedArticlesCount: 0,
 }));
 
-async function ExplorePillarsContent() {
-  const result = await getExploreOverview();
-  const pillars: readonly PillarGridItem[] =
-    result.status === "ok" && result.data.length > 0
-      ? result.data
-      : FALLBACK_EXPLORE_PILLARS;
+const DOMAIN_QUESTIONS: readonly {
+  readonly domain: string;
+  readonly question: string;
+  readonly href: string;
+}[] = [
+  {
+    domain: "Climate",
+    question: "How fast is the atmosphere warming, and what does each fraction of a degree change?",
+    href: "/explore/climate-atmosphere",
+  },
+  {
+    domain: "Oceans",
+    question: "What happens to marine chemistry, coral reefs, and freshwater when heat accumulates?",
+    href: "/explore/oceans-water",
+  },
+  {
+    domain: "Forests",
+    question: "Which canopies are irreplaceable, and what lives inside them?",
+    href: "/explore/forests-biodiversity",
+  },
+  {
+    domain: "Human impact",
+    question: "Where do pollution, waste, and land conversion land in the end?",
+    href: "/explore/pollution-human-impact",
+  },
+  {
+    domain: "Restoration",
+    question: "Which interventions are documented to work, and on what timescale?",
+    href: "/explore/solutions-restoration",
+  },
+];
 
-  const allTopics =
-    result.status === "ok"
-      ? result.data.flatMap((pillar) =>
-          pillar.topics.map((topic) => ({
-            ...topic,
-            pillarSlug: pillar.slug,
-            pillarName: pillar.name,
-          })),
-        )
-      : [];
+async function ExploreLedger() {
+  const result = await getExploreOverview();
+  const pillars: readonly ExplorePillarItem[] =
+    result.status === "ok" && result.data.length > 0 ? result.data : FALLBACK_PILLARS;
+
+  const topicCount = pillars.reduce((total, pillar) => total + pillar.topics.length, 0);
+  const noteCount = pillars.reduce(
+    (total, pillar) => total + pillar.publishedArticlesCount,
+    0,
+  );
 
   return (
-    <div className="space-y-12">
-      <PillarGrid pillars={pillars} variant="portrait" />
+    <>
+      <div className="flex flex-wrap items-baseline gap-x-8 gap-y-2 border-t border-border pt-6 font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+        <span className="tabular-nums">
+          {pillars.length} DOMAINS
+        </span>
+        <span className="tabular-nums">{topicCount} INDEXED TOPICS</span>
+        <span className="tabular-nums">{noteCount} PUBLISHED NOTES</span>
+      </div>
 
-      {allTopics.length > 0 ? (
-        <section
-          aria-labelledby="explore-topics-heading"
-          className="rounded-xl border border-border bg-card p-6 sm:p-8"
+      <div className="mt-10">
+        <PillarLedger pillars={pillars} />
+      </div>
+    </>
+  );
+}
+
+/** Static list: the questions each domain is responsible for answering. */
+function DomainQuestions() {
+  return (
+    <ol className="grid border-t border-border lg:grid-cols-5">
+      {DOMAIN_QUESTIONS.map((item, index) => (
+        <li
+          key={item.domain}
+          className="border-b border-border px-0 py-6 lg:border-b-0 lg:border-l lg:px-6 lg:first:border-l-0 lg:first:pl-0"
         >
-          <h2
-            id="explore-topics-heading"
-            className="font-heading text-2xl font-medium text-foreground"
+          <Link
+            href={item.href}
+            className="group/q block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           >
-            Active Research Topics
-          </h2>
-          <p className="mt-1.5 text-sm text-muted-foreground">
-            Browse curated environmental subtopics indexed inside each pillar.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {allTopics.map((topic) => (
-              <Link
-                key={topic.id}
-                href={`/explore/${topic.pillarSlug}`}
-                className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-              >
-                <Badge
-                  variant="secondary"
-                  className="px-3 py-1 text-xs font-medium hover:bg-primary hover:text-primary-foreground"
-                >
-                  {topic.name}
-                </Badge>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : null}
-    </div>
+            <p className="font-mono text-[10px] tracking-[0.12em] text-earth-muted tabular-nums">
+              {String(index + 1).padStart(2, "0")} &middot; {item.domain}
+            </p>
+            <p className="mt-4 font-heading text-lg leading-snug text-foreground transition-colors duration-200 group-hover/q:text-primary">
+              {item.question}
+            </p>
+            <span
+              aria-hidden="true"
+              className="mt-5 block h-px w-0 bg-primary transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/q:w-14 motion-reduce:transition-none"
+            />
+          </Link>
+        </li>
+      ))}
+    </ol>
   );
 }
 
 export default function ExplorePage() {
   return (
     <>
-      <PageHeroBanner
-        eyebrow="Five Knowledge Domains"
+      <EditorialPageHero
+        index="Section 02"
+        context="The five domains"
         title="Explore Our Planet"
-        description="Discover the five interconnected pillars of our environmental world—climate, oceans, forests, human impact, and restoration."
+        standfirst="Five interconnected systems — atmosphere, water, forest, human pressure, and restoration. Each domain holds its own indexed topics, published notes, field studies, and measurements."
         imageSrc="/images/about-earth.jpg"
         imageAlt="High-altitude coastal river delta flowing into azure ocean reefs"
-      >
-        <Breadcrumbs tone="dark" items={[{ label: "Home", href: "/" }, { label: "Explore" }]} />
-      </PageHeroBanner>
+      />
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
-        <Suspense fallback={<LoadingState label="Loading environmental pillars and topics..." />}>
-          <ExplorePillarsContent />
+      <div className="mx-auto w-full max-w-[1400px] px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
+        <Suspense fallback={<LoadingState label="Loading the five domains..." />}>
+          <ExploreLedger />
         </Suspense>
 
-        <section
-          aria-labelledby="explore-cross-nav-heading"
-          className="mt-14 rounded-xl border border-border bg-card p-8"
+        <EditorialSection
+          className="mt-20 scroll-mt-28 sm:mt-28"
+          headingId="explore-questions-heading"
+          index="Section 03"
+          title="What each domain is responsible for answering"
+          lede="The archive is organised around questions rather than subjects. Every note, study, and measurement filed under a domain exists to close one of these gaps."
         >
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-            <div className="max-w-2xl space-y-2">
-              <h2
-                id="explore-cross-nav-heading"
-                className="font-heading text-2xl font-medium text-foreground sm:text-3xl"
+          <DomainQuestions />
+        </EditorialSection>
+
+        <EditorialSection
+          className="mt-20 scroll-mt-28 sm:mt-28"
+          headingId="explore-cross-heading"
+          index="Section 04"
+          title="Where the domains meet"
+          lede="Cross-cutting pressures rarely respect a single domain. Our Planet holds the global breakdowns and comparative measurements; Stories holds the reporting that connects them."
+          aside={
+            <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
+              <Link
+                href="/our-planet"
+                className="group/x inline-flex items-center gap-2 border-b border-foreground/25 pb-1 text-sm font-medium text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
               >
-                Looking for cross-cutting global indicators?
-              </h2>
-              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Visit Our Planet for global pressure breakdowns and comparative data visualizations,
-                or read published dispatches across all pillars in Stories.
-              </p>
+                <span>Read the global breakdowns</span>
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/x:translate-x-1 motion-reduce:transform-none"
+                >
+                  &rarr;
+                </span>
+              </Link>
+              <Link
+                href="/stories"
+                className="text-sm text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+              >
+                Browse the reporting
+              </Link>
             </div>
-
-            <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg" className="h-11 rounded-lg px-6">
-                <Link href="/our-planet" className="gap-2">
-                  <span>Explore Our Planet</span>
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="h-11 rounded-lg px-6">
-                <Link href="/stories">Browse Stories</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <div className="mt-14">
-          <CTASection
-            title="Have a field topic or verified dataset to suggest?"
-            description="Reach out to our editorial team to share environmental research leads or educational feedback."
-            primaryLabel="Contact Us"
-            primaryHref="/contact"
-            secondaryLabel="Explore Solutions"
-            secondaryHref="/solutions"
-          />
-        </div>
+          }
+        >
+          <ul className="grid border-t border-border sm:grid-cols-3">
+            {[
+              {
+                label: "Our Planet",
+                body: "Global pressures, regional case studies, and every published measurement with its source.",
+                href: "/our-planet",
+              },
+              {
+                label: "Stories",
+                body: "Long-form reporting and field dispatches, listed in the order they were recorded.",
+                href: "/stories",
+              },
+              {
+                label: "Solutions",
+                body: "Ten working pathways for recovery, with the case studies that evidence them.",
+                href: "/solutions",
+              },
+            ].map((item) => (
+              <li key={item.label} className="border-b border-border py-7 sm:border-b-0 sm:border-l sm:px-6 sm:first:border-l-0 sm:first:pl-0">
+                <h3 className="font-heading text-xl text-foreground">
+                  <Link
+                    href={item.href}
+                    className="transition-colors duration-200 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                  >
+                    {item.label}
+                  </Link>
+                </h3>
+                <p className="mt-2.5 max-w-[38ch] text-sm leading-relaxed text-muted-foreground">
+                  {item.body}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </EditorialSection>
       </div>
     </>
   );

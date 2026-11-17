@@ -40,30 +40,30 @@ export function StoriesPagination({
       aria-label="Stories pagination"
       className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6"
     >
-      <p className="text-sm text-muted-foreground">
-        Page {page} of {totalPages}
+      <p className="font-mono text-[10px] tracking-[0.12em] text-earth-muted tabular-nums">
+        PAGE {page} OF {totalPages}
       </p>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-5">
         {hasPrev ? (
           <Link
             href={buildPageHref(page - 1, search, pillarSlug)}
-            className="inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-border bg-card px-3.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="inline-flex min-h-8 items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           >
-            <ChevronLeft className="size-4" aria-hidden="true" />
-            <span>Previous</span>
+            <ChevronLeft className="size-3.5" aria-hidden="true" />
+            <span>Newer</span>
           </Link>
         ) : (
           <span
             aria-disabled="true"
-            className="inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-border/60 bg-muted/40 px-3.5 text-sm font-medium text-muted-foreground/70"
+            className="inline-flex min-h-8 items-center gap-1.5 text-sm text-muted-foreground/45"
           >
-            <ChevronLeft className="size-4" aria-hidden="true" />
-            <span>Previous</span>
+            <ChevronLeft className="size-3.5" aria-hidden="true" />
+            <span>Newer</span>
           </span>
         )}
 
-        <ol className="flex flex-wrap items-center gap-1.5">
+        <ol className="flex flex-wrap items-center gap-3">
           {pages.map((pageNum) => {
             const isCurrent = pageNum === page;
             return (
@@ -72,13 +72,13 @@ export function StoriesPagination({
                   href={buildPageHref(pageNum, search, pillarSlug)}
                   aria-current={isCurrent ? "page" : undefined}
                   className={cn(
-                    "inline-flex size-10 items-center justify-center rounded-lg border text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                    "font-mono text-[11px] tabular-nums transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring",
                     isCurrent
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-card text-foreground hover:bg-secondary",
+                      ? "text-foreground underline decoration-primary decoration-2 underline-offset-[6px]"
+                      : "text-earth-muted hover:text-foreground",
                   )}
                 >
-                  {pageNum}
+                  {String(pageNum).padStart(2, "0")}
                 </Link>
               </li>
             );
@@ -88,18 +88,18 @@ export function StoriesPagination({
         {hasNext ? (
           <Link
             href={buildPageHref(page + 1, search, pillarSlug)}
-            className="inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-border bg-card px-3.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="inline-flex min-h-8 items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           >
-            <span>Next</span>
-            <ChevronRight className="size-4" aria-hidden="true" />
+            <span>Older</span>
+            <ChevronRight className="size-3.5" aria-hidden="true" />
           </Link>
         ) : (
           <span
             aria-disabled="true"
-            className="inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-border/60 bg-muted/40 px-3.5 text-sm font-medium text-muted-foreground/70"
+            className="inline-flex min-h-8 items-center gap-1.5 text-sm text-muted-foreground/45"
           >
-            <span>Next</span>
-            <ChevronRight className="size-4" aria-hidden="true" />
+            <span>Older</span>
+            <ChevronRight className="size-3.5" aria-hidden="true" />
           </span>
         )}
       </div>

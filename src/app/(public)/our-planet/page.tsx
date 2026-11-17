@@ -2,32 +2,16 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  BookOpen,
-  Compass,
-  Droplets,
-  FileText,
-  Flame,
-  Layers,
-  Leaf,
-  MapPin,
-  ShieldCheck,
-  Sprout,
-  Wind,
-} from "lucide-react";
-import { Breadcrumbs } from "@/components/public/breadcrumbs";
-import { CaseStudyCard } from "@/components/public/case-study-card";
-import { CTASection } from "@/components/public/cta-section";
+import { EditorialPageHero } from "@/components/public/editorial-page-hero";
+import { EditorialSection } from "@/components/public/editorial-section";
 import { EmptyState } from "@/components/public/empty-state";
 import { ErrorState } from "@/components/public/error-state";
 import { LoadingState } from "@/components/public/loading-state";
-import { PageHeroBanner } from "@/components/public/page-hero-banner";
 import { ReferenceList } from "@/components/public/reference-list";
-import { SectionHeading } from "@/components/public/section-heading";
-import { StatisticCard } from "@/components/public/statistic-card";
 import { StatisticsOverviewChart } from "@/components/public/statistics-overview-chart";
 import { getOurPlanetData } from "@/features/public/queries";
+import { formatDateTime } from "@/lib/utils/format";
+import { resolveEditorialImageUrl } from "@/lib/utils/media-url";
 
 export const metadata: Metadata = {
   title: "Our Planet",
@@ -38,30 +22,7 @@ export const metadata: Metadata = {
   },
 };
 
-const RELATED_RESOURCES = [
-  {
-    label: "Mangrove Restoration Guide",
-    href: "/case-studies/mangrove-restoration-in-coastal-indonesia",
-    icon: Sprout,
-  },
-  {
-    label: "Coastal Ecosystem Report",
-    href: "/explore/oceans-water",
-    icon: Compass,
-  },
-  {
-    label: "Blue Carbon Assessment",
-    href: "#sources",
-    icon: FileText,
-  },
-  {
-    label: "Habitat Protection Pathways",
-    href: "/solutions",
-    icon: BookOpen,
-  },
-] as const;
-
-const GLOBAL_THEMES = [
+const GLOBAL_PRESSURES = [
   {
     id: "climate-change",
     pillarHref: "/explore/climate-atmosphere",
@@ -73,7 +34,6 @@ const GLOBAL_THEMES = [
       "Land-use conversion and peatland drainage releasing stored soil carbon",
       "Permafrost thaw and reduced polar albedo creating amplifying feedbacks",
     ],
-    icon: Flame,
   },
   {
     id: "biodiversity-loss",
@@ -86,7 +46,6 @@ const GLOBAL_THEMES = [
       "Fragmentation of migratory corridors and freshwater wetlands",
       "Compounding pressure from shifting climate envelopes and invasive species",
     ],
-    icon: Leaf,
   },
   {
     id: "ocean-degradation",
@@ -99,45 +58,43 @@ const GLOBAL_THEMES = [
       "Ocean acidification reducing carbonate ions needed for calcifying organisms",
       "Coastal nutrient runoff expanding hypoxic dead zones alongside overfishing",
     ],
-    icon: Droplets,
   },
   {
     id: "pollution",
     pillarHref: "/explore/pollution-human-impact",
     title: "Pollution & Waste",
     summary:
-      "Synthetic chemicals, microplastics, heavy metals, and airborne particulates persist across ecological boundaries—affecting watersheds, marine fauna, and urban health.",
+      "Synthetic chemicals, microplastics, heavy metals, and airborne particulates persist across ecological boundaries — affecting watersheds, marine fauna, and urban health.",
     keyDrivers: [
       "Single-use polymer leakage into river basins and coastal gyres",
       "Fine particulate matter and tropospheric ozone from combustion and industry",
       "Untreated agricultural nutrients and electronic-waste leachates",
     ],
-    icon: Wind,
   },
 ] as const;
 
-async function OurPlanetDynamicSection() {
+async function PlanetEvidence() {
   const result = await getOurPlanetData();
 
   if (result.status === "unconfigured") {
     return (
-      <section className="mt-14">
+      <div className="mt-16">
         <ErrorState
           title="Content unavailable"
           description="Case studies, statistics, and references are not available right now."
         />
-      </section>
+      </div>
     );
   }
 
   if (result.status === "error") {
     return (
-      <section className="mt-14">
+      <div className="mt-16">
         <ErrorState
           title="Unable to load global evidence records"
           description={result.message}
         />
-      </section>
+      </div>
     );
   }
 
@@ -145,89 +102,204 @@ async function OurPlanetDynamicSection() {
 
   return (
     <>
-      <section aria-labelledby="planet-cases-heading" className="mt-16">
-        <SectionHeading
-          headingId="planet-cases-heading"
-          title="Featured Global Case Studies"
-          description="Regional field investigations connecting ecological pressures, observable impacts, and documented conservation responses."
-          actionLabel="Explore Pillars"
-          actionHref="/explore"
-        />
+      <EditorialSection
+        className="mt-20 scroll-mt-28 sm:mt-28"
+        headingId="planet-cases-heading"
+        index="Section 04"
+        title="Regional studies on file"
+        lede="Field investigations connecting ecological pressures, observable impacts, and documented conservation responses. Each entry names its site and period."
+        aside={
+          <Link
+            href="/explore"
+            className="group/x inline-flex items-center gap-2 border-b border-foreground/25 pb-1 text-sm font-medium text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+          >
+            <span>Open the domain ledger</span>
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/x:translate-x-1 motion-reduce:transform-none"
+            >
+              &rarr;
+            </span>
+          </Link>
+        }
+      >
+        {caseStudies.length > 0 ? (
+          <ol className="border-t border-border">
+            {caseStudies.map((cs, index) => {
+              const imageSrc = resolveEditorialImageUrl(cs.cover_image_path, {
+                pillarSlug: cs.pillarSlug,
+              });
+              const period = cs.start_date
+                ? `${formatDateTime(cs.start_date)} — ${cs.end_date ? formatDateTime(cs.end_date) : "ongoing"}`
+                : "Ongoing";
 
-        <div className="mt-8">
-          {caseStudies.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {caseStudies.map((cs) => (
-                <CaseStudyCard key={cs.id} caseStudy={cs} />
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              title="Regional case studies are being curated"
-              description="Verified field case studies will appear here as soon as editorial review is complete."
-              actionLabel="Browse Stories"
-              actionHref="/stories"
-            />
-          )}
-        </div>
-      </section>
+              return (
+                <li key={cs.id} className="border-b border-border">
+                  <Link
+                    href={`/case-studies/${cs.slug}`}
+                    className="group/row grid gap-6 py-8 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring lg:grid-cols-12 lg:gap-10 lg:py-10"
+                  >
+                    <div className="flex items-start gap-4 lg:col-span-8 lg:gap-8">
+                      <span className="w-8 shrink-0 pt-1 font-mono text-[11px] text-earth-muted tabular-nums">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
 
-      <section aria-labelledby="planet-stats-heading" className="mt-16">
-        <SectionHeading
-          headingId="planet-stats-heading"
-          title="Verified Environmental Data & Indicators"
-          description="Quantitative indicators are grouped strictly by matching measurement unit and paired with explicit data types and citations."
-        />
+                      <div className="max-w-[14rem] shrink-0 sm:max-w-[17rem]">
+                        <div className="relative aspect-4/3 w-full overflow-hidden bg-secondary">
+                          <Image
+                            src={imageSrc}
+                            alt=""
+                            fill
+                            sizes="(max-width: 1024px) 60vw, 22vw"
+                            className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/row:scale-[1.035] motion-reduce:transform-none"
+                          />
+                        </div>
+                      </div>
 
-        <div className="mt-8 space-y-8">
-          {statistics.length > 0 ? (
-            <>
+                      <div className="min-w-0 flex-1 pt-1">
+                        <h3 className="font-heading text-xl leading-tight tracking-[-0.015em] text-foreground transition-colors duration-200 group-hover/row:text-primary sm:text-2xl">
+                          {cs.title}
+                        </h3>
+                        <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-muted-foreground">
+                          {cs.summary}
+                        </p>
+                        <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
+                          <span>Open the study</span>
+                          <span
+                            aria-hidden="true"
+                            className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/row:translate-x-1 motion-reduce:transform-none"
+                          >
+                            &rarr;
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <dl className="lg:col-span-4 lg:pt-1">
+                      <div className="flex items-baseline justify-between gap-4 border-b border-border/60 py-2">
+                        <dt className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                          Site
+                        </dt>
+                        <dd className="text-right text-[13px] text-foreground/85">
+                          {cs.country}
+                          {cs.region ? ` · ${cs.region}` : ""}
+                        </dd>
+                      </div>
+                      <div className="flex items-baseline justify-between gap-4 border-b border-border/60 py-2">
+                        <dt className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                          Domain
+                        </dt>
+                        <dd className="text-right text-[13px] text-foreground/85">
+                          {cs.pillarName}
+                        </dd>
+                      </div>
+                      <div className="flex items-baseline justify-between gap-4 border-b border-border/60 py-2">
+                        <dt className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                          Period
+                        </dt>
+                        <dd className="text-right text-[13px] text-foreground/85 tabular-nums">
+                          {period}
+                        </dd>
+                      </div>
+                      {cs.latitude !== null && cs.longitude !== null ? (
+                        <div className="flex items-baseline justify-between gap-4 py-2">
+                          <dt className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                            Coordinates
+                          </dt>
+                          <dd className="text-right text-[13px] text-foreground/85 tabular-nums">
+                            {cs.latitude.toFixed(3)}, {cs.longitude.toFixed(3)}
+                          </dd>
+                        </div>
+                      ) : null}
+                    </dl>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
+        ) : (
+          <EmptyState
+            title="Regional case studies are being curated"
+            description="Verified field case studies will appear here as soon as editorial review is complete."
+            actionLabel="Browse stories"
+            actionHref="/stories"
+          />
+        )}
+      </EditorialSection>
+
+      <EditorialSection
+        className="mt-20 scroll-mt-28 sm:mt-28"
+        headingId="planet-stats-heading"
+        index="Section 05"
+        title="Verified measurements, with their limitations"
+        lede="Indicators are grouped by matching measurement unit and paired with an explicit data type, geographic scope, observation year, and citation."
+      >
+        {statistics.length > 0 ? (
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+            <div className="lg:col-span-7">
               <StatisticsOverviewChart statistics={statistics} pillars={pillars} />
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {statistics.map((stat) => (
-                  <StatisticCard key={stat.id} statistic={stat} />
-                ))}
-              </div>
-            </>
-          ) : (
-            <EmptyState
-              title="Verified statistics dataset awaiting publication"
-              description="THE LIVING EARTH never invents placeholder metrics or extrapolated charts. Published indicators from verified scientific sources will appear here automatically."
-              actionLabel="Learn About Our Standards"
-              actionHref="/about#approach"
-            />
-          )}
-        </div>
-      </section>
-
-      <section id="sources" aria-labelledby="planet-sources-heading" className="mt-16 scroll-mt-24">
-        <SectionHeading
-          headingId="planet-sources-heading"
-          title="Sources & Scientific References"
-          description="Institutional reports, peer-reviewed journals, and public datasets referenced across the platform."
-        />
-
-        <div className="mt-8">
-          {references.length > 0 ? (
-            <ReferenceList references={references} />
-          ) : (
-            <div className="rounded-xl border border-border bg-card p-6 sm:p-8">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                <div className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-                  <p className="font-medium text-foreground">Strict Citation &amp; Provenance Policy</p>
-                  <p>
-                    No quantitative dataset is displayed without an assigned institutional source,
-                    publication date, and unit classification in the editorial records. Primary
-                    references will list automatically here alongside published statistics and
-                    articles.
-                  </p>
-                </div>
-              </div>
             </div>
-          )}
-        </div>
-      </section>
+            <div className="border-t border-border lg:col-span-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12">
+              <p className="pt-6 font-mono text-[10px] tracking-[0.12em] text-earth-muted lg:pt-0">
+                INDICATORS
+              </p>
+              <ul className="mt-4 border-t border-border">
+                {statistics.map((stat) => (
+                  <li key={stat.id} className="border-b border-border py-4">
+                    <p className="flex items-baseline justify-between gap-6">
+                      <span className="text-[15px] font-medium text-foreground">
+                        {stat.indicator}
+                      </span>
+                      <span className="shrink-0 font-heading text-xl text-foreground tabular-nums">
+                        {stat.unit === "%"
+                          ? `~${stat.value}%`
+                          : `${stat.value}${stat.unit}`}
+                      </span>
+                    </p>
+                    <p className="mt-1.5 font-mono text-[10px] tracking-[0.1em] text-earth-muted">
+                      {stat.geographic_scope} &middot; {stat.measurement_year}
+                    </p>
+                    <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
+                      {stat.reference?.organization ?? "Verified source"}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <EmptyState
+            title="Verified statistics dataset awaiting publication"
+            description="THE LIVING EARTH never invents placeholder metrics or extrapolated charts. Published indicators from verified scientific sources will appear here automatically."
+            actionLabel="Learn about our standards"
+            actionHref="/about#approach"
+          />
+        )}
+      </EditorialSection>
+
+      <EditorialSection
+        id="sources"
+        className="mt-20 scroll-mt-28 sm:mt-28"
+        headingId="planet-sources-heading"
+        index="Section 06"
+        title="Sources and scientific references"
+        lede="Institutional reports, peer-reviewed journals, and public datasets referenced across the platform."
+      >
+        {references.length > 0 ? (
+          <ReferenceList references={references} />
+        ) : (
+          <div className="border-t border-border pt-6">
+            <p className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+              STRICT CITATION &amp; PROVENANCE POLICY
+            </p>
+            <p className="mt-4 max-w-[70ch] text-[15px] leading-relaxed text-muted-foreground">
+              No quantitative dataset is displayed without an assigned institutional source,
+              publication date, and unit classification in the editorial records. Primary
+              references list automatically here alongside published statistics and articles.
+            </p>
+          </div>
+        )}
+      </EditorialSection>
     </>
   );
 }
@@ -235,261 +307,179 @@ async function OurPlanetDynamicSection() {
 export default function OurPlanetPage() {
   return (
     <>
-      {/* Hero Banner matching Screen 6 ("Mangrove Restoration in Coastal Indonesia") */}
-      <PageHeroBanner
-        eyebrow="Our Planet · Featured Field Study"
-        title="Mangrove Restoration in Coastal Indonesia"
-        description="Nature-based solutions for stronger coastlines, thriving estuaries, and resilient blue-carbon ecosystems."
+      <EditorialPageHero
+        index="Section 05"
+        context="Global pressures"
+        title="What is happening to the planet, and where"
+        standfirst="Four interacting pressures — warming, biodiversity loss, ocean change, and pollution — read against regional field studies and the measurements that document them."
         imageSrc="/images/mangrove-coastal.jpg"
         imageAlt="Lush coastal mangrove roots along an Indonesian shoreline"
-      >
-        <Breadcrumbs tone="dark" items={[{ label: "Home", href: "/" }, { label: "Our Planet" }]} />
-      </PageHeroBanner>
+      />
 
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14 lg:px-8">
-        {/* Two-Column Case Study Spotlight + Sidebar matching Mockup Screen 6 */}
-        <div className="grid gap-10 lg:grid-cols-12">
-          {/* Left Column: Overview, The Solution, Results + 2 Side-by-Side Photos */}
-          <div className="space-y-8 lg:col-span-8">
-            <section aria-labelledby="spotlight-overview-heading" className="space-y-3">
-              <h2
-                id="spotlight-overview-heading"
-                className="font-heading text-3xl font-medium text-foreground"
-              >
-                Overview
-              </h2>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                Indonesia stewards the largest mangrove extent on Earth—intertidal forests whose
-                dense aerial root networks dissipate storm surge energy, trap coastal sediment, and
-                sequester up to four times more carbon per hectare than terrestrial tropical forests.
+      <div className="mx-auto w-full max-w-[1400px] px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
+        {/* Lead field study, kept as its own composure at the top of the page. */}
+        <EditorialSection
+          headingId="planet-lead-heading"
+          index="Section 02"
+          title="Featured field study"
+          lede="A single documented restoration effort, in full, before the global picture."
+        >
+          <article className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+            <div className="lg:col-span-7">
+              <p className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                INDONESIA &middot; COASTAL JAVA &amp; KALIMANTAN
               </p>
-              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Decades of coastal aquaculture pond conversion and seawall modification left low-lying
-                villages exposed to tidal flooding, shoreline erosion, and declining nearshore crab
-                and finfish nurseries.
-              </p>
-            </section>
-
-            <section
-              aria-labelledby="spotlight-solution-heading"
-              className="space-y-3 border-t border-border pt-7"
-            >
-              <h2
-                id="spotlight-solution-heading"
-                className="font-heading text-3xl font-medium text-foreground"
-              >
-                The Solution
-              </h2>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                Community-led ecological mangrove restoration pairs permeable brushwood sediment
-                barriers with tidal channel reopening—allowing natural mangrove propagules
-                (<em>Avicennia</em> and <em>Rhizophora</em> species) to re-establish alongside mixed
-                silvofishery ponds that sustain local livelihoods.
-              </p>
-            </section>
-
-            <section
-              aria-labelledby="spotlight-results-heading"
-              className="space-y-5 border-t border-border pt-7"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <h2
-                  id="spotlight-results-heading"
-                  className="font-heading text-3xl font-medium text-foreground"
-                >
-                  Results
-                </h2>
+              <h3 className="mt-4 font-heading text-[1.9rem] leading-[1.08] tracking-[-0.015em] text-foreground sm:text-4xl">
                 <Link
                   href="/case-studies/mangrove-restoration-in-coastal-indonesia"
-                  className="group inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className="transition-colors duration-200 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                 >
-                  <span>View all</span>
-                  <ArrowRight
-                    className="size-3.5 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
-                    aria-hidden="true"
-                  />
+                  Mangrove Restoration in Coastal Indonesia
                 </Link>
-              </div>
-
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <div className="group overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 hover:border-primary/40">
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
-                    <Image
-                      src="/images/mangrove-coastal.jpg"
-                      alt="Restored coastal mangrove belt stabilizing tropical shoreline"
-                      fill
-                      sizes="(max-width: 640px) 100vw, 400px"
-                      className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transform-none"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <p className="font-heading text-base font-medium text-foreground">
-                      Shoreline Sediment Accretion
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Permeable coastal buffers trap sediment and reduce wave impact energy.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="group overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 hover:border-primary/40">
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
-                    <Image
-                      src="/images/about-earth.jpg"
-                      alt="Estuarine river delta and nursery habitat recovery"
-                      fill
-                      sizes="(max-width: 640px) 100vw, 400px"
-                      className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transform-none"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <p className="font-heading text-base font-medium text-foreground">
-                      Estuary Biodiversity &amp; Blue Carbon
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Reconnected tidal channels restore nursery habitats and organic soil carbon.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          {/* Right Sidebar: Location, Pillar, and Related Resources (Matching Screen 6) */}
-          <aside aria-label="Case study metadata and related resources" className="space-y-6 lg:col-span-4">
-            <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-2xs">
-              <div className="flex items-center gap-3.5">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary">
-                  <MapPin className="size-4" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground">Location</p>
-                  <p className="font-heading text-lg font-medium text-foreground">Indonesia</p>
-                </div>
-              </div>
-
-              <div className="border-t border-border/70 pt-4">
-                <Link
-                  href="/explore/oceans-water"
-                  className="group flex items-center gap-3.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                >
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary">
-                    <Layers className="size-4" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="text-xs font-medium text-muted-foreground">Pillar</p>
-                    <p className="font-heading text-lg font-medium text-foreground group-hover:text-primary">
-                      Oceans &amp; Water
-                    </p>
-                  </div>
-                </Link>
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
-              <h3 className="font-heading text-xl font-medium text-foreground">
-                Related Resources
               </h3>
-              <ul className="mt-4 space-y-3">
-                {RELATED_RESOURCES.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <li key={item.label}>
-                      <Link
-                        href={item.href}
-                        className="group flex items-center gap-3 rounded-xl p-2 transition-[background-color,transform] duration-200 hover:translate-x-0.5 hover:bg-secondary/65 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none"
-                      >
-                        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary transition-transform duration-200 group-hover:scale-105 group-hover:-rotate-6 motion-reduce:transform-none">
-                          <Icon className="size-4" aria-hidden="true" />
-                        </span>
-                        <span className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
-                          {item.label}
-                        </span>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </aside>
-        </div>
 
-        {/* Four Global Planetary Pressures (#climate-change, #biodiversity-loss, #ocean-degradation, #pollution) */}
-        <section aria-labelledby="global-themes-heading" className="mt-16 border-t border-border pt-14">
-          <SectionHeading
-            headingId="global-themes-heading"
-            title="Major Planetary Pressures"
-            description="How atmospheric warming, biodiversity loss, ocean chemistry, and pollution interact across global systems."
-          />
+              <p className="mt-6 max-w-[64ch] text-lg leading-relaxed text-foreground/85">
+                Indonesia stewards the largest mangrove extent on Earth — intertidal forests whose
+                dense aerial root networks dissipate storm surge energy, trap coastal sediment, and
+                sequester up to four times more carbon per hectare than terrestrial tropical
+                forests.
+              </p>
 
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {GLOBAL_THEMES.map((theme) => {
-              const Icon = theme.icon;
-              return (
-                <article
-                  key={theme.id}
-                  id={theme.id}
-                  className="group flex scroll-mt-24 flex-col justify-between rounded-xl border border-border bg-card p-6 transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xs motion-reduce:transform-none"
+              <p className="mt-5 max-w-[64ch] text-[15px] leading-relaxed text-muted-foreground">
+                Decades of aquaculture pond conversion and seawall modification left low-lying
+                villages exposed to tidal flooding, shoreline erosion, and declining nearshore crab
+                and finfish nurseries. Restoration teams shifted away from monoculture planting
+                toward hydrological rehabilitation: reopening blocked estuarine channels and
+                letting natural propagules re-establish.
+              </p>
+
+              <Link
+                href="/case-studies/mangrove-restoration-in-coastal-indonesia"
+                className="group/x mt-8 inline-flex items-center gap-2 border-b border-foreground/25 pb-1 text-sm font-medium text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+              >
+                <span>Read the full study</span>
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/x:translate-x-1 motion-reduce:transform-none"
                 >
-                  <div>
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex size-10 items-center justify-center rounded-lg bg-secondary text-primary transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-6 motion-reduce:transform-none">
-                        <Icon className="size-5" aria-hidden="true" />
-                      </span>
-                      <h3 className="font-heading text-xl font-medium text-foreground">
-                        {theme.title}
-                      </h3>
-                    </div>
+                  &rarr;
+                </span>
+              </Link>
+            </div>
 
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      {theme.summary}
-                    </p>
+            <figure className="lg:col-span-5">
+              <div className="relative aspect-3/4 w-full overflow-hidden bg-secondary">
+                <Image
+                  src="/images/mangrove-coastal.jpg"
+                  alt="Restored coastal mangrove belt stabilizing a tropical shoreline"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 36vw"
+                  className="object-cover"
+                />
+              </div>
+              <figcaption className="mt-4 border-t border-border pt-3 font-mono text-[10px] leading-relaxed tracking-[0.1em] text-earth-muted">
+                PERMEABLE SEDIMENT BARRIERS AND REOPENED TIDAL CHANNELS ALLOW PROPAGULES TO
+                RE-ESTABLISH WITHOUT PLANTING.
+              </figcaption>
+            </figure>
+          </article>
+        </EditorialSection>
 
-                    <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
-                      {theme.keyDrivers.map((driver) => (
-                        <li key={driver} className="flex items-start gap-2">
-                          <span
-                            aria-hidden="true"
-                            className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary"
-                          />
-                          <span>{driver}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+        {/* The four pressures, as dense numbered records rather than cards. */}
+        <EditorialSection
+          className="mt-20 scroll-mt-28 sm:mt-28"
+          headingId="planet-pressures-heading"
+          index="Section 03"
+          title="Major planetary pressures"
+          lede="How atmospheric warming, biodiversity loss, ocean chemistry, and pollution interact across global systems."
+        >
+          <ol className="grid border-t border-border lg:grid-cols-2">
+            {GLOBAL_PRESSURES.map((pressure, index) => (
+              <li
+                key={pressure.id}
+                id={pressure.id}
+                className="scroll-mt-28 border-b border-border py-8 lg:[&:nth-child(2n)]:border-l lg:[&:nth-child(2n)]:pl-8 lg:[&:nth-child(2n+1)]:pr-8"
+              >
+                <p className="font-mono text-[10px] tracking-[0.12em] text-earth-muted tabular-nums">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <h3 className="mt-3 font-heading text-2xl leading-tight tracking-[-0.015em] text-foreground">
+                  {pressure.title}
+                </h3>
+                <p className="mt-4 max-w-[58ch] text-[15px] leading-relaxed text-muted-foreground">
+                  {pressure.summary}
+                </p>
 
-                  <div className="mt-5 border-t border-border/70 pt-3.5">
-                    <Link
-                      href={theme.pillarHref}
-                      className="group/link inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                <p className="mt-6 font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                  KEY DRIVERS
+                </p>
+                <ul className="mt-3">
+                  {pressure.keyDrivers.map((driver) => (
+                    <li
+                      key={driver}
+                      className="border-b border-border/60 py-2.5 text-[13px] leading-relaxed text-foreground/80 last:border-b-0"
                     >
-                      <span>Explore related pillar</span>
-                      <ArrowRight
-                        className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-1 motion-reduce:transform-none"
-                        aria-hidden="true"
-                      />
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
+                      {driver}
+                    </li>
+                  ))}
+                </ul>
 
-        <Suspense fallback={<LoadingState label="Loading global case studies, data, and sources..." />}>
-          <OurPlanetDynamicSection />
+                <Link
+                  href={pressure.pillarHref}
+                  className="group/x mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                >
+                  <span>Open the related domain</span>
+                  <span
+                    aria-hidden="true"
+                    className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/x:translate-x-1 motion-reduce:transform-none"
+                  >
+                    &rarr;
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </EditorialSection>
+
+        <Suspense fallback={<LoadingState label="Loading regional studies, measurements, and sources..." />}>
+          <PlanetEvidence />
         </Suspense>
 
-        <div className="mt-16">
-          <CTASection
-            title="Move from understanding challenges to examining solutions."
-            description="Explore realistic ecological restoration, clean energy transitions, and conservation frameworks."
-            primaryLabel="Explore Solutions"
-            primaryHref="/solutions"
-            secondaryLabel="Read Stories"
-            secondaryHref="/stories"
-          />
-        </div>
+        <EditorialSection
+          className="mt-20 scroll-mt-28 sm:mt-28"
+          headingId="planet-next-heading"
+          index="Section 07"
+          title="From pressures to pathways"
+          lede="Understanding the problem is only half the record. The other half is what is documented to work."
+          aside={
+            <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
+              <Link
+                href="/solutions"
+                className="group/x inline-flex items-center gap-2 border-b border-foreground/25 pb-1 text-sm font-medium text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+              >
+                <span>See the restoration pathways</span>
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/x:translate-x-1 motion-reduce:transform-none"
+                >
+                  &rarr;
+                </span>
+              </Link>
+              <Link
+                href="/stories"
+                className="text-sm text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+              >
+                Read the reporting
+              </Link>
+            </div>
+          }
+        >
+          <p className="max-w-[70ch] text-[15px] leading-relaxed text-muted-foreground">
+            Every pressure above has at least one documented countermeasure on file. We separate
+            what has been measured from what is still being trialled, and we publish the
+            difference.
+          </p>
+        </EditorialSection>
       </div>
     </>
   );

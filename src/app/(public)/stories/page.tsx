@@ -1,16 +1,12 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { ArticleCard } from "@/components/public/article-card";
-import { Breadcrumbs } from "@/components/public/breadcrumbs";
-import { CTASection } from "@/components/public/cta-section";
+import { EditorialPageHero } from "@/components/public/editorial-page-hero";
 import { EmptyState } from "@/components/public/empty-state";
 import { ErrorState } from "@/components/public/error-state";
-import { FeaturedStory } from "@/components/public/featured-story";
 import { LoadingState } from "@/components/public/loading-state";
-import { PageHeroBanner } from "@/components/public/page-hero-banner";
-import { SectionHeading } from "@/components/public/section-heading";
 import { StoriesFilterBar } from "@/components/public/stories-filter-bar";
 import { StoriesPagination } from "@/components/public/stories-pagination";
+import { StoryLedger } from "@/components/public/story-ledger";
 import { getStoriesList } from "@/features/public/queries";
 
 export const metadata: Metadata = {
@@ -68,15 +64,11 @@ async function StoriesArchiveContent({
     );
   }
 
-  const { featuredStory, articles, totalCount, pillars } = result.data;
-  const isDefaultFirstPage = page === 1 && !search && !pillarSlug;
-  const gridArticles =
-    isDefaultFirstPage && featuredStory
-      ? articles.filter((item) => item.id !== featuredStory.id)
-      : articles;
+  const { articles, totalCount, pillars } = result.data;
+  const offset = (page - 1) * PAGE_SIZE;
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <StoriesFilterBar
         pillars={pillars}
         initialQuery={search}
@@ -84,39 +76,24 @@ async function StoriesArchiveContent({
         totalCount={totalCount}
       />
 
-      {isDefaultFirstPage && featuredStory ? (
-        <section aria-label="Featured Story">
-          <FeaturedStory article={featuredStory} />
-        </section>
-      ) : null}
-
       {articles.length === 0 ? (
         <EmptyState
           title={
             search || pillarSlug
-              ? "No published stories match your filter"
-              : "No environmental stories published yet"
+              ? "Nothing in the archive matches this filter"
+              : "The archive is empty"
           }
           description={
             search || pillarSlug
-              ? "Try broadening your search title or clearing the environmental pillar filter."
-              : "Long-form environmental essays and dispatches will appear here once the editorial desk publishes them."
+              ? "Try a broader search term, or clear the domain filter to see every note on file."
+              : "Long-form essays and field dispatches will appear here as the editorial desk publishes them."
           }
-          actionLabel={search || pillarSlug ? "Clear Filters" : "Explore Pillars"}
+          actionLabel={search || pillarSlug ? "Clear filters" : "Browse the domains"}
           actionHref={search || pillarSlug ? "/stories" : "/explore"}
-          secondaryLabel="Explore Our Planet"
-          secondaryHref="/our-planet"
         />
-      ) : gridArticles.length > 0 ? (
-        <section aria-labelledby="more-stories-heading" className="space-y-6">
-          <SectionHeading headingId="more-stories-heading" title="More Stories" />
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {gridArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
-        </section>
-      ) : null}
+      ) : (
+        <StoryLedger articles={articles} startIndex={offset} />
+      )}
 
       <StoriesPagination
         page={page}
@@ -132,31 +109,19 @@ async function StoriesArchiveContent({
 export default function StoriesPage({ searchParams }: StoriesPageProps) {
   return (
     <>
-      <PageHeroBanner
-        eyebrow="Editorial Archive"
-        title="Our Stories"
-        description="Insights, field narratives, and scientific explainers for a changing and sustainable world."
+      <EditorialPageHero
+        index="Section 03"
+        context="The archive"
+        title="Every note, in the order it was recorded"
+        standfirst="Long-form reporting and field dispatches across all five domains — each entry carries its domain, topic, publication date, and reading time."
         imageSrc="/images/hero-planet.jpg"
         imageAlt="Forest river valley canopy representing environmental stories"
-      >
-        <Breadcrumbs tone="dark" items={[{ label: "Home", href: "/" }, { label: "Stories" }]} />
-      </PageHeroBanner>
+      />
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <Suspense fallback={<LoadingState label="Loading published stories..." />}>
+      <div className="mx-auto w-full max-w-[1400px] px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
+        <Suspense fallback={<LoadingState label="Loading the archive..." />}>
           <StoriesArchiveContent searchParams={searchParams} />
         </Suspense>
-
-        <div className="mt-16">
-          <CTASection
-            title="Explore the regional studies behind the stories."
-            description="Examine documented environmental case studies and verified statistics on Our Planet."
-            primaryLabel="Explore Our Planet"
-            primaryHref="/our-planet"
-            secondaryLabel="Explore Pillars"
-            secondaryHref="/explore"
-          />
-        </div>
       </div>
     </>
   );

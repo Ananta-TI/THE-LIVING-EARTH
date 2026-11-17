@@ -83,11 +83,12 @@ export function HomeHero({ slides }: HomeHeroProps) {
       aria-labelledby="hero-headline"
       className="relative isolate overflow-hidden bg-earth-deep-forest text-earth-ivory"
     >
-      {/* Filmstrip: only the current frame is mounted. */}
+      {/* Filmstrip: frames cross-fade with a clip-path wipe. Inactive frames stay
+          fully painted and are only revealed by the wipe, so no empty plate is
+          ever visible mid-transition. */}
       <div aria-hidden="true" className="absolute inset-0">
         {slides.map((slide, slideIndex) => {
           const isActive = slideIndex === index;
-          const hasBeenSeen = slideIndex === index;
 
           return (
             <motion.div
@@ -96,21 +97,31 @@ export function HomeHero({ slides }: HomeHeroProps) {
               initial={false}
               animate={
                 isActive
-                  ? { clipPath: "inset(0% 0% 0% 0%)", scale: 1.02, opacity: 1 }
-                  : hasBeenSeen
-                    ? { clipPath: "inset(0% 0% 0% 0%)", scale: 1.02, opacity: 0 }
-                    : { clipPath: "inset(100% 0% 0% 0%)", scale: 1.08, opacity: 0 }
+                  ? { clipPath: "inset(0% 0% 0% 0%)", scale: 1.02 }
+                  : { clipPath: "inset(0% 0% 0% 0%)", scale: 1.02, opacity: 0 }
               }
               transition={{ duration: prefersReduced ? 0 : 1.1, ease: EASE }}
+              style={{ zIndex: isActive ? 2 : 1 }}
             >
-              <Image
-                src={slide.imageSrc}
-                alt=""
-                fill
-                priority={slideIndex === 0}
-                sizes="100vw"
-                className="object-cover object-center"
-              />
+              <motion.div
+                className="absolute inset-0"
+                initial={false}
+                animate={
+                  isActive
+                    ? { clipPath: "inset(0% 0% 0% 0%)" }
+                    : { clipPath: "inset(100% 0% 0% 0%)" }
+                }
+                transition={{ duration: prefersReduced ? 0 : 1.1, ease: EASE }}
+              >
+                <Image
+                  src={slide.imageSrc}
+                  alt=""
+                  fill
+                  priority={slideIndex === 0}
+                  sizes="100vw"
+                  className="object-cover object-center"
+                />
+              </motion.div>
             </motion.div>
           );
         })}
@@ -141,22 +152,41 @@ export function HomeHero({ slides }: HomeHeroProps) {
             <div className="relative mt-4 grid">
               {slides.map((slide, slideIndex) => {
                 const isActive = slideIndex === index;
+                // Only the active frame carries the page's single <h1>; the
+                // other frames are plain, aria-hidden text, so the document
+                // never exposes five competing top-level headings.
+                const headlineClass = cn(
+                  "col-start-1 row-start-1 font-heading text-[2.6rem] leading-[0.98] tracking-[-0.02em] text-earth-ivory sm:text-6xl lg:text-[4.6rem]",
+                  !isActive && "pointer-events-none",
+                );
+                const animation = {
+                  opacity: isActive ? 1 : 0,
+                  y: isActive ? 0 : 18,
+                  filter: isActive ? "blur(0px)" : "blur(6px)",
+                };
+                const transition = { duration: prefersReduced ? 0 : 0.65, ease: EASE };
+
+                if (!isActive) {
+                  return (
+                    <p
+                      key={slide.slug}
+                      aria-hidden="true"
+                      className={headlineClass}
+                      style={{ opacity: 0, pointerEvents: "none" }}
+                    >
+                      {slide.name}
+                    </p>
+                  );
+                }
+
                 return (
                   <motion.h1
-                    id={isActive ? "hero-headline" : undefined}
+                    id="hero-headline"
                     key={slide.slug}
-                    aria-hidden={!isActive}
-                    className={cn(
-                      "col-start-1 row-start-1 font-heading text-[2.6rem] leading-[0.98] tracking-[-0.02em] text-earth-ivory sm:text-6xl lg:text-[4.6rem]",
-                      !isActive && "pointer-events-none",
-                    )}
+                    className={headlineClass}
                     initial={false}
-                    animate={{
-                      opacity: isActive ? 1 : 0,
-                      y: isActive ? 0 : 18,
-                      filter: isActive ? "blur(0px)" : "blur(6px)",
-                    }}
-                    transition={{ duration: prefersReduced ? 0 : 0.65, ease: EASE }}
+                    animate={animation}
+                    transition={transition}
                   >
                     {slide.name}
                   </motion.h1>

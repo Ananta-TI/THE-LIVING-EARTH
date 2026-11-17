@@ -2,10 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { motion, useReducedMotion } from "motion/react";
-import { Search, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface StoriesFilterBarProps {
@@ -24,7 +21,7 @@ const SHORT_PILLAR_LABELS: Record<string, string> = {
   "oceans-water": "Oceans",
   "forests-biodiversity": "Forests",
   "pollution-human-impact": "Pollution",
-  "solutions-restoration": "Solutions",
+  "solutions-restoration": "Restoration",
 };
 
 function buildStoriesHref(query: string, pillarSlug: string): string {
@@ -36,6 +33,10 @@ function buildStoriesHref(query: string, pillarSlug: string): string {
   return qs ? `/stories?${qs}` : "/stories";
 }
 
+/**
+ * Archive index bar: domain filters as a plain text row, a hairline search
+ * field, and a running count. No pill chips, no button block.
+ */
 export function StoriesFilterBar({
   pillars,
   initialQuery,
@@ -43,7 +44,6 @@ export function StoriesFilterBar({
   totalCount,
 }: StoriesFilterBarProps) {
   const router = useRouter();
-  const prefersReduced = useReducedMotion();
   const [searchValue, setSearchValue] = useState(initialQuery);
 
   function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
@@ -55,45 +55,28 @@ export function StoriesFilterBar({
     router.push(buildStoriesHref(searchValue, slug));
   }
 
-  function handleReset() {
-    setSearchValue("");
-    router.push("/stories");
-  }
-
   const hasFilters = Boolean(initialQuery.trim() || initialPillarSlug);
 
   return (
-    <div className="space-y-4">
-      {/* Horizontal Category Underline Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border">
+    <div className="border-t border-border pt-6">
+      <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
         <div
           role="group"
-          aria-label="Filter stories by environmental pillar"
-          className="flex flex-wrap items-center gap-5 sm:gap-7"
+          aria-label="Filter notes by environmental domain"
+          className="flex flex-wrap items-center gap-x-6 gap-y-1 lg:col-span-7"
         >
           <button
             type="button"
             onClick={() => handlePillarSelect("")}
             aria-pressed={initialPillarSlug === ""}
             className={cn(
-              "relative inline-flex min-h-11 items-center px-1 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+              "min-h-8 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring",
               initialPillarSlug === ""
-                ? "font-medium text-primary"
-                : "font-medium text-muted-foreground hover:text-foreground",
+                ? "font-medium text-foreground underline decoration-primary decoration-2 underline-offset-[6px]"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
-            <span>All</span>
-            {initialPillarSlug === "" ? (
-              prefersReduced ? (
-                <span className="absolute right-0 -bottom-px left-0 h-0.5 bg-primary" />
-              ) : (
-                <motion.span
-                  layoutId="stories-pillar-underline"
-                  transition={{ type: "spring", stiffness: 420, damping: 32 }}
-                  className="absolute right-0 -bottom-px left-0 h-0.5 bg-primary"
-                />
-              )
-            ) : null}
+            All
           </button>
 
           {pillars.map((pillar) => {
@@ -107,76 +90,63 @@ export function StoriesFilterBar({
                 aria-pressed={active}
                 title={pillar.name}
                 className={cn(
-                  "relative inline-flex min-h-11 items-center px-1 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                  "min-h-8 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring",
                   active
-                    ? "font-medium text-primary"
-                    : "font-medium text-muted-foreground hover:text-foreground",
+                    ? "font-medium text-foreground underline decoration-primary decoration-2 underline-offset-[6px]"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
-                <span>{shortLabel}</span>
-                {active ? (
-                  prefersReduced ? (
-                    <span className="absolute right-0 -bottom-px left-0 h-0.5 bg-primary" />
-                  ) : (
-                    <motion.span
-                      layoutId="stories-pillar-underline"
-                      transition={{ type: "spring", stiffness: 420, damping: 32 }}
-                      className="absolute right-0 -bottom-px left-0 h-0.5 bg-primary"
-                    />
-                  )
-                ) : null}
+                {shortLabel}
               </button>
             );
           })}
         </div>
 
-        <p className="text-xs font-medium text-muted-foreground" aria-live="polite">
-          {totalCount === 1 ? "1 article" : `${totalCount} articles`}
-        </p>
-      </div>
-
-      {/* Rounded Full-Width Search Input */}
-      <form
-        onSubmit={handleSearchSubmit}
-        role="search"
-        aria-label="Filter published stories"
-        className="flex w-full flex-col gap-2.5 sm:flex-row"
-      >
-        <label htmlFor="stories-search-input" className="sr-only">
-          Search articles
-        </label>
-        <div className="relative flex-1">
-          <Search
-            className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <Input
-            id="stories-search-input"
-            type="search"
-            value={searchValue}
-            onChange={(event) => setSearchValue(event.target.value)}
-            placeholder="Search articles"
-            className="h-11 rounded-lg border-border bg-card pr-4 pl-11 text-sm shadow-2xs transition-colors focus:border-primary"
-          />
-        </div>
-        <Button
-          type="submit"
-          className="h-11 rounded-lg px-6 transition-[background-color,transform] active:scale-[0.98]"
-        >
-          Search
-        </Button>
-        {hasFilters ? (
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleReset}
-            className="h-11 gap-1.5 rounded-lg px-4 transition-[background-color,transform] active:scale-[0.98]"
+        <div className="lg:col-span-5">
+          <form
+            onSubmit={handleSearchSubmit}
+            role="search"
+            aria-label="Search published notes"
+            className="flex items-center gap-3 border-b border-border pb-2 focus-within:border-primary"
           >
-            <X className="size-4" aria-hidden="true" />
-            <span>Reset</span>
-          </Button>
-        ) : null}
-      </form>
+            <label htmlFor="stories-search-input" className="sr-only">
+              Search notes
+            </label>
+            <Search className="size-3.5 shrink-0 text-earth-muted" aria-hidden="true" />
+            <input
+              id="stories-search-input"
+              type="search"
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+              placeholder="Search the archive"
+              className="min-w-0 flex-1 bg-transparent text-sm text-foreground placeholder:text-earth-muted focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="shrink-0 font-mono text-[10px] tracking-[0.12em] text-earth-muted transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+            >
+              SEARCH
+            </button>
+            {hasFilters ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchValue("");
+                  router.push("/stories");
+                }}
+                className="shrink-0 font-mono text-[10px] tracking-[0.12em] text-earth-muted transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+              >
+                CLEAR
+              </button>
+            ) : null}
+          </form>
+
+          <p className="mt-3 font-mono text-[10px] tracking-[0.12em] text-earth-muted" aria-live="polite">
+            <span className="tabular-nums">{totalCount}</span>
+            {totalCount === 1 ? " NOTE ON FILE" : " NOTES ON FILE"}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

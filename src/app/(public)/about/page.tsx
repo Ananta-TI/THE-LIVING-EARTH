@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { BookOpenCheck, Compass, Handshake, Sprout } from "lucide-react";
-import { Breadcrumbs } from "@/components/public/breadcrumbs";
-import { CTASection } from "@/components/public/cta-section";
-import { MotionReveal } from "@/components/public/motion-reveal";
-import { PageHeroBanner } from "@/components/public/page-hero-banner";
-import { PillarGrid, type PillarGridItem } from "@/components/public/pillar-grid";
-import { SectionHeading } from "@/components/public/section-heading";
+import Link from "next/link";
+import { EditorialPageHero } from "@/components/public/editorial-page-hero";
+import { EditorialSection } from "@/components/public/editorial-section";
 import { CONTENT_PILLARS } from "@/lib/constants/pillars";
 
 export const metadata: Metadata = {
@@ -22,212 +18,226 @@ const CORE_VALUES = [
   {
     title: "Knowledge",
     description: "Verified facts grounded in peer-reviewed research.",
-    icon: BookOpenCheck,
   },
   {
     title: "Action",
     description: "Practical, evidence-led conservation pathways.",
-    icon: Sprout,
   },
   {
     title: "Clarity",
     description: "Accessible storytelling without alarmism.",
-    icon: Compass,
   },
   {
     title: "Collaboration",
     description: "Shared civic, scientific, and community care.",
-    icon: Handshake,
   },
 ] as const;
 
 const APPROACH_STEPS = [
   {
     step: "01",
-    title: "Primary Scientific Documentation",
+    title: "Primary scientific documentation",
     body: "Research summaries cite peer-reviewed journals, environmental assessments, and institutional datasets with clear observation dates and measurement units.",
   },
   {
     step: "02",
-    title: "Place-Based Field Case Studies",
+    title: "Place-based field case studies",
     body: "Broad global indicators become tangible when grounded in regional watersheds, coral reefs, rainforest corridors, and coastal restoration initiatives.",
   },
   {
     step: "03",
-    title: "Balanced Solutions Analysis",
+    title: "Balanced solutions analysis",
     body: "Instead of simplified silver bullets, we examine ecological trade-offs, implementation timelines, and how systemic policy aligns with daily action.",
   },
 ] as const;
 
-const ABOUT_PILLARS: readonly PillarGridItem[] = CONTENT_PILLARS.map((p) => ({
-  id: p.slug,
-  slug: p.slug,
-  name: p.title,
-  description: p.subtitle,
-  cover_image_path: null,
-}));
-
 export default function AboutPage() {
   return (
     <>
-      <PageHeroBanner
-        eyebrow="Who We Are"
-        title="About THE LIVING EARTH"
-        description="A journey to understand, protect, and restore our planet through documentary storytelling and verified science."
+      <EditorialPageHero
+        index="Section 01"
+        context="Who we are"
+        title="An environmental record, kept in public"
+        standfirst="THE LIVING EARTH documents how the planet is changing and what is being done about it. Every number we publish carries a source; every place we describe has been reported."
         imageSrc="/images/hero-planet.jpg"
         imageAlt="Misty mountain peaks and evergreen rainforest canopy"
-      >
-        <Breadcrumbs tone="dark" items={[{ label: "Home", href: "/" }, { label: "About" }]} />
-      </PageHeroBanner>
+      />
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
-        {/* Asymmetric Vision & Mission + Landscape Photo */}
-        <section aria-labelledby="vision-mission-heading" className="grid gap-10 lg:grid-cols-12 lg:items-center">
-          <MotionReveal className="space-y-8 lg:col-span-6">
-            <h2 id="vision-mission-heading" className="sr-only">
-              Our Vision and Mission
-            </h2>
+      <div className="mx-auto w-full max-w-[1400px] px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
+        {/* Vision & mission, set as a two-column editorial spread. */}
+        <EditorialSection
+          headingId="about-vision-heading"
+          index="Section 02"
+          title="Vision and mission"
+        >
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+            <div className="space-y-12 lg:col-span-7">
+              <div>
+                <h3 className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                  VISION
+                </h3>
+                <p className="mt-4 font-heading text-xl leading-snug text-foreground sm:text-2xl">
+                  A publicly literate world where nature and humanity thrive together — guided by
+                  calm, accurate understanding of how climate, water, forests, and human systems
+                  depend on one another.
+                </p>
+              </div>
 
-            <div className="space-y-2.5">
-              <h3 className="font-heading text-3xl font-medium text-foreground">Our Vision</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                A publicly literate world where nature and humanity thrive together—guided by calm,
-                accurate understanding of how climate, water, forests, and human systems depend on
-                one another.
-              </p>
+              <div className="border-t border-border pt-10">
+                <h3 className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                  MISSION
+                </h3>
+                <p className="mt-4 max-w-[64ch] text-[15px] leading-relaxed text-muted-foreground">
+                  To deliver accessible environmental journalism, transparent scientific indicators
+                  with named provenance, and regional conservation case studies that inspire
+                  informed ecological stewardship.
+                </p>
+              </div>
+
+              <div className="border-t border-border pt-10">
+                <h3 className="font-mono text-[10px] tracking-[0.12em] text-earth-muted">
+                  WORKING PRINCIPLES
+                </h3>
+                <dl className="mt-4 border-t border-border">
+                  {CORE_VALUES.map((value) => (
+                    <div
+                      key={value.title}
+                      className="flex flex-col gap-1 border-b border-border py-3.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
+                    >
+                      <dt className="font-heading text-lg text-foreground">{value.title}</dt>
+                      <dd className="text-sm text-muted-foreground sm:text-right">
+                        {value.description}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             </div>
 
-            <div className="space-y-2.5 border-t border-border pt-6">
-              <h3 className="font-heading text-3xl font-medium text-foreground">Our Mission</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                To deliver accessible environmental journalism, transparent scientific indicators
-                with named provenance, and regional conservation case studies that inspire
-                informed ecological stewardship.
-              </p>
-            </div>
-
-            {/* 4 Circular Icon Value Medallions */}
-            <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
-              {CORE_VALUES.map((val) => {
-                const Icon = val.icon;
-                return (
-                  <div
-                    key={val.title}
-                    className="group flex flex-col items-center rounded-xl border border-border bg-card p-4 text-center transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xs motion-reduce:transform-none"
-                  >
-                    <span className="flex size-11 items-center justify-center rounded-lg bg-secondary text-primary transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-6 motion-reduce:transform-none">
-                      <Icon className="size-5" aria-hidden="true" />
-                    </span>
-                    <p className="mt-2.5 font-heading text-base font-medium text-foreground">
-                      {val.title}
-                    </p>
-                    <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
-                      {val.description}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </MotionReveal>
-
-          <MotionReveal delay={0.08} className="lg:col-span-6">
-            <figure className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+            <figure className="lg:col-span-5">
+              <div className="relative aspect-4/3 w-full overflow-hidden bg-secondary lg:aspect-3/4">
                 <Image
                   src="/images/about-earth.jpg"
                   alt="Aerial view of coastal river delta channels flowing through mangroves to the sea"
                   fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03] motion-reduce:transform-none"
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  className="object-cover"
                 />
               </div>
-              <figcaption className="border-t border-border bg-card px-5 py-3.5 text-xs leading-relaxed text-muted-foreground">
-                Coastal deltas connect terrestrial watersheds, mangrove biodiversity, and marine
-                currents into a single living system.
+              <figcaption className="mt-4 border-t border-border pt-3 font-mono text-[10px] leading-relaxed tracking-[0.1em] text-earth-muted">
+                COASTAL DELTAS CONNECT TERRESTRIAL WATERSHEDS, MANGROVE BIODIVERSITY, AND MARINE
+                CURRENTS INTO A SINGLE LIVING SYSTEM.
               </figcaption>
             </figure>
-          </MotionReveal>
-        </section>
+          </div>
+        </EditorialSection>
 
-        {/* Atmospheric Misty Banner — Why Environmental Awareness Matters & Approach */}
-        <section
+        {/* Editorial method, framed as a numbered record rather than three cards. */}
+        <EditorialSection
           id="approach"
-          aria-labelledby="awareness-heading"
-          className="relative isolate mt-16 overflow-hidden rounded-xl border border-border bg-earth-deep-forest px-6 py-12 text-earth-ivory sm:px-10 sm:py-14 scroll-mt-24"
+          className="mt-20 scroll-mt-28 sm:mt-28"
+          headingId="about-approach-heading"
+          index="Section 03"
+          title="How each entry is made"
+          lede="Every topic on THE LIVING EARTH follows a three-layer editorial approach connecting scientific measurements with place-based reporting and balanced restoration options."
         >
-          <Image
-            src="/images/hero-planet.jpg"
-            alt=""
-            aria-hidden="true"
-            fill
-            sizes="(min-width: 1280px) 1200px, 100vw"
-            className="object-cover object-center opacity-25"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/65 to-black/80"
-          />
-
-          <div className="relative">
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="text-xs font-medium text-earth-sage">
-                Methodology &amp; Purpose
-              </p>
-              <h2
-                id="awareness-heading"
-                className="mt-2 font-heading text-3xl font-medium tracking-tight text-earth-ivory sm:text-4xl"
+          <ol className="border-t border-border">
+            {APPROACH_STEPS.map((item) => (
+              <li
+                key={item.step}
+                className="grid gap-4 border-b border-border py-8 lg:grid-cols-12 lg:gap-10"
               >
-                Why Environmental Awareness Matters
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-earth-ivory/82 sm:text-base">
-                Every topic on THE LIVING EARTH follows a three-layer editorial approach connecting
-                scientific measurements with place-based reporting and balanced restoration options.
-              </p>
-            </div>
+                <p className="font-mono text-[11px] text-earth-muted tabular-nums lg:col-span-2">
+                  {item.step}
+                </p>
+                <h3 className="font-heading text-xl leading-snug text-foreground lg:col-span-4 sm:text-2xl">
+                  {item.title}
+                </h3>
+                <p className="max-w-[62ch] text-[15px] leading-relaxed text-muted-foreground lg:col-span-6">
+                  {item.body}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </EditorialSection>
 
-            <div className="mt-10 grid gap-5 lg:grid-cols-3">
-              {APPROACH_STEPS.map((item) => (
-                <div
-                  key={item.step}
-                  className="rounded-xl border border-white/15 bg-black/30 p-6 transition-[transform,border-color,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-earth-sage/55 hover:bg-black/40 motion-reduce:transform-none"
+        {/* The five domains, as a compact index rather than medallion cards. */}
+        <EditorialSection
+          className="mt-20 scroll-mt-28 sm:mt-28"
+          headingId="about-domains-heading"
+          index="Section 04"
+          title="The five domains we cover"
+          lede="Each domain holds its own topics, published notes, field studies, and measurements."
+          aside={
+            <Link
+              href="/explore"
+              className="group/x inline-flex items-center gap-2 border-b border-foreground/25 pb-1 text-sm font-medium text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+            >
+              <span>Open the domain ledger</span>
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/x:translate-x-1 motion-reduce:transform-none"
+              >
+                &rarr;
+              </span>
+            </Link>
+          }
+        >
+          <ol className="border-t border-border">
+            {CONTENT_PILLARS.map((pillar) => (
+              <li key={pillar.slug} className="border-b border-border">
+                <Link
+                  href={pillar.href}
+                  className="group/row grid items-baseline gap-x-8 gap-y-2 py-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring lg:grid-cols-12"
                 >
-                  <span className="font-heading text-2xl font-medium text-earth-soft-sage">
-                    {item.step}
+                  <span className="font-mono text-[11px] text-earth-muted tabular-nums lg:col-span-1">
+                    {pillar.code}
                   </span>
-                  <h3 className="mt-2.5 font-heading text-xl font-medium text-earth-ivory">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-earth-ivory/80">{item.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+                  <span className="font-heading text-xl text-foreground transition-colors duration-200 group-hover/row:text-primary lg:col-span-4">
+                    {pillar.title}
+                  </span>
+                  <span className="text-sm leading-relaxed text-muted-foreground lg:col-span-6">
+                    {pillar.subtitle}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="hidden text-muted-foreground transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/row:translate-x-1 group-hover/row:text-primary motion-reduce:transform-none lg:col-span-1 lg:block lg:text-right"
+                  >
+                    &rarr;
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </EditorialSection>
 
-        {/* Five Circular Pillar Medallions */}
-        <section aria-labelledby="about-pillars-heading" className="mt-16">
-          <SectionHeading
-            headingId="about-pillars-heading"
-            title="Our Five Pillars"
-            description="Select any domain to inspect scientific context, stories, case studies, and citations."
-            align="center"
-          />
-
-          <div className="mt-8">
-            <PillarGrid pillars={ABOUT_PILLARS} variant="circular" />
-          </div>
-        </section>
-
-        <div className="mt-16">
-          <CTASection
-            title="Together for a Greener Tomorrow."
-            description="Navigate Earth's five living systems or reach out with questions and verified source contributions."
-            primaryLabel="Explore Our Planet"
-            primaryHref="/our-planet"
-            secondaryLabel="Contact Us"
-            secondaryHref="/contact"
-          />
-        </div>
+        <EditorialSection
+          className="mt-20 scroll-mt-28 sm:mt-28"
+          headingId="about-contact-heading"
+          index="Section 05"
+          title="Corrections and contributions"
+          lede="If a figure on this site is wrong, we want to hear it first. Send the citation and we will review, correct, and republish with a note."
+          aside={
+            <Link
+              href="/contact"
+              className="group/x inline-flex items-center gap-2 border-b border-foreground/25 pb-1 text-sm font-medium text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+            >
+              <span>Reach the editorial desk</span>
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/x:translate-x-1 motion-reduce:transform-none"
+              >
+                &rarr;
+              </span>
+            </Link>
+          }
+        >
+          <p className="max-w-[70ch] text-[15px] leading-relaxed text-muted-foreground">
+            We publish the source behind every measurement, including its geographic scope,
+            observation year, and stated limitations. Where the science is uncertain, we say so
+            rather than smoothing it over.
+          </p>
+        </EditorialSection>
       </div>
     </>
   );

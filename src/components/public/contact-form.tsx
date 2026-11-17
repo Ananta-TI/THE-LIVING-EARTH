@@ -78,13 +78,13 @@ export function ContactForm() {
       onSubmit={handleSubmit}
       noValidate
       aria-label="Send a message to THE LIVING EARTH"
-      className="space-y-6 rounded-xl border border-border bg-card p-6 sm:p-8"
+      className="border-t border-border pt-6"
     >
       {successMessage ? (
         <div
           role="status"
           aria-live="polite"
-          className="flex items-start gap-3 rounded-xl border border-primary/30 bg-primary/8 p-4 text-sm text-foreground"
+          className="mb-8 flex items-start gap-3 border-l-2 border-primary pl-4 text-sm text-foreground"
         >
           <CheckCircle2
             className="mt-0.5 size-5 shrink-0 text-primary"
@@ -100,7 +100,7 @@ export function ContactForm() {
       {formError ? (
         <div
           role="alert"
-          className="flex items-start gap-3 rounded-xl border border-destructive/35 bg-destructive/8 p-4 text-sm text-foreground"
+          className="mb-8 flex items-start gap-3 border-l-2 border-destructive pl-4 text-sm text-foreground"
         >
           <AlertCircle
             className="mt-0.5 size-5 shrink-0 text-destructive"
@@ -127,10 +127,13 @@ export function ContactForm() {
         />
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="contact-name">
-            Name <span className="text-destructive" aria-hidden="true">*</span>
+          <Label
+            htmlFor="contact-name"
+            className="font-mono text-[10px] tracking-[0.12em] text-earth-muted"
+          >
+            NAME <span className="text-destructive" aria-hidden="true">*</span>
           </Label>
           <Input
             id="contact-name"
@@ -143,7 +146,7 @@ export function ContactForm() {
             aria-invalid={Boolean(fieldErrors.name)}
             aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
             placeholder="Your full name"
-            className="h-11 bg-background"
+            className="h-11 rounded-none border-x-0 border-t-0 border-b border-border bg-transparent px-0 shadow-none focus-visible:border-primary focus-visible:ring-0"
           />
           {fieldErrors.name ? (
             <p id="contact-name-error" className="text-xs font-medium text-destructive">
@@ -153,8 +156,11 @@ export function ContactForm() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="contact-email">
-            Email <span className="text-destructive" aria-hidden="true">*</span>
+          <Label
+            htmlFor="contact-email"
+            className="font-mono text-[10px] tracking-[0.12em] text-earth-muted"
+          >
+            EMAIL <span className="text-destructive" aria-hidden="true">*</span>
           </Label>
           <Input
             id="contact-email"
@@ -167,7 +173,7 @@ export function ContactForm() {
             aria-invalid={Boolean(fieldErrors.email)}
             aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
             placeholder="you@example.org"
-            className="h-11 bg-background"
+            className="h-11 rounded-none border-x-0 border-t-0 border-b border-border bg-transparent px-0 shadow-none focus-visible:border-primary focus-visible:ring-0"
           />
           {fieldErrors.email ? (
             <p id="contact-email-error" className="text-xs font-medium text-destructive">
@@ -178,8 +184,11 @@ export function ContactForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="contact-subject">
-          Subject <span className="text-destructive" aria-hidden="true">*</span>
+        <Label
+          htmlFor="contact-subject"
+          className="font-mono text-[10px] tracking-[0.12em] text-earth-muted"
+        >
+          SUBJECT <span className="text-destructive" aria-hidden="true">*</span>
         </Label>
         <Input
           id="contact-subject"
@@ -191,7 +200,7 @@ export function ContactForm() {
           aria-invalid={Boolean(fieldErrors.subject)}
           aria-describedby={fieldErrors.subject ? "contact-subject-error" : undefined}
           placeholder="Topic, story question, or scientific source inquiry"
-          className="h-11 bg-background"
+          className="h-11 rounded-none border-x-0 border-t-0 border-b border-border bg-transparent px-0 shadow-none focus-visible:border-primary focus-visible:ring-0"
         />
         {fieldErrors.subject ? (
           <p id="contact-subject-error" className="text-xs font-medium text-destructive">
@@ -200,9 +209,12 @@ export function ContactForm() {
         ) : null}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="contact-message">
-          Message <span className="text-destructive" aria-hidden="true">*</span>
+      <div className="space-y-2 pt-2">
+        <Label
+          htmlFor="contact-message"
+          className="font-mono text-[10px] tracking-[0.12em] text-earth-muted"
+        >
+          MESSAGE <span className="text-destructive" aria-hidden="true">*</span>
         </Label>
         <Textarea
           id="contact-message"
@@ -216,7 +228,7 @@ export function ContactForm() {
             fieldErrors.message ? "contact-message-error" : "contact-message-hint"
           }
           placeholder="Share your inquiry, feedback, or environmental documentation note..."
-          className="min-h-36 bg-background"
+          className="min-h-36 rounded-none border-x-0 border-t-0 border-b border-border bg-transparent px-0 shadow-none focus-visible:border-primary focus-visible:ring-0"
         />
         {fieldErrors.message ? (
           <p id="contact-message-error" className="text-xs font-medium text-destructive">
@@ -224,26 +236,22 @@ export function ContactForm() {
           </p>
         ) : (
           <p id="contact-message-hint" className="text-xs text-muted-foreground">
-            Minimum 10 characters. Please include citation details if suggesting a scientific correction.
+            Minimum 10 characters. Include citation details if suggesting a scientific correction.
           </p>
         )}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
-        <p className="text-xs text-muted-foreground">
-          This form opens your own email app—nothing is stored on this website. You can also
-          write directly to{" "}
-          <a
-            href={`mailto:${SITE_CONFIG.contactEmail}`}
-            className="font-medium text-primary underline-offset-2 hover:underline"
-          >
-            {SITE_CONFIG.contactEmail}
-          </a>
-          .
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
+        <p className="max-w-[46ch] text-xs leading-relaxed text-muted-foreground">
+          This form opens your own email app — nothing is stored on this website.
         </p>
-        <Button type="submit" size="lg" className="h-11 gap-2 px-6">
+        <Button
+          type="submit"
+          size="lg"
+          className="h-11 gap-2 rounded-none bg-foreground px-6 text-background transition-colors duration-200 hover:bg-primary active:scale-[0.98]"
+        >
           <Send className="size-4" aria-hidden="true" />
-          <span>Open Email Draft</span>
+          <span>Open email draft</span>
         </Button>
       </div>
     </form>
