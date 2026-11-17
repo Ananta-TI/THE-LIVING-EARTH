@@ -140,14 +140,7 @@ export function AboutInteractiveView() {
           <div className="absolute inset-0 bg-gradient-to-t from-earth-deep-forest via-earth-deep-forest/45 to-black/30" />
         </motion.div>
 
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/4 -left-8 z-10 select-none opacity-[0.06]"
-        >
-          <span className="font-heading text-[22vw] leading-none tracking-tighter whitespace-nowrap text-earth-ivory">
-            LIVING RECORD
-          </span>
-        </div>
+        
 
         <motion.div
           style={prefersReduced ? undefined : { y: heroTextY, opacity: heroOpacity }}
