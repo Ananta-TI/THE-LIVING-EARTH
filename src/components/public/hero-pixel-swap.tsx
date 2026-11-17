@@ -116,18 +116,20 @@ export function HeroPixelSwap({ imageSrc, alt = "", firstSrc }: HeroPlateProps) 
          the cursor sits on the rail to the right, which pushed the wipe into
          one corner and read as "no effect". `center` always expands from the
          middle so the transition is equally visible wherever the cursor is.
-         `pixelSize` and `duration` are tuned for a 1440px-wide hero: a larger
-         tile count divides the same duration into an imperceptibly fast wave. */
+         `duration` is the stagger between tiles and `pixelDuration` is how fast
+         one tile grows. The tile count comes from `pixelSize` against a 1440px
+         hero (~45 tiles at 160), so the two together decide whether the pass
+         reads as a sweep or as a few lonely squares. */
       pattern="center"
-      pixelSize={160}
+      pixelSize={110}
       pixelRadius={0}
       gap={0}
       pixelScale={0}
       pixelSpin={0}
-      duration={1400}
-      pixelDuration={700}
-      randomness={0.35}
-      bounce={0.35}
+      duration={620}
+      pixelDuration={200}
+      randomness={0.25}
+      bounce={0.45}
       trigger="hover"
       intro
       /* The domain rail is the real control; the plate is decorative, so it must

@@ -173,6 +173,25 @@ function PixelSwap({
     layer.style.clipPath = clip || '';
   };
 
+  /**
+   * Stacking during a wipe.
+   *
+   * Layers default to `z-index: 0/1` so that layer 1 sits on top once a swap
+   * settles. An intro pass is the opposite case: it clips *layer 0* to reveal
+   * the incoming image, and layer 1 holds the outgoing photograph full-bleed.
+   * If layer 1 kept the higher z-index it would permanently cover the pixels
+   * layer 0 draws, so the wipe would run entirely out of sight and the image
+   * would appear to snap only when the pass ended. Lifting the clipped layer
+   * for the duration of the pass is what makes the effect visible.
+   */
+  const stackFor = mode => {
+    const top = mode === 'intro' ? 0 : 1;
+    [0, 1].forEach(index => {
+      const layer = layerRefs.current[index];
+      if (layer) layer.style.zIndex = String(index === top ? 1 : 0);
+    });
+  };
+
   const finish = () => {
     const engine = engineRef.current;
     if (!engine) return;
@@ -187,12 +206,14 @@ function PixelSwap({
       setLayer(0, true, '');
       setLayer(1, false, '');
       engine.mode = 'swap';
+      stackFor('swap');
       if (desiredRef.current !== shownRef.current) requestRef.current(desiredRef.current, pointRef.current);
       return;
     }
     const target = engine.desired === 1;
     setLayer(1, target, '');
     setLayer(0, !target, '');
+    stackFor('swap');
     shownRef.current = target;
     setShown(target);
     settingsRef.current.onComplete?.(target);
@@ -292,6 +313,7 @@ function PixelSwap({
     for (let i = 0; i < grid.count; i++) engine.flipAt[i] = now + Math.max(0, orders[i] - first) * s.duration;
     root.setAttribute('data-swapping', '');
     if (mode === 'swap') setLayer(0, true, '');
+    stackFor(mode);
     cancelAnimationFrame(engine.raf);
     engine.raf = requestAnimationFrame(frame);
     return true;

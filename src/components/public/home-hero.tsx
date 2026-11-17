@@ -49,10 +49,22 @@ export function HomeHero({ slides }: HomeHeroProps) {
 
   const advance = useCallback(
     (delta: number) => {
+      if (slides.length === 0) return;
       setIndex((current) => (current + delta + slides.length) % slides.length);
     },
     [slides.length],
   );
+
+  // Decode every slide up front so a rail hover paints the new photograph
+  // immediately instead of showing the previous frame until it downloads.
+  useEffect(() => {
+    slides.forEach((slide) => {
+      if (!slide.imageSrc) return;
+      const img = new window.Image();
+      img.src = slide.imageSrc;
+      img.decode?.().catch(() => {});
+    });
+  }, [slides]);
 
   useEffect(() => {
     if (prefersReduced || !playing || slides.length < 2) return;
@@ -77,20 +89,22 @@ export function HomeHero({ slides }: HomeHeroProps) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [advance, prefersReduced]);
 
+  const activeSlide = slides[index];
+
   return (
     <section
       ref={sectionRef}
       aria-labelledby="hero-headline"
       className="relative isolate overflow-hidden bg-earth-deep-forest text-earth-ivory"
     >
-      {/* Hero plate. PixelSwap owns the hero image: its bottom layer holds the
-          outgoing photograph and its top layer the incoming one, and `intro`
-          plays a pixel-grid wipe on every domain change. The first image is
-          priority-loaded so the hero is never empty. */}
-      <div aria-hidden="true" className="absolute inset-0">
-        {slides[index] ? (
+      {/* Hero plate. PixelSwap owns the hero image and stays mounted for the
+          whole life of the hero: `intro` plays a pixel-grid wipe on each domain
+          change, with the outgoing photograph held behind the incoming one. The
+          first image is priority-loaded so the hero is never empty. */}
+      <div aria-hidden="true" className="absolute inset-0 z-0">
+        {activeSlide ? (
           <HeroPixelSwap
-            imageSrc={slides[index].imageSrc}
+            imageSrc={activeSlide.imageSrc}
             firstSrc={slides[0]?.imageSrc ?? "/images/hero-planet.jpg"}
           />
         ) : null}
@@ -99,18 +113,18 @@ export function HomeHero({ slides }: HomeHeroProps) {
       {/* Legibility: base wash, directional scrim, a right-hand ramp that keeps
           the domain rail readable over busy mid-tones, and a fade into the
           band below. */}
-      <div aria-hidden="true" className="absolute inset-0 z-10 bg-black/20" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 bg-black/20" />
       <div
         aria-hidden="true"
-        className="absolute inset-0 z-10 bg-gradient-to-r from-black/80 via-black/45 to-black/35"
+        className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-black/80 via-black/45 to-black/35"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-y-0 right-0 z-10 w-full bg-gradient-to-l from-earth-deep-forest/70 via-earth-deep-forest/25 to-transparent lg:w-1/2"
+        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-full bg-gradient-to-l from-earth-deep-forest/70 via-earth-deep-forest/25 to-transparent lg:w-1/2"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-earth-deep-forest to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-earth-deep-forest to-transparent"
       />
 
       <motion.div
@@ -133,9 +147,9 @@ export function HomeHero({ slides }: HomeHeroProps) {
                 );
 
                 if (!isActive) {
-                  // Inactive frames must not be in the accessibility tree nor
-                  // painted at all: hiding only the active <h1> is what made
-                  // every domain name show through the photograph.
+                  // Inactive frames must stay out of the accessibility tree and
+                  // must not paint: they are stacked in the same grid cell, so
+                  // leaving them visible shows every domain name over the photo.
                   return (
                     <p
                       key={slide.slug}
@@ -152,7 +166,7 @@ export function HomeHero({ slides }: HomeHeroProps) {
                     id="hero-headline"
                     key={slide.slug}
                     className={headlineClass}
-                    initial={false}
+                    initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                     transition={{ duration: prefersReduced ? 0 : 0.65, ease: EASE }}
                   >
@@ -299,7 +313,7 @@ export function HomeHero({ slides }: HomeHeroProps) {
       <motion.div
         aria-hidden="true"
         style={prefersReduced ? undefined : { scaleX: spineScale }}
-        className="absolute inset-x-0 bottom-0 z-20 h-px origin-left bg-earth-ivory/25"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-px origin-left bg-earth-ivory/25"
       />
     </section>
   );
