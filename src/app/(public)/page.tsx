@@ -72,6 +72,18 @@ async function HomeDynamicSections() {
         </section>
       ) : null}
 
+      {/* Typographic statement — a large, single-line moment. */}
+      <section
+        aria-hidden="true"
+        className="mx-auto w-full max-w-[1400px] px-4 py-24 sm:px-6 sm:py-32 lg:px-10"
+      >
+        <p className="font-heading text-[2.4rem] leading-[1.05] tracking-[-0.025em] text-foreground/90 sm:text-[3.2rem] lg:text-[4.4rem]">
+          Five domains.
+          <br />
+          <span className="text-primary">One connected record.</span>
+        </p>
+      </section>
+
       <section
         aria-labelledby="home-notes-heading"
         className="mx-auto w-full max-w-[1400px] px-4 pt-20 sm:px-6 sm:pt-28 lg:px-10"

@@ -143,7 +143,7 @@ export function HomeHero({ slides }: HomeHeroProps) {
               {slides.map((slide, slideIndex) => {
                 const isActive = slideIndex === index;
                 const headlineClass = cn(
-                  "col-start-1 row-start-1 font-heading text-[2.6rem] leading-[0.98] tracking-[-0.02em] text-earth-ivory sm:text-6xl lg:text-[4.6rem]",
+                  "col-start-1 row-start-1 font-heading text-[3.2rem] leading-[0.95] tracking-[-0.03em] text-earth-ivory sm:text-7xl lg:text-[5.6rem]",
                 );
 
                 if (!isActive) {
