@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { AnimatedContent } from "@/components/public/animated-content";
 import type { PublicStatisticWithSource } from "@/features/public/queries";
 import { formatNumber } from "@/lib/utils/format";
@@ -27,7 +28,18 @@ export function FieldDataPanel({ statistics }: FieldDataPanelProps) {
       aria-labelledby="home-field-data-heading"
       className="relative isolate overflow-hidden bg-earth-deep-forest text-earth-ivory"
     >
-      <div className="mx-auto w-full max-w-[1400px] px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
+      <Image
+        src="/images/earth-globe.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover object-center opacity-25"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-b from-earth-deep-forest/80 via-earth-deep-forest/60 to-earth-deep-forest/90"
+      />
+      <div className="relative mx-auto w-full max-w-[1400px] px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
         <div className="flex flex-wrap items-end justify-between gap-6 border-b border-earth-ivory/15 pb-6">
           <h2
             id="home-field-data-heading"

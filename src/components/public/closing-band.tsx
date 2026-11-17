@@ -62,7 +62,7 @@ export function ClosingBand({ pillars }: ClosingBandProps) {
               <li key={pillar.slug} className="border-b border-border">
                 <Link
                   href={`/explore/${pillar.slug}`}
-                  className="group/row flex items-center justify-between gap-6 py-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                  className="group/row flex items-center justify-between gap-6 py-4 -mx-3 px-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring transition-colors duration-200 hover:bg-muted/40"
                 >
                   <span className="font-heading text-lg text-foreground transition-colors duration-200 group-hover/row:text-primary">
                     {pillar.name}
