@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { EditorialPageHero } from "@/components/public/editorial-page-hero";
+import { StoriesHero } from "@/components/public/stories-hero";
 import { EmptyState } from "@/components/public/empty-state";
 import { ErrorState } from "@/components/public/error-state";
 import { LoadingState } from "@/components/public/loading-state";
@@ -109,14 +109,7 @@ async function StoriesArchiveContent({
 export default function StoriesPage({ searchParams }: StoriesPageProps) {
   return (
     <>
-      <EditorialPageHero
-        index="Section 03"
-        context="The archive"
-        title="Every note, in the order it was recorded"
-        standfirst="Long-form reporting and field dispatches across all five domains — each entry carries its domain, topic, publication date, and reading time."
-        imageSrc="/images/hero-planet.jpg"
-        imageAlt="Forest river valley canopy representing environmental stories"
-      />
+      <StoriesHero />
 
       <div className="mx-auto w-full max-w-[1400px] px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
         <Suspense fallback={<LoadingState label="Loading the archive..." />}>
