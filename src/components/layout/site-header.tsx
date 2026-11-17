@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { MAIN_NAV_ITEMS } from "@/config/site";
+import { hasDarkPageHero, isActivePath } from "@/lib/constants/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV_ICONS: Readonly<Record<string, LucideIcon>> = {
@@ -28,22 +29,15 @@ const NAV_ICONS: Readonly<Record<string, LucideIcon>> = {
   "/contact": Mail,
 };
 
-function isActivePath(pathname: string, href: string): boolean {
-  if (href === "/") {
-    return pathname === "/";
-  }
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
-
 export function SiteHeader() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
 
-  const isHome = pathname === "/";
+  const hasHero = hasDarkPageHero(pathname);
   const hasFloatingSurface = isScrolled || mobileMenuOpen;
-  const isLightSurface = hasFloatingSurface || !isHome;
+  const isLightSurface = hasFloatingSurface || !hasHero;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,11 +85,11 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* Keeps content clear of the fixed header on every route except the home hero. */}
-      {!isHome ? <div aria-hidden="true" className="h-[4.875rem]" /> : null}
+      {/* Reserves the fixed header height only on routes without a page hero. */}
+      {!hasHero ? <div aria-hidden="true" className="h-[4.875rem]" /> : null}
 
       <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex w-full justify-center">
-        {/* Readability scrim over the photographic home hero. */}
+        {/* Readability scrim over photographic page heroes. */}
         <div
           aria-hidden="true"
           className={cn(

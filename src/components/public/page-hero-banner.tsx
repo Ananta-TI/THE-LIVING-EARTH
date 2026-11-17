@@ -67,8 +67,8 @@ export function PageHeroBanner({
         className={cn(
           "relative mx-auto flex max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8",
           compact
-            ? "min-h-[15rem] py-12 sm:min-h-[18rem] sm:py-16"
-            : "min-h-[18rem] py-16 sm:min-h-[21rem] sm:py-20",
+            ? "min-h-[19rem] pt-28 pb-12 sm:min-h-[22rem] sm:pt-32 sm:pb-16"
+            : "min-h-[22rem] pt-32 pb-16 sm:min-h-[25rem] sm:pt-36 sm:pb-20",
           align === "center" ? "items-center text-center" : "items-start text-left",
         )}
       >
