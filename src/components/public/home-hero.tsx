@@ -83,9 +83,9 @@ export function HomeHero({ slides }: HomeHeroProps) {
       aria-labelledby="hero-headline"
       className="relative isolate overflow-hidden bg-earth-deep-forest text-earth-ivory"
     >
-      {/* Filmstrip: frames cross-fade with a clip-path wipe. Inactive frames stay
-          fully painted and are only revealed by the wipe, so no empty plate is
-          ever visible mid-transition. */}
+      {/* Filmstrip: every frame stays mounted and fully painted. The outgoing
+          frame wipes downward to reveal the incoming one, so no empty plate is
+          ever visible mid-transition. All frames sit below the scrim (z-10). */}
       <div aria-hidden="true" className="absolute inset-0">
         {slides.map((slide, slideIndex) => {
           const isActive = slideIndex === index;
@@ -93,26 +93,17 @@ export function HomeHero({ slides }: HomeHeroProps) {
           return (
             <motion.div
               key={slide.slug}
-              className="absolute inset-0 will-change-[clip-path,transform]"
+              className="absolute inset-0"
               initial={false}
-              animate={
-                isActive
-                  ? { clipPath: "inset(0% 0% 0% 0%)", scale: 1.02 }
-                  : { clipPath: "inset(0% 0% 0% 0%)", scale: 1.02, opacity: 0 }
-              }
+              animate={{
+                clipPath: isActive
+                  ? "inset(0% 0% 0% 0%)"
+                  : "inset(0% 0% 100% 0%)",
+                scale: isActive ? 1.02 : 1.05,
+              }}
               transition={{ duration: prefersReduced ? 0 : 1.1, ease: EASE }}
-              style={{ zIndex: isActive ? 2 : 1 }}
             >
-              <motion.div
-                className="absolute inset-0"
-                initial={false}
-                animate={
-                  isActive
-                    ? { clipPath: "inset(0% 0% 0% 0%)" }
-                    : { clipPath: "inset(100% 0% 0% 0%)" }
-                }
-                transition={{ duration: prefersReduced ? 0 : 1.1, ease: EASE }}
-              >
+              <div className="relative size-full">
                 <Image
                   src={slide.imageSrc}
                   alt=""
@@ -121,25 +112,32 @@ export function HomeHero({ slides }: HomeHeroProps) {
                   sizes="100vw"
                   className="object-cover object-center"
                 />
-              </motion.div>
+              </div>
             </motion.div>
           );
         })}
       </div>
 
-      {/* Legibility: directional scrim plus a soft vertical fade into the band below. */}
+      {/* Legibility: base wash, directional scrim, a right-hand ramp that keeps
+          the domain rail readable over busy mid-tones, and a fade into the
+          band below. */}
+      <div aria-hidden="true" className="absolute inset-0 z-10 bg-black/20" />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-r from-black/82 via-black/48 to-black/12"
+        className="absolute inset-0 z-10 bg-gradient-to-r from-black/80 via-black/45 to-black/35"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-earth-deep-forest to-transparent"
+        className="absolute inset-y-0 right-0 z-10 w-full bg-gradient-to-l from-earth-deep-forest/70 via-earth-deep-forest/25 to-transparent lg:w-1/2"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-earth-deep-forest to-transparent"
       />
 
       <motion.div
         style={prefersReduced ? undefined : { y: bodyY, opacity: bodyOpacity }}
-        className="relative mx-auto flex min-h-[38rem] max-w-[1400px] flex-col justify-end px-4 pt-28 pb-10 sm:min-h-[42rem] sm:px-6 sm:pb-14 lg:min-h-[46rem] lg:px-10 lg:pt-32"
+        className="relative z-20 mx-auto flex min-h-[38rem] max-w-[1400px] flex-col justify-end px-4 pt-28 pb-10 sm:min-h-[42rem] sm:px-6 sm:pb-14 lg:min-h-[46rem] lg:px-10 lg:pt-32"
       >
         <div className="grid items-end gap-10 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">
@@ -152,27 +150,19 @@ export function HomeHero({ slides }: HomeHeroProps) {
             <div className="relative mt-4 grid">
               {slides.map((slide, slideIndex) => {
                 const isActive = slideIndex === index;
-                // Only the active frame carries the page's single <h1>; the
-                // other frames are plain, aria-hidden text, so the document
-                // never exposes five competing top-level headings.
                 const headlineClass = cn(
                   "col-start-1 row-start-1 font-heading text-[2.6rem] leading-[0.98] tracking-[-0.02em] text-earth-ivory sm:text-6xl lg:text-[4.6rem]",
-                  !isActive && "pointer-events-none",
                 );
-                const animation = {
-                  opacity: isActive ? 1 : 0,
-                  y: isActive ? 0 : 18,
-                  filter: isActive ? "blur(0px)" : "blur(6px)",
-                };
-                const transition = { duration: prefersReduced ? 0 : 0.65, ease: EASE };
 
                 if (!isActive) {
+                  // Inactive frames must not be in the accessibility tree nor
+                  // painted at all: hiding only the active <h1> is what made
+                  // every domain name show through the photograph.
                   return (
                     <p
                       key={slide.slug}
                       aria-hidden="true"
-                      className={headlineClass}
-                      style={{ opacity: 0, pointerEvents: "none" }}
+                      className={cn(headlineClass, "invisible")}
                     >
                       {slide.name}
                     </p>
@@ -185,8 +175,8 @@ export function HomeHero({ slides }: HomeHeroProps) {
                     key={slide.slug}
                     className={headlineClass}
                     initial={false}
-                    animate={animation}
-                    transition={transition}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: prefersReduced ? 0 : 0.65, ease: EASE }}
                   >
                     {slide.name}
                   </motion.h1>
@@ -331,7 +321,7 @@ export function HomeHero({ slides }: HomeHeroProps) {
       <motion.div
         aria-hidden="true"
         style={prefersReduced ? undefined : { scaleX: spineScale }}
-        className="absolute inset-x-0 bottom-0 h-px origin-left bg-earth-ivory/25"
+        className="absolute inset-x-0 bottom-0 z-20 h-px origin-left bg-earth-ivory/25"
       />
     </section>
   );
