@@ -83,9 +83,9 @@ export function HomeHero({ slides }: HomeHeroProps) {
       aria-labelledby="hero-headline"
       className="relative isolate overflow-hidden bg-earth-deep-forest text-earth-ivory"
     >
-      {/* Hero plate. PixelSwap owns the whole hero image: its bottom layer holds
-          the outgoing photograph and its top layer the incoming one, so domain
-          changes are revealed by the pixel-grid wipe. The first image is
+      {/* Hero plate. PixelSwap owns the hero image: its bottom layer holds the
+          outgoing photograph and its top layer the incoming one, and `intro`
+          plays a pixel-grid wipe on every domain change. The first image is
           priority-loaded so the hero is never empty. */}
       <div aria-hidden="true" className="absolute inset-0">
         {slides[index] ? (
@@ -93,7 +93,7 @@ export function HomeHero({ slides }: HomeHeroProps) {
             key="hero-swap"
             frameKey={slides[index].slug}
             imageSrc={slides[index].imageSrc}
-            fallbackSrc={slides[0]?.imageSrc ?? "/images/hero-planet.jpg"}
+            firstSrc={slides[0]?.imageSrc ?? "/images/hero-planet.jpg"}
           />
         ) : null}
       </div>
