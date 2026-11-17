@@ -2,12 +2,12 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { AnimatedContent } from "@/components/public/animated-content";
 import { ClosingBand } from "@/components/public/closing-band";
+import { EditorialSection } from "@/components/public/editorial-section";
 import { FeatureNote } from "@/components/public/feature-note";
 import { FieldDataPanel } from "@/components/public/field-data-panel";
 import { FieldNoteGrid } from "@/components/public/field-note-grid";
 import { HomeHero, type HeroSlide } from "@/components/public/home-hero";
 import { LoadingState } from "@/components/public/loading-state";
-import { SectionHeading } from "@/components/public/section-heading";
 import { getHomePageData } from "@/features/public/queries";
 import { CONTENT_PILLARS } from "@/lib/constants/pillars";
 import { getHomeFieldNotes } from "@/lib/utils/field-notes";
@@ -76,22 +76,24 @@ async function HomeDynamicSections() {
         aria-labelledby="home-notes-heading"
         className="mx-auto w-full max-w-[1400px] px-4 pt-20 sm:px-6 sm:pt-28 lg:px-10"
       >
-        <SectionHeading
+        <EditorialSection
           headingId="home-notes-heading"
+          index="Section 02"
           title="From the field"
-          description="Dispatches and case studies, listed in the order they were recorded."
-        />
-        <div className="mt-10">
-          <AnimatedContent
-            distance={22}
-            duration={0.7}
-            threshold={0.05}
-            stagger={0.05}
-            trigger="scroll"
-          >
-            <FieldNoteGrid notes={notes} startIndex={lead ? 1 : 0} />
-          </AnimatedContent>
-        </div>
+          lede="Dispatches and case studies, listed in the order they were recorded."
+        >
+          <div className="mt-2">
+            <AnimatedContent
+              distance={22}
+              duration={0.7}
+              threshold={0.05}
+              stagger={0.05}
+              trigger="scroll"
+            >
+              <FieldNoteGrid notes={notes} startIndex={lead ? 1 : 0} />
+            </AnimatedContent>
+          </div>
+        </EditorialSection>
       </section>
 
       <div className="mt-20 sm:mt-28">

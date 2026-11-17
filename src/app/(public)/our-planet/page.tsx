@@ -341,14 +341,14 @@ export default function OurPlanetPage() {
                 </Link>
               </h3>
 
-              <p className="mt-6 max-w-[64ch] text-lg leading-relaxed text-foreground/85">
+              <p className="mt-6 max-w-[64ch] text-base leading-relaxed text-foreground/85">
                 Indonesia stewards the largest mangrove extent on Earth — intertidal forests whose
                 dense aerial root networks dissipate storm surge energy, trap coastal sediment, and
                 sequester up to four times more carbon per hectare than terrestrial tropical
                 forests.
               </p>
 
-              <p className="mt-5 max-w-[64ch] text-[15px] leading-relaxed text-muted-foreground">
+              <p className="mt-4 max-w-[64ch] text-sm leading-relaxed text-muted-foreground">
                 Decades of aquaculture pond conversion and seawall modification left low-lying
                 villages exposed to tidal flooding, shoreline erosion, and declining nearshore crab
                 and finfish nurseries. Restoration teams shifted away from monoculture planting
@@ -401,26 +401,23 @@ export default function OurPlanetPage() {
               <li
                 key={pressure.id}
                 id={pressure.id}
-                className="scroll-mt-28 border-b border-border py-8 lg:[&:nth-child(2n)]:border-l lg:[&:nth-child(2n)]:pl-8 lg:[&:nth-child(2n+1)]:pr-8"
+                className="scroll-mt-28 border-b border-border py-7 lg:[&:nth-child(2n)]:border-l lg:[&:nth-child(2n)]:pl-8 lg:[&:nth-child(2n+1)]:pr-8"
               >
                 <p className="font-mono text-[10px] tracking-[0.12em] text-earth-muted tabular-nums">
                   {String(index + 1).padStart(2, "0")}
                 </p>
-                <h3 className="mt-3 font-heading text-2xl leading-tight tracking-[-0.015em] text-foreground">
+                <h3 className="mt-2 font-heading text-xl leading-tight tracking-[-0.015em] text-foreground">
                   {pressure.title}
                 </h3>
-                <p className="mt-4 max-w-[58ch] text-[15px] leading-relaxed text-muted-foreground">
+                <p className="mt-3 line-clamp-2 max-w-[58ch] text-sm leading-relaxed text-muted-foreground">
                   {pressure.summary}
                 </p>
 
-                <p className="mt-6 font-mono text-[10px] tracking-[0.12em] text-earth-muted">
-                  KEY DRIVERS
-                </p>
-                <ul className="mt-3">
+                <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5">
                   {pressure.keyDrivers.map((driver) => (
                     <li
                       key={driver}
-                      className="border-b border-border/60 py-2.5 text-[13px] leading-relaxed text-foreground/80 last:border-b-0"
+                      className="font-mono text-[10px] tracking-[0.1em] text-earth-muted before:mr-1.5 before:content-['—']"
                     >
                       {driver}
                     </li>
@@ -429,7 +426,7 @@ export default function OurPlanetPage() {
 
                 <Link
                   href={pressure.pillarHref}
-                  className="group/x mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                  className="group/x mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                 >
                   <span>Open the related domain</span>
                   <span
