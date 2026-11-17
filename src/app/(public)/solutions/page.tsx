@@ -129,7 +129,7 @@ async function PublishedRestorationRecords() {
                   <h3 className="mt-3 max-w-[30ch] font-heading text-xl leading-snug text-foreground transition-colors duration-200 group-hover/row:text-primary sm:text-2xl">
                     {caseStudy.title}
                   </h3>
-                  <p className="mt-3 max-w-[62ch] text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-3 line-clamp-2 max-w-[62ch] text-sm leading-relaxed text-muted-foreground">
                     {caseStudy.summary}
                   </p>
                 </div>
@@ -177,19 +177,19 @@ export default function SolutionsPage() {
           title="Pathways for ecological recovery"
           lede="Durable recovery pairs systemic policy and clean infrastructure with measurable local restoration. Each pathway below names what it addresses and where it operates."
         >
-          <ol className="grid border-t border-border lg:grid-cols-2">
+          <ol className="grid border-t border-border sm:grid-cols-2 xl:grid-cols-3">
             {PATHWAYS.map((pathway, index) => (
               <li
                 key={pathway.title}
-                className="border-b border-border px-0 py-7 lg:[&:nth-child(2n)]:border-l lg:[&:nth-child(2n)]:pl-8 lg:[&:nth-child(2n+1)]:pr-8"
+                className="border-b border-border px-0 py-5 sm:px-5 sm:[&:nth-child(2n)]:border-l xl:px-6 xl:[&:nth-child(2n)]:border-l-0 xl:[&:nth-child(3n+2)]:border-l xl:[&:nth-child(3n)]:border-l"
               >
                 <p className="font-mono text-[10px] tracking-[0.12em] text-earth-muted tabular-nums">
                   {String(index + 1).padStart(2, "0")} &middot; {pathway.tag}
                 </p>
-                <h3 className="mt-3 font-heading text-xl leading-snug text-foreground sm:text-2xl">
+                <h3 className="mt-2 font-heading text-lg leading-snug text-foreground sm:text-xl">
                   {pathway.title}
                 </h3>
-                <p className="mt-3 max-w-[54ch] text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                   {pathway.description}
                 </p>
               </li>
